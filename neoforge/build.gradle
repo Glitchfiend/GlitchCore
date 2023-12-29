@@ -79,6 +79,7 @@ curseforge {
 
         releaseType = release_channel
         addGameVersion minecraft_version
+        addGameVersion 'NeoForge' // NeoForge isn't auto-detected and must be manually specified
 
         mainArtifact(jar) {
             displayName = "${mod_display_name} NeoForge ${version}"

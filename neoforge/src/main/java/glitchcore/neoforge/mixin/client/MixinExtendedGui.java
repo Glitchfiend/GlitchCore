@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,6 +29,7 @@ public abstract class MixinExtendedGui extends Gui
         super(p_232355_, p_232356_);
     }
 
+    @Unique
     private float partialTicks;
 
     @Inject(method="render", at=@At(value="HEAD"))

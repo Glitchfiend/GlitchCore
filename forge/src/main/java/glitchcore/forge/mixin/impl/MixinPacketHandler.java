@@ -8,10 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler
@@ -20,6 +17,7 @@ public abstract class MixinPacketHandler
     @Final
     private ResourceLocation channelName;
 
+    @Unique
     private SimpleChannel channel;
 
     @Overwrite

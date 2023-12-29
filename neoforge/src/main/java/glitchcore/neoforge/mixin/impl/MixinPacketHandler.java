@@ -18,6 +18,7 @@ public abstract class MixinPacketHandler
     @Final
     private ResourceLocation channelName;
 
+    @Unique
     private SimpleChannel channel;
 
     @Unique

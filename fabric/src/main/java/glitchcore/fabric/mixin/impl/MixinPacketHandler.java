@@ -14,10 +14,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +27,7 @@ public abstract class MixinPacketHandler
     @Final
     private ResourceLocation channelName;
 
+    @Unique
     private Map<Class<?>, FabricPacketWrapper> wrappers = new HashMap<>();
 
 

@@ -29,15 +29,15 @@ jobs:
         MAVEN_USER: ${{ secrets.MAVEN_USER }}
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         BUILD_NUMBER: ${{ github.run_number }}
-   - name: CurseForge Publish
-     run: ./gradlew curseforge -PcurseApiKey=${CURSE_API_KEY}
-     env:
-       CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
-       BUILD_NUMBER: ${{ github.run_number }}
-     continue-on-error: true
-   - name: Modrinth Publish
-     run: ./gradlew modrinth -PmodrinthToken=${MODRINTH_TOKEN}
-     env:
-       MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-       BUILD_NUMBER: ${{ github.run_number }}
-     continue-on-error: true
+    - name: CurseForge Publish
+      run: ./gradlew curseforge -PcurseApiKey=${CURSE_API_KEY}
+      env:
+        CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
+        BUILD_NUMBER: ${{ github.run_number }}
+      continue-on-error: true
+    - name: Modrinth Publish
+      run: ./gradlew modrinth -PmodrinthToken=${MODRINTH_TOKEN}
+      env:
+        MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        BUILD_NUMBER: ${{ github.run_number }}
+      continue-on-error: true

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "glitchcore.neoforge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "glitchcore.refmap.json",
+  "mixins": [
+    "impl.MixinEnvironment",
+    "impl.MixinPacketHandler",
+    "impl.MixinRenderTypeHelper",
+    "MixinServerPlayer"
+  ],
+  "client": [
+    "client.MixinExtendedGui"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}

@@ -1,0 +1,29 @@
+include("common", "forge", "neoforge", "fabric")
+
+pluginManagement.repositories {
+    gradlePluginPortal()
+    maven {
+        name = "Fabric"
+        url = "https://maven.fabricmc.net/"
+    }
+    maven {
+        name = "NeoForge"
+        url = "https://maven.neoforged.net/releases"
+    }
+    maven {
+        name = "Forge"
+        url = "https://maven.minecraftforge.net"
+    }
+    maven {
+        name = "Sponge Snapshots"
+        url = "https://repo.spongepowered.org/repository/maven-public/"
+    }
+}
+
+rootProject.name = "GlitchCore"
+
+// We want lowercase folder names but uppercase project names
+project(":common").name = "Common"
+project(":forge").name = "Forge"
+project(":neoforge").name = "NeoForge"
+project(":fabric").name = "Fabric"

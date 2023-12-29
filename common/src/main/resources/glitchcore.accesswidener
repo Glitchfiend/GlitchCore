@@ -1,0 +1,4 @@
+accessWidener v1 named
+
+# Registry ordering
+accessible field net/minecraft/core/registries/BuiltInRegistries LOADERS Ljava/util/Map;

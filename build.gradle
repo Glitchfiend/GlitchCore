@@ -81,54 +81,51 @@ subprojects {
     tasks.withType(GenerateModuleMetadata) {
         enabled = false
     }
-    
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                artifact jar
-                groupId project.group
-                version project.version
 
-                afterEvaluate {
+    afterEvaluate {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    artifact jar
                     artifactId project.archivesBaseName
-                }
+                    groupId project.group
+                    version project.version
+                    from components.java
 
-                pom {
-                    afterEvaluate {
+                    pom {
                         name = project.archivesBaseName
-                    }
-                    description = project.mod_description
-                    url = project.mod_git_url
-                    scm {
+                        description = project.mod_description
                         url = project.mod_git_url
-                        connection = project.mod_scm_url
-                        developerConnection = project.mod_scm_url
-                    }
-                    issueManagement {
-                        system = 'github'
-                        url = project.mod_issues_url
-                    }
-                    licenses {
-                        license {
-                            name = project.mod_license
+                        scm {
+                            url = project.mod_git_url
+                            connection = project.mod_scm_url
+                            developerConnection = project.mod_scm_url
                         }
-                    }
-                    developers {
-                        developer {
-                            id = 'adubbz'
-                            name = 'Adubbz'
+                        issueManagement {
+                            system = 'github'
+                            url = project.mod_issues_url
+                        }
+                        licenses {
+                            license {
+                                name = project.mod_license
+                            }
+                        }
+                        developers {
+                            developer {
+                                id = 'adubbz'
+                                name = 'Adubbz'
+                            }
                         }
                     }
                 }
             }
-        }
-        repositories {
-            maven {
-                url = "https://maven.minecraftforge.net/releases/"
-                credentials {
-                    username = System.getenv("MAVEN_USER")
-                    password = System.getenv("MAVEN_PASSWORD")
+            repositories {
+                maven {
+                    url = "https://maven.minecraftforge.net/releases/"
+                    credentials {
+                        username = System.getenv("MAVEN_USER")
+                        password = System.getenv("MAVEN_PASSWORD")
+                    }
                 }
             }
         }

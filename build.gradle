@@ -114,10 +114,6 @@ subprojects {
                                 id = 'adubbz'
                                 name = 'Adubbz'
                             }
-                            developer {
-                                id = 'forstride'
-                                name = 'Forstride'
-                            }
                         }
                     }
                 }

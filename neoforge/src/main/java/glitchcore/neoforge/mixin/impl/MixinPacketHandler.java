@@ -70,6 +70,9 @@ public abstract class MixinPacketHandler
     @Overwrite
     private void init()
     {
-        this.channel = NetworkRegistry.ChannelBuilder.named(this.channelName).simpleChannel();
+        this.channel = NetworkRegistry.ChannelBuilder.named(this.channelName)
+                .clientAcceptedVersions(e -> true)
+                .serverAcceptedVersions(e -> true)
+                .networkProtocolVersion(() -> "yes").simpleChannel();
     }
 }

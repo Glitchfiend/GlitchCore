@@ -86,7 +86,6 @@ subprojects {
         publishing {
             publications {
                 mavenJava(MavenPublication) {
-                    artifact jar
                     groupId project.group
                     artifactId project.archivesBaseName
                     version project.version

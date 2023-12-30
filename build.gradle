@@ -82,51 +82,53 @@ subprojects {
         enabled = false
     }
 
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifact jar
-                groupId project.group
-                artifactId project.archivesBaseName
-                version project.version
+    afterEvaluate {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    artifact jar
+                    groupId project.group
+                    artifactId project.archivesBaseName
+                    version project.version
 
-                pom {
-                    name = project.archivesBaseName
-                    description = project.mod_description
-                    url = project.mod_git_url
-                    scm {
+                    pom {
+                        name = project.archivesBaseName
+                        description = project.mod_description
                         url = project.mod_git_url
-                        connection = project.mod_scm_url
-                        developerConnection = project.mod_scm_url
-                    }
-                    issueManagement {
-                        system = 'github'
-                        url = project.mod_issues_url
-                    }
-                    licenses {
-                        license {
-                            name = project.mod_license
+                        scm {
+                            url = project.mod_git_url
+                            connection = project.mod_scm_url
+                            developerConnection = project.mod_scm_url
                         }
-                    }
-                    developers {
-                        developer {
-                            id = 'adubbz'
-                            name = 'Adubbz'
+                        issueManagement {
+                            system = 'github'
+                            url = project.mod_issues_url
                         }
-                        developer {
-                            id = 'forstride'
-                            name = 'Forstride'
+                        licenses {
+                            license {
+                                name = project.mod_license
+                            }
+                        }
+                        developers {
+                            developer {
+                                id = 'adubbz'
+                                name = 'Adubbz'
+                            }
+                            developer {
+                                id = 'forstride'
+                                name = 'Forstride'
+                            }
                         }
                     }
                 }
             }
-        }
-        repositories {
-            maven {
-                url = "https://maven.minecraftforge.net/releases/"
-                credentials {
-                    username = System.getenv("MAVEN_USER")
-                    password = System.getenv("MAVEN_PASSWORD")
+            repositories {
+                maven {
+                    url = "https://maven.minecraftforge.net/releases/"
+                    credentials {
+                        username = System.getenv("MAVEN_USER")
+                        password = System.getenv("MAVEN_PASSWORD")
+                    }
                 }
             }
         }

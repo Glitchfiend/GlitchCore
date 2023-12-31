@@ -4,8 +4,10 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.client;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RenderTooltipEvent;
+import glitchcore.fabric.gui.IExtendedGuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -21,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics
+public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
 {
     @Unique
     private ItemStack currentTooltipStack = ItemStack.EMPTY;
@@ -46,5 +48,16 @@ public abstract class MixinGuiGraphics
     private void onRenderTooltipInternal(Font fallbackFont, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, CallbackInfo ci)
     {
         EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
+    }
+
+    @Override
+    public ItemStack getCurrentTooltipStack()
+    {
+        return this.currentTooltipStack;
+    }
+
+    public void setCurrentTooltipStack(ItemStack stack)
+    {
+        this.currentTooltipStack = stack;
     }
 }

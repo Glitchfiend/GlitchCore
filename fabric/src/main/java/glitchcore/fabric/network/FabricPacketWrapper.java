@@ -12,6 +12,9 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.thread.BlockableEventLoop;
+
+import java.util.concurrent.CompletableFuture;
 
 public class FabricPacketWrapper<T extends CustomPacket<T>>
 {
@@ -30,20 +33,30 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
             @Override
             public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender)
             {
-                FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
-                {
-                    @Override
-                    public boolean isClientSide()
+                Runnable runnable = () -> {
+                    FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
                     {
-                        return false;
-                    }
+                        @Override
+                        public boolean isClientSide()
+                        {
+                            return false;
+                        }
 
-                    @Override
-                    public ServerPlayer getSender()
-                    {
-                        return player;
-                    }
-                });
+                        @Override
+                        public ServerPlayer getSender()
+                        {
+                            return player;
+                        }
+                    });
+                };
+
+                var executor = player.getServer();
+                if (!executor.isSameThread()) {
+                    executor.submitAsync(runnable);
+                } else {
+                    runnable.run();
+                    CompletableFuture.completedFuture(null);
+                }
             }
         });
     }

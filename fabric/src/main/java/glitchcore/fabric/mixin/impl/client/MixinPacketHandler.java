@@ -26,6 +26,6 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     @Override
     public FabricPacketWrapper<?> createPacketWrapper(ResourceLocation channel, CustomPacket<?> packet)
     {
-        return new ClientFabricPacketWrapper(channel, packet);
+        return new ClientFabricPacketWrapper<>(channel, packet);
     }
 }

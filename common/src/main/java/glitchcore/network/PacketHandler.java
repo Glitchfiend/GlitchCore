@@ -17,7 +17,7 @@ public final class PacketHandler
         this.init();
     }
 
-    public void register(CustomPacket<?> packet) { throw new UnsupportedOperationException(); }
+    public void register(ResourceLocation name, CustomPacket<?> packet) { throw new UnsupportedOperationException(); }
 
     public <T> void sendToPlayer(T data, ServerPlayer player) { throw new UnsupportedOperationException(); }
 

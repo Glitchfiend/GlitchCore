@@ -21,7 +21,7 @@ public abstract class MixinPacketHandler
     private SimpleChannel channel;
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(CustomPacket<T> packet)
+    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
     {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 

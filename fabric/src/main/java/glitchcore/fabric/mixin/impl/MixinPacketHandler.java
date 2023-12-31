@@ -4,11 +4,10 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.impl;
 
-import com.google.common.base.Preconditions;
 import glitchcore.fabric.network.FabricPacketWrapper;
+import glitchcore.fabric.network.IFabricPacketHandler;
 import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.jodah.typetools.TypeResolver;
@@ -18,10 +17,9 @@ import org.spongepowered.asm.mixin.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Mixin(value = PacketHandler.class, remap = false)
-public abstract class MixinPacketHandler
+public abstract class MixinPacketHandler implements IFabricPacketHandler
 {
     @Shadow
     @Final
@@ -47,7 +45,7 @@ public abstract class MixinPacketHandler
     @Overwrite
     public <T> void sendToServer(T packet)
     {
-        ClientPlayNetworking.send(createFabricPacket((CustomPacket)packet));
+        throw new UnsupportedOperationException("Attempted to call sendToServer from server");
     }
 
     @Overwrite
@@ -55,7 +53,8 @@ public abstract class MixinPacketHandler
     {
     }
 
-    private <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet)
+    @Override
+    public <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet)
     {
         var dataType = getPacketDataType(packet);
 

@@ -15,9 +15,9 @@ import net.neoforged.fml.common.Mod;
 @Mod(value = GlitchCore.MOD_ID)
 public class GlitchCoreNeoForge
 {
-    public static void init()
+    public GlitchCoreNeoForge()
     {
-
+        GlitchCore.init();
     }
 
     public static void prepareModEventHandlers(IEventBus modEventBus)

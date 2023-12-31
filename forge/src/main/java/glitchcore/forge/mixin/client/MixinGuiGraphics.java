@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(GuiGraphics.class)
@@ -32,6 +33,7 @@ public abstract class MixinGuiGraphics
     @Inject(method = "renderTooltipInternal", at=@At("HEAD"))
     private void onRenderTooltipInternal(Font fallbackFont, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, CallbackInfo ci)
     {
+        components = new ArrayList<>(components);
         EventManager.fire(new RenderTooltipEvent(this.tooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
     }
 }

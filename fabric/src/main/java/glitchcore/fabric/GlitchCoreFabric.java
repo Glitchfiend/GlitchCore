@@ -4,6 +4,7 @@
  ******************************************************************************/
 package glitchcore.fabric;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
@@ -28,7 +29,7 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
     @Override
     public void onInitialize()
     {
-
+        GlitchCore.init();
     }
 
     @Override

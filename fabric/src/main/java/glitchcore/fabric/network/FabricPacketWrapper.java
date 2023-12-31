@@ -4,17 +4,13 @@
  ******************************************************************************/
 package glitchcore.fabric.network;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.network.CustomPacket;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.thread.BlockableEventLoop;
-
-import java.util.concurrent.CompletableFuture;
+import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 
 public class FabricPacketWrapper<T extends CustomPacket<T>>
 {
@@ -33,30 +29,42 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
             @Override
             public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender)
             {
-                Runnable runnable = () -> {
-                    FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
+                FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
+                {
+                    @Override
+                    public boolean isClientSide()
                     {
-                        @Override
-                        public boolean isClientSide()
-                        {
-                            return false;
-                        }
+                        return false;
+                    }
 
-                        @Override
-                        public ServerPlayer getSender()
-                        {
-                            return player;
-                        }
-                    });
-                };
+                    @Override
+                    public ServerPlayer getSender()
+                    {
+                        return player;
+                    }
+                });
+            }
+        });
 
-                var executor = player.getServer();
-                if (!executor.isSameThread()) {
-                    executor.submitAsync(runnable);
-                } else {
-                    runnable.run();
-                    CompletableFuture.completedFuture(null);
-                }
+        ServerConfigurationNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerConfigurationNetworking.ConfigurationPacketHandler()
+        {
+            @Override
+            public void receive(FabricPacket packet, ServerConfigurationPacketListenerImpl networkHandler, PacketSender responseSender)
+            {
+                FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
+                {
+                    @Override
+                    public boolean isClientSide()
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public ServerPlayer getSender()
+                    {
+                        return null;
+                    }
+                });
             }
         });
     }

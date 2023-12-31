@@ -1,15 +1,24 @@
 package glitchcore.neoforge.mixin.impl;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.jodah.typetools.TypeResolver;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.network.NetworkRegistry;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PlayNetworkDirection;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
 import org.spongepowered.asm.mixin.*;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler
@@ -59,6 +68,17 @@ public abstract class MixinPacketHandler
     public <T> void sendToPlayer(T data, ServerPlayer player)
     {
         channel.send(PacketDistributor.PLAYER.with(() -> player), data);
+    }
+
+    @Overwrite
+    public <T> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    {
+        var connection = handler.connection;
+        var direction = switch (connection.getSending()) {
+            case CLIENTBOUND -> PlayNetworkDirection.PLAY_TO_CLIENT;
+            case SERVERBOUND -> PlayNetworkDirection.PLAY_TO_SERVER;
+        };
+        channel.sendTo(packet, connection, direction);
     }
 
     @Overwrite

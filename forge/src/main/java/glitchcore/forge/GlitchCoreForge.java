@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(value = GlitchCore.MOD_ID)
 public class GlitchCoreForge
 {
-    public static void init()
+    public GlitchCoreForge()
     {
-
+        GlitchCore.init();
     }
 
     public static void prepareModEventHandlers(IEventBus modEventBus)

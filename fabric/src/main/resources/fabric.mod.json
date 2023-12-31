@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "glitchcore.fabric.GlitchCoreFabric"
+    ],
+    "client": [
+      "glitchcore.fabric.GlitchCoreFabric"
     ]
   },
   "mixins": [

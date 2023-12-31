@@ -8,11 +8,14 @@ import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.RegisterColorsEvent;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -20,10 +23,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Comparator;
 
-public class GlitchCoreFabric implements ModInitializer
+public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
 {
     @Override
     public void onInitialize()
+    {
+
+    }
+
+    @Override
+    public void onInitializeClient()
     {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             // Fire color registration events

@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class MixinGuiGraphics
 {
     @Unique
-    private ItemStack currentTooltipStack;
+    private ItemStack currentTooltipStack = ItemStack.EMPTY;
 
     @Shadow public abstract int guiWidth();
 

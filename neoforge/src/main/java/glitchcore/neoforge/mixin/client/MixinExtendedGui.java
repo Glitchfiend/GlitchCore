@@ -38,6 +38,12 @@ public abstract class MixinExtendedGui extends Gui
         this.partialTicks = partialTicks;
     }
 
+    @Inject(method="renderFrostbite", at=@At(value="HEAD"), remap = false)
+    public void onBeginRenderFrostbite(GuiGraphics guiGraphics, CallbackInfo ci)
+    {
+        EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FROSTBITE, this, guiGraphics, this.partialTicks, this.screenWidth, this.screenHeight));
+    }
+
     @Inject(method="renderFood", at=@At(value="HEAD"), remap = false)
     public void onBeginRenderFood(int width, int height, GuiGraphics guiGraphics, CallbackInfo ci)
     {

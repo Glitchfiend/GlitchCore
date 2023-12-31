@@ -36,7 +36,7 @@ public abstract class MixinGui
     @Inject(method="render", at=@At(value="INVOKE", target="net/minecraft/client/player/LocalPlayer.getTicksFrozen()I"))
     private void onBeginRenderFrozenOverlay(GuiGraphics guiGraphics, float partialTicks, CallbackInfo ci)
     {
-        EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FOOD, (Gui)(Object)this, guiGraphics, this.partialTicks, this.screenWidth, this.screenHeight));
+        EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FROSTBITE, (Gui)(Object)this, guiGraphics, this.partialTicks, this.screenWidth, this.screenHeight));
     }
 
     @Inject(method="renderPlayerHealth", at=@At(value="INVOKE", target="net/minecraft/client/gui/Gui.getVehicleMaxHearts(Lnet/minecraft/world/entity/LivingEntity;)I"))

@@ -6,10 +6,13 @@ package glitchcore.fabric;
 
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
+import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.RegisterColorsEvent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +29,10 @@ public class GlitchCoreFabric implements ModInitializer
             // Fire color registration events
             EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
             EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
+        });
+
+        ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
+            EventManager.fire(new ItemTooltipEvent(stack, lines));
         });
     }
 

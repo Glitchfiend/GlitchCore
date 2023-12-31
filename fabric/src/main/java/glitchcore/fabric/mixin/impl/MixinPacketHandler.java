@@ -33,7 +33,7 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     public <T extends CustomPacket<T>> void register(CustomPacket<T> packet)
     {
         var dataType = getPacketDataType(packet);
-        wrappers.put(dataType, new FabricPacketWrapper(new ResourceLocation(this.channelName.getNamespace(), String.valueOf(dataType.hashCode())), packet));
+        wrappers.put(dataType, createPacketWrapper(new ResourceLocation(this.channelName.getNamespace(), String.valueOf(dataType.hashCode())), packet));
     }
 
     @Overwrite

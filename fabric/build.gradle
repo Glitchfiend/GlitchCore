@@ -1,5 +1,6 @@
 plugins {
     id "fabric-loom" version "1.4-SNAPSHOT"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 base.archivesName.set("${mod_name}-fabric")
@@ -18,6 +19,9 @@ dependencies {
 
 loom {
     accessWidenerPath = project(":Common").file("src/main/resources/${mod_id}.accesswidener")
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
     runs {
         client {
             client()
@@ -40,4 +44,27 @@ processResources {
 
 tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
+}
+
+curseforge {
+    apiKey = project.findProperty('curseApiKey') ?: 'unset'
+    project {
+        id = mod_curseforge_id
+
+        if (changelog_file.exists()) {
+            changelog = changelog_file
+        }
+
+        releaseType = release_channel
+        addGameVersion minecraft_version
+        addGameVersion name
+
+        mainArtifact(remapJar) {
+            displayName = "${mod_display_name} ${name} ${version}"
+
+            relations {
+                requiredDependency "fabric-api"
+            }
+        }
+    }
 }

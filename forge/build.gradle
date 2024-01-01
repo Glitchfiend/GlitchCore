@@ -1,6 +1,7 @@
 plugins {
     id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 base.archivesName.set("${mod_name}-forge")
@@ -85,4 +86,23 @@ sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
     it.java.destinationDirectory = dir
+}
+
+curseforge {
+    apiKey = project.findProperty('curseApiKey') ?: 'unset'
+    project {
+        id = mod_curseforge_id
+
+        if (changelog_file.exists()) {
+            changelog = changelog_file
+        }
+
+        releaseType = release_channel
+        addGameVersion minecraft_version
+        addGameVersion name
+
+        mainArtifact(jar) {
+            displayName = "${mod_display_name} ${name} ${version}"
+        }
+    }
 }

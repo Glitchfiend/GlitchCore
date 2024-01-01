@@ -4,6 +4,7 @@
  ******************************************************************************/
 package glitchcore.neoforge.handlers;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RegisterColorsEvent;
 import net.neoforged.api.distmarker.Dist;

@@ -1,9 +1,21 @@
-plugins {
-    // Required for NeoGradle
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
-    // Used for changelog generation
-    id 'net.minecraftforge.gradleutils' version '2.2.0'
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = "Forge"
+            url = "https://maven.minecraftforge.net"
+        }
+    }
+    dependencies {
+        classpath 'com.modrinth.minotaur:Minotaur:2.+'
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.1.7' // Required for NeoGradle
+        classpath 'net.minecraftforge:gradleutils:2.2.0' // Required for changelog generation
+    }
 }
+
+apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
+apply plugin: 'net.minecraftforge.gradleutils'
 
 changelog {
     fromTag '1.0.0'
@@ -19,9 +31,22 @@ ext {
 }
 
 subprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
+
+    if (!project.name.equals("Common")) {
+        apply plugin: 'com.modrinth.minotaur'
+        apply plugin: 'com.matthewprenger.cursegradle'
+    }
 
     version = "${minecraft_version}-${mod_version}"
 
@@ -42,14 +67,6 @@ subprojects {
                 'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
                 'Build-On-Minecraft'      : minecraft_version
             ])
-        }
-    }
-
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'Sponge / Mixin'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
     }
 
@@ -83,6 +100,51 @@ subprojects {
     }
 
     afterEvaluate {
+        // Share Modrinth and CurseForge configurations between loaders
+        // remapJar does not exist until after initial evaluation
+        if (!name.equals("Common")) {
+            modrinth {
+                token = findProperty('modrinthToken')
+                projectId = mod_modrinth_id
+                versionNumber = mod_version
+                versionName = "${mod_version} for ${name} ${minecraft_version}"
+                versionType = release_channel
+                uploadFile = name.equals("Fabric") ? remapJar : jar
+                gameVersions = [minecraft_version]
+                loaders = [name.toLowerCase()]
+
+                if (changelog_file.exists()) {
+                    changelog = trimChangelog(changelog_file.text)
+                }
+            }
+
+            curseforge {
+                apiKey = project.findProperty('curseApiKey') ?: 'unset'
+                project {
+                    id = mod_curseforge_id
+
+                    if (changelog_file.exists()) {
+                        changelog = changelog_file
+                    }
+
+                    releaseType = release_channel
+                    addGameVersion minecraft_version
+                    addGameVersion name
+
+                    mainArtifact(name.equals("Fabric") ? remapJar : jar) {
+                        displayName = "${mod_display_name} ${name} ${version}"
+
+                        if (name.equals("Fabric")) {
+                            relations {
+                                requiredDependency "fabric-api"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // archivesBaseName is not set until after initial evaluation
         publishing {
             publications {
                 mavenJava(MavenPublication) {

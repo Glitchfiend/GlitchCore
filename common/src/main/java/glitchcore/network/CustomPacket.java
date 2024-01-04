@@ -2,6 +2,9 @@ package glitchcore.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.Optional;
 
 public interface CustomPacket<T extends CustomPacket<T>>
 {
@@ -18,6 +21,6 @@ public interface CustomPacket<T extends CustomPacket<T>>
         {
             return !isClientSide();
         }
-        ServerPlayer getSender();
+        Optional<Player> getPlayer();
     }
 }

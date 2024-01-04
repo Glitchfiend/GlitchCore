@@ -13,6 +13,9 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.Optional;
 
 public class ClientFabricPacketWrapper<T extends CustomPacket<T>> extends FabricPacketWrapper<T>
 {
@@ -31,8 +34,9 @@ public class ClientFabricPacketWrapper<T extends CustomPacket<T>> extends Fabric
                     }
 
                     @Override
-                    public ServerPlayer getSender() {
-                        return null;
+                    public Optional<Player> getPlayer()
+                    {
+                        return Optional.of(player);
                     }
                 });
             }
@@ -49,8 +53,8 @@ public class ClientFabricPacketWrapper<T extends CustomPacket<T>> extends Fabric
                     }
 
                     @Override
-                    public ServerPlayer getSender() {
-                        return null;
+                    public Optional<Player> getPlayer() {
+                        return Optional.empty();
                     }
                 });
             }

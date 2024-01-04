@@ -10,11 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import org.spongepowered.asm.mixin.*;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Mixin(value = PacketHandler.class, remap = false)
@@ -50,9 +52,9 @@ public abstract class MixinPacketHandler
                     }
 
                     @Override
-                    public ServerPlayer getSender()
+                    public Optional<Player> getPlayer()
                     {
-                        return forgeContext.getSender();
+                        return Optional.ofNullable(forgeContext.getSender());
                     }
                 });
             });

@@ -30,7 +30,7 @@ public abstract class MixinServerConfigurationPacketListenerImpl extends ServerC
     @Shadow @Final private Queue<ConfigurationTask> configurationTasks;
 
     @Shadow
-    protected abstract void finishCurrentTask(ConfigurationTask.Type type);
+    public abstract void finishCurrentTask(ConfigurationTask.Type type);
 
     public MixinServerConfigurationPacketListenerImpl(MinecraftServer server, Connection connection, CommonListenerCookie $$2) {
         super(server, connection, $$2);

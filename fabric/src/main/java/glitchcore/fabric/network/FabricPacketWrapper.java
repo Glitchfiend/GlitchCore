@@ -11,6 +11,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.Optional;
 
 public class FabricPacketWrapper<T extends CustomPacket<T>>
 {
@@ -38,9 +41,9 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
                     }
 
                     @Override
-                    public ServerPlayer getSender()
+                    public Optional<Player> getPlayer()
                     {
-                        return player;
+                        return Optional.of(player);
                     }
                 });
             }
@@ -60,9 +63,9 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
                     }
 
                     @Override
-                    public ServerPlayer getSender()
+                    public Optional<Player> getPlayer()
                     {
-                        return null;
+                        return Optional.empty();
                     }
                 });
             }

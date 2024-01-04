@@ -14,7 +14,7 @@ logoFile="${mod_id}_logo.png"
 
 [[dependencies.${mod_id}]]
     modId="neoforge"
-    mandatory=true
+    required=true
     versionRange="${neoforge_version_range}"
     ordering="NONE"
     side="BOTH"

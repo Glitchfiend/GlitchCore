@@ -9,6 +9,7 @@ import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.RegisterColorsEvent;
+import glitchcore.event.player.PlayerInteractEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -17,10 +18,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 
 import java.util.Comparator;
 
@@ -43,6 +46,16 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
 
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             EventManager.fire(new ItemTooltipEvent(stack, lines));
+        });
+
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            var event = new PlayerInteractEvent.UseBlock(player, hand, hitResult);
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                return event.getCancelResult().getResult();
+
+            return InteractionResult.PASS;
         });
     }
 

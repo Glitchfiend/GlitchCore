@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class PlayerInteractEvent extends PlayerEvent
 {
@@ -53,6 +54,22 @@ public abstract class PlayerInteractEvent extends PlayerEvent
         public UseItem(Player player, InteractionHand hand)
         {
             super(player, hand);
+        }
+    }
+
+    public static class UseBlock extends PlayerInteractEvent
+    {
+        private final BlockHitResult hitResult;
+
+        public UseBlock(Player player, InteractionHand hand, BlockHitResult hitResult)
+        {
+            super(player, hand);
+            this.hitResult = hitResult;
+        }
+
+        public BlockHitResult getHitResult()
+        {
+            return this.hitResult;
         }
     }
 

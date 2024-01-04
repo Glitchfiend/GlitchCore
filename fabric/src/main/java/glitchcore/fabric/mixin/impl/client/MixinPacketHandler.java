@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-@Mixin(value = PacketHandler.class, remap = false, priority = 0)
+@Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler implements IFabricPacketHandler
 {
     @Overwrite

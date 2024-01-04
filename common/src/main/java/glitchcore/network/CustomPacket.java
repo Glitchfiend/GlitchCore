@@ -1,7 +1,6 @@
 package glitchcore.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
@@ -14,6 +13,11 @@ public interface CustomPacket<T extends CustomPacket<T>>
 
     void handle(T data, Context context);
 
+    default Phase getPhase()
+    {
+        return Phase.PLAY;
+    }
+
     interface Context
     {
         boolean isClientSide();
@@ -22,5 +26,11 @@ public interface CustomPacket<T extends CustomPacket<T>>
             return !isClientSide();
         }
         Optional<Player> getPlayer();
+    }
+
+    enum Phase
+    {
+        PLAY,
+        CONFIGURATION
     }
 }

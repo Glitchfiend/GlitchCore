@@ -27,49 +27,49 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
         this.packet = packet;
         this.fabricPacketType = PacketType.create(this.channel, Impl::new);
 
-        ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler()
+        if (packet.getPhase() == CustomPacket.Phase.PLAY)
         {
-            @Override
-            public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender)
-            {
-                FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
-                {
-                    @Override
-                    public boolean isClientSide()
-                    {
-                        return false;
-                    }
+            ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
+                @Override
+                public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
+                    FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
+                        @Override
+                        public boolean isClientSide() {
+                            return false;
+                        }
 
-                    @Override
-                    public Optional<Player> getPlayer()
-                    {
-                        return Optional.of(player);
-                    }
-                });
-            }
-        });
-
-        ServerConfigurationNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerConfigurationNetworking.ConfigurationPacketHandler()
+                        @Override
+                        public Optional<Player> getPlayer() {
+                            return Optional.of(player);
+                        }
+                    });
+                }
+            });
+        }
+        else if (packet.getPhase() == CustomPacket.Phase.CONFIGURATION)
         {
-            @Override
-            public void receive(FabricPacket packet, ServerConfigurationPacketListenerImpl networkHandler, PacketSender responseSender)
+            ServerConfigurationNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerConfigurationNetworking.ConfigurationPacketHandler()
             {
-                FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
+                @Override
+                public void receive(FabricPacket packet, ServerConfigurationPacketListenerImpl networkHandler, PacketSender responseSender)
                 {
-                    @Override
-                    public boolean isClientSide()
+                    FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
                     {
-                        return false;
-                    }
+                        @Override
+                        public boolean isClientSide()
+                        {
+                            return false;
+                        }
 
-                    @Override
-                    public Optional<Player> getPlayer()
-                    {
-                        return Optional.empty();
-                    }
-                });
-            }
-        });
+                        @Override
+                        public Optional<Player> getPlayer()
+                        {
+                            return Optional.empty();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public FabricPacket createPacket(T data)

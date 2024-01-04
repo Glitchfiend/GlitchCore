@@ -5,7 +5,6 @@
 package glitchcore.network;
 
 import glitchcore.config.ConfigSync;
-import glitchcore.core.GlitchCore;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.nio.charset.StandardCharsets;
@@ -43,5 +42,11 @@ public class SyncConfigPacket implements CustomPacket<SyncConfigPacket>
             return;
 
         ConfigSync.reload(data.path, new String(data.data, StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public Phase getPhase()
+    {
+        return Phase.CONFIGURATION;
     }
 }

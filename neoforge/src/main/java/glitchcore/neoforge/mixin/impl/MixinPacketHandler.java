@@ -1,7 +1,6 @@
 package glitchcore.neoforge.mixin.impl;
 
 import com.google.common.base.Preconditions;
-import glitchcore.core.GlitchCore;
 import glitchcore.neoforge.network.NeoForgePacketWrapper;
 import glitchcore.neoforge.network.NetworkUtils;
 import glitchcore.network.CustomPacket;
@@ -19,12 +18,11 @@ import org.spongepowered.asm.mixin.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler
 {
-
-
     @Shadow
     @Final
     private ResourceLocation channelName;
@@ -45,14 +43,21 @@ public abstract class MixinPacketHandler
 
         container.getEventBus().addListener((RegisterPayloadHandlerEvent event) -> {
             IPayloadRegistrar registrar = event.registrar(modid);
+            registrar.versioned(modid);
 
-            registrar.common(name, wrappedPacket.getReader(), wrappedPacket.getHandler());
+            switch (packet.getPhase())
+            {
+                case PLAY -> registrar.play(name, wrappedPacket.getReader(), wrappedPacket.getPlayPayloadHandler());
+                case CONFIGURATION -> registrar.configuration(name, wrappedPacket.getReader(), wrappedPacket.getConfigurationPayloadHandler());
+                default -> throw new UnsupportedOperationException("Attempted to register packet with unsupported phase " + packet.getPhase());
+            }
         });
     }
 
     @Overwrite
     public <T> void sendToPlayer(T data, ServerPlayer player)
     {
+        Objects.requireNonNull(player);
         PacketDistributor.PLAYER.with(player).send(wrapPacket((CustomPacket<?>)data));
     }
 

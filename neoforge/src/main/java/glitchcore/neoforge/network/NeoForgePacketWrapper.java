@@ -4,31 +4,37 @@
  ******************************************************************************/
 package glitchcore.neoforge.network;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.network.CustomPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.neoforged.neoforge.network.handling.IPayloadHandler;
+import net.neoforged.neoforge.network.handling.ConfigurationPayloadContext;
+import net.neoforged.neoforge.network.handling.IConfigurationPayloadHandler;
+import net.neoforged.neoforge.network.handling.IPlayPayloadHandler;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class NeoForgePacketWrapper<T extends CustomPacket<T>> implements CustomPacketPayload
 {
     private final ResourceLocation id;
     private final CustomPacket<T> packet;
     private final Reader reader;
-    private final Handler handler;
+    private final ConfigurationPayloadHandler configurationPayloadHandler;
+    private final PlayPayloadHandler playPayloadHandler;
 
     public NeoForgePacketWrapper(ResourceLocation id, CustomPacket<T> packet)
     {
         this.id = id;
         this.packet = packet;
         this.reader = new Reader();
-        this.handler = new Handler();
+        this.configurationPayloadHandler = new ConfigurationPayloadHandler();
+        this.playPayloadHandler = new PlayPayloadHandler();
     }
 
     @Override
@@ -48,9 +54,14 @@ public class NeoForgePacketWrapper<T extends CustomPacket<T>> implements CustomP
         return this.reader;
     }
 
-    public Handler getHandler()
+    public ConfigurationPayloadHandler getConfigurationPayloadHandler()
     {
-        return this.handler;
+        return this.configurationPayloadHandler;
+    }
+
+    public PlayPayloadHandler getPlayPayloadHandler()
+    {
+        return this.playPayloadHandler;
     }
 
     public class Reader implements FriendlyByteBuf.Reader<NeoForgePacketWrapper<T>>
@@ -62,21 +73,44 @@ public class NeoForgePacketWrapper<T extends CustomPacket<T>> implements CustomP
         }
     }
 
-    public class Handler implements IPayloadHandler<NeoForgePacketWrapper<T>>
+    public class ConfigurationPayloadHandler implements IConfigurationPayloadHandler<NeoForgePacketWrapper<T>>
     {
         @Override
-        public void handle(NeoForgePacketWrapper<T> payload, IPayloadContext context)
+        public void handle(NeoForgePacketWrapper<T> payload, ConfigurationPayloadContext context)
         {
-            payload.packet.handle((T) payload.packet, new CustomPacket.Context() {
-                @Override
-                public boolean isClientSide() {
-                    return context.flow() == PacketFlow.CLIENTBOUND;
-                }
+            context.workHandler().execute(() -> {
+                payload.packet.handle((T) payload.packet, new CustomPacket.Context() {
+                    @Override
+                    public boolean isClientSide() {
+                        return context.flow() == PacketFlow.CLIENTBOUND;
+                    }
 
-                @Override
-                public Optional<Player> getPlayer() {
-                    return context.player();
-                }
+                    @Override
+                    public Optional<Player> getPlayer() {
+                        return context.player().or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+                    }
+                });
+            });
+        }
+    }
+
+    public class PlayPayloadHandler implements IPlayPayloadHandler<NeoForgePacketWrapper<T>>
+    {
+        @Override
+        public void handle(NeoForgePacketWrapper<T> payload, PlayPayloadContext context)
+        {
+            context.workHandler().execute(() -> {
+                payload.packet.handle((T) payload.packet, new CustomPacket.Context() {
+                    @Override
+                    public boolean isClientSide() {
+                        return context.flow() == PacketFlow.CLIENTBOUND;
+                    }
+
+                    @Override
+                    public Optional<Player> getPlayer() {
+                        return context.player().or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+                    }
+                });
             });
         }
     }

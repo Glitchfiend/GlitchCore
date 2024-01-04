@@ -3,6 +3,7 @@ package glitchcore.forge.mixin.impl;
 import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.jodah.typetools.TypeResolver;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
@@ -54,7 +55,7 @@ public abstract class MixinPacketHandler
                     @Override
                     public Optional<Player> getPlayer()
                     {
-                        return Optional.ofNullable(forgeContext.getSender());
+                        return Optional.ofNullable((Player)forgeContext.getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
                     }
                 });
             });

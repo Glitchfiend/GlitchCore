@@ -10,8 +10,8 @@
     "impl.MixinRenderTypeHelper"
   ],
   "client": [
-    "client.MixinForgeGui",
-    "client.MixinGuiGraphics"
+    "client.MixinGuiGraphics",
+    "client.MixinVanillaGuiOverlay"
   ],
   "injectors": {
     "defaultRequire": 1

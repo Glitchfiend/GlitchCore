@@ -10,8 +10,8 @@
     "impl.MixinRenderTypeHelper"
   ],
   "client": [
-    "client.MixinExtendedGui",
-    "client.MixinGuiGraphics"
+    "client.MixinGuiGraphics",
+    "client.MixinVanillaGuiOverlay"
   ],
   "injectors": {
     "defaultRequire": 1

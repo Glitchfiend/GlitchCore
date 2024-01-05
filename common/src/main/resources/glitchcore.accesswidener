@@ -5,3 +5,6 @@ accessible field net/minecraft/core/registries/BuiltInRegistries LOADERS Ljava/u
 
 # Packet handling
 accessible method net/minecraft/util/thread/BlockableEventLoop submitAsync (Ljava/lang/Runnable;)Ljava/util/concurrent/CompletableFuture;
+
+# Level renderer events
+accessible field net/minecraft/client/renderer/LevelRenderer ticks I

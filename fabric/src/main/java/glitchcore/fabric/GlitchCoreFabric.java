@@ -8,6 +8,7 @@ import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
+import glitchcore.event.client.LevelRenderEvent;
 import glitchcore.event.client.RegisterColorsEvent;
 import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.event.village.WandererTradesEvent;
@@ -17,6 +18,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -71,6 +73,10 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
                 return event.getCancelResult().getResult();
 
             return InteractionResult.PASS;
+        });
+
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+            EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, context.worldRenderer(), context.matrixStack(), context.projectionMatrix(), context.worldRenderer().ticks, context.tickDelta(), context.camera(), context.frustum()));
         });
     }
 

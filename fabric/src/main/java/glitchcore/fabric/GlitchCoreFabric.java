@@ -10,6 +10,7 @@ import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.RegisterColorsEvent;
 import glitchcore.event.player.PlayerInteractEvent;
+import glitchcore.event.village.WandererTradesEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -19,6 +20,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -33,6 +35,19 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
     public void onInitialize()
     {
         GlitchCore.init();
+
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            var wandererTradesEvent = new WandererTradesEvent();
+            EventManager.fire(wandererTradesEvent);
+
+            TradeOfferHelper.registerWanderingTraderOffers(1, (list) -> {
+                list.addAll(wandererTradesEvent.getGenericTrades());
+            });
+
+            TradeOfferHelper.registerWanderingTraderOffers(2, (list) -> {
+                list.addAll(wandererTradesEvent.getRareTrades());
+            });
+        });
     }
 
     @Override

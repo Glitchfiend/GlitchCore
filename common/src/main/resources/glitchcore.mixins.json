@@ -8,6 +8,7 @@
     "MixinServerConfigurationPacketListenerImpl"
   ],
   "client": [
+    "client.MixinKeyboardHandler",
     "client.MixinMinecraft"
   ],
   "injectors": {

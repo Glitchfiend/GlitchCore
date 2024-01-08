@@ -8,3 +8,6 @@ accessible method net/minecraft/util/thread/BlockableEventLoop submitAsync (Ljav
 
 # Level renderer events
 accessible field net/minecraft/client/renderer/LevelRenderer ticks I
+
+# Particles
+accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration

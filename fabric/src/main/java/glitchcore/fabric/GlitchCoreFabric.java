@@ -10,12 +10,15 @@ import glitchcore.event.RegistryEvent;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.LevelRenderEvent;
 import glitchcore.event.client.RegisterColorsEvent;
+import glitchcore.event.client.RegisterParticleSpritesEvent;
 import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.event.village.WandererTradesEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -23,13 +26,18 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 
 import java.util.Comparator;
+import java.util.function.BiConsumer;
 
 public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
 {
@@ -59,6 +67,11 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
             // Fire color registration events
             EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
             EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
+
+            BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
+                ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
+            };
+            EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
         });
 
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {

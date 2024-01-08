@@ -55,6 +55,8 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
         });
 
         // Fire events which must occur during initialization
+        postRegisterEvents();
+
         var wandererTradesEvent = new WandererTradesEvent();
         EventManager.fire(wandererTradesEvent);
 
@@ -94,9 +96,6 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
             GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
             initializer.onInitializeClient();
         });
-
-        // Fire events which must occur during initialization
-        postRegisterEvents();
 
         EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
         EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));

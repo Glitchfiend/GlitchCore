@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -44,36 +45,32 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
     @Override
     public void onInitialize()
     {
+        // GlitchCore initialization
         GlitchCore.init();
 
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            var wandererTradesEvent = new WandererTradesEvent();
-            EventManager.fire(wandererTradesEvent);
+        // Perform initialization for dependants
+        FabricLoader.getInstance().getEntrypointContainers("glitchcore", GlitchCoreInitializer.class).forEach(entrypoint -> {
+            GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
+            initializer.onInitialize();
+        });
 
-            TradeOfferHelper.registerWanderingTraderOffers(1, (list) -> {
-                list.addAll(wandererTradesEvent.getGenericTrades());
-            });
+        // Fire events which must occur during initialization
+        var wandererTradesEvent = new WandererTradesEvent();
+        EventManager.fire(wandererTradesEvent);
 
-            TradeOfferHelper.registerWanderingTraderOffers(2, (list) -> {
-                list.addAll(wandererTradesEvent.getRareTrades());
-            });
+        TradeOfferHelper.registerWanderingTraderOffers(1, (list) -> {
+            list.addAll(wandererTradesEvent.getGenericTrades());
+        });
+
+        TradeOfferHelper.registerWanderingTraderOffers(2, (list) -> {
+            list.addAll(wandererTradesEvent.getRareTrades());
         });
     }
 
     @Override
     public void onInitializeClient()
     {
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-            // Fire color registration events
-            EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
-            EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
-
-            BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
-                ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
-            };
-            EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
-        });
-
+        // GlitchCore initialization
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             EventManager.fire(new ItemTooltipEvent(stack, lines));
         });
@@ -91,11 +88,23 @@ public class GlitchCoreFabric implements ModInitializer, ClientModInitializer
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
             EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, context.worldRenderer(), context.matrixStack(), context.projectionMatrix(), context.worldRenderer().ticks, context.tickDelta(), context.camera(), context.frustum()));
         });
-    }
 
-    public static void prepareEvents()
-    {
+        // Perform initialization for dependants
+        FabricLoader.getInstance().getEntrypointContainers("glitchcore", GlitchCoreInitializer.class).forEach(entrypoint -> {
+            GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
+            initializer.onInitializeClient();
+        });
+
+        // Fire events which must occur during initialization
         postRegisterEvents();
+
+        EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
+        EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
+
+        BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
+            ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
+        };
+        EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
     }
 
     private static void postRegisterEvents()

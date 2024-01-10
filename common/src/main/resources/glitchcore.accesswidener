@@ -11,3 +11,9 @@ accessible field net/minecraft/client/renderer/LevelRenderer ticks I
 
 # Particles
 accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+
+# Blocks
+accessible field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
+mutable field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
+accessible field net/minecraft/world/item/ShovelItem FLATTENABLES Ljava/util/Map;
+mutable field net/minecraft/world/item/ShovelItem FLATTENABLES Ljava/util/Map;

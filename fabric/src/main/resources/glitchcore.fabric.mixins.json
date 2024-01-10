@@ -7,7 +7,7 @@
     "MixinServerPlayer",
     "impl.MixinEnvironment",
     "impl.MixinPacketHandler",
-    "impl.MixinRenderTypeHelper"
+    "impl.MixinRenderHelper"
   ],
   "client": [
     "impl.client.MixinPacketHandler",

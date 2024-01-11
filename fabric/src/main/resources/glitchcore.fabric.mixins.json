@@ -5,15 +5,16 @@
   "refmap": "glitchcore.refmap.json",
   "mixins": [
     "MixinServerPlayer",
+    "impl.MixinBlockHelper",
     "impl.MixinEnvironment",
     "impl.MixinPacketHandler",
     "impl.MixinRenderHelper"
   ],
   "client": [
-    "impl.client.MixinPacketHandler",
     "client.MixinAbstractContainerScreen",
     "client.MixinGui",
-    "client.MixinGuiGraphics"
+    "client.MixinGuiGraphics",
+    "impl.client.MixinPacketHandler"
   ],
   "injectors": {
     "defaultRequire": 1

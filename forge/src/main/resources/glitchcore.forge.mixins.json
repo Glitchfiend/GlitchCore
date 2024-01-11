@@ -5,6 +5,7 @@
   "refmap": "glitchcore.refmap.json",
   "mixins": [
     "MixinServerPlayer",
+    "impl.MixinBlockHelper",
     "impl.MixinEnvironment",
     "impl.MixinPacketHandler",
     "impl.MixinRenderHelper"

@@ -34,7 +34,6 @@ public class ToolModificationEventHandler
                 if (tillable.getFirst().test(event.getContext()))
                 {
                     event.setFinalState(tillable.getSecond());
-                    event.setCanceled(true);
                     return;
                 }
             }

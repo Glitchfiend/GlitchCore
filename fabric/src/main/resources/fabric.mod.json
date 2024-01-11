@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "glitchcore.fabric.GlitchCoreFabric"
+      "glitchcore.fabric.core.GlitchCoreFabric"
     ],
     "client": [
-      "glitchcore.fabric.GlitchCoreFabric"
+      "glitchcore.fabric.core.GlitchCoreFabricClient"
     ]
   },
   "mixins": [

@@ -14,12 +14,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
 
 public class RenderHelper
 {
     public static void setRenderType(Block block, RenderType type)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public static void setRenderType(Fluid fluid, RenderType type)
     {
         throw new UnsupportedOperationException();
     }

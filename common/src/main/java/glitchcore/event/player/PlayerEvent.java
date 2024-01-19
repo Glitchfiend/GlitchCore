@@ -21,6 +21,14 @@ public abstract class PlayerEvent extends Event
         return this.player;
     }
 
+    public static class JoinLevel extends PlayerEvent
+    {
+        public JoinLevel(Player player)
+        {
+            super(player);
+        }
+    }
+
     public static class ChangeDimension extends PlayerEvent
     {
         public ChangeDimension(Player player)

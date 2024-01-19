@@ -8,6 +8,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler
 {
+    @Unique
     private static final PacketDistributor<ServerGamePacketListenerImpl> HANDLER_DISTRIBUTOR = new PacketDistributor<>((distributor, handler) -> handler::send);
 
     @Shadow
@@ -64,20 +66,26 @@ public abstract class MixinPacketHandler
     }
 
     @Overwrite
-    public <T> void sendToPlayer(T data, ServerPlayer player)
+    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
     {
         channel.send(data, PacketDistributor.PLAYER.with(player));
     }
 
     @Overwrite
-    public <T> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
+    {
+        channel.send(packet, PacketDistributor.ALL.noArg());
+    }
+
+    @Overwrite
+    public <T extends CustomPacket<T>> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
     {
         var connection = handler.getConnection();
         channel.send(packet, connection);
     }
 
     @Overwrite
-    public <T> void sendToServer(T data)
+    public <T extends CustomPacket<T>> void sendToServer(T data)
     {
         channel.send(data, PacketDistributor.SERVER.noArg());
     }

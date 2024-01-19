@@ -4,6 +4,8 @@
  ******************************************************************************/
 package glitchcore.event;
 
+import net.minecraft.world.level.Level;
+
 public abstract class TickEvent extends Event
 {
     private final Phase phase;
@@ -28,6 +30,21 @@ public abstract class TickEvent extends Event
         public Client(Phase phase)
         {
             super(phase);
+        }
+    }
+
+    public static class Level extends TickEvent
+    {
+        private final net.minecraft.world.level.Level level;
+        public Level(Phase phase, net.minecraft.world.level.Level level)
+        {
+            super(phase);
+            this.level = level;
+        }
+
+        public net.minecraft.world.level.Level getLevel()
+        {
+            return this.level;
         }
     }
 }

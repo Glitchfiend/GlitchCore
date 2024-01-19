@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import org.spongepowered.asm.mixin.*;
@@ -39,20 +40,40 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     }
 
     @Overwrite
-    public <T> void sendToPlayer(T packet, ServerPlayer player)
+    public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player)
     {
-        ServerPlayNetworking.send(player, createFabricPacket((CustomPacket)packet));
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
+        switch (packet.getPhase())
+        {
+            case PLAY -> ServerPlayNetworking.send(player, fPacket);
+            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
+        }
     }
 
     @Overwrite
-    public <T> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
     {
-        var fabricPacket = createFabricPacket((CustomPacket)packet);
-        ServerConfigurationNetworking.send(handler, fabricPacket);
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
+        switch (packet.getPhase())
+        {
+            case PLAY -> server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket));
+            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
+        }
     }
 
     @Overwrite
-    public <T> void sendToServer(T packet)
+    public <T extends CustomPacket<T>> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    {
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
+        switch (packet.getPhase())
+        {
+            case CONFIGURATION -> ServerConfigurationNetworking.send(handler, fPacket);
+            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
+        }
+    }
+
+    @Overwrite
+    public <T extends CustomPacket<T>> void sendToServer(T packet)
     {
         throw new UnsupportedOperationException("Attempted to call sendToServer from server");
     }

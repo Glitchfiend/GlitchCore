@@ -7,6 +7,7 @@ import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.neoforged.fml.ModContainer;
@@ -55,16 +56,22 @@ public abstract class MixinPacketHandler
     }
 
     @Overwrite
-    public <T> void sendToPlayer(T data, ServerPlayer player)
+    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
     {
         Objects.requireNonNull(player);
-        PacketDistributor.PLAYER.with(player).send(wrapPacket((CustomPacket<?>)data));
+        PacketDistributor.PLAYER.with(player).send(wrapPacket(data));
     }
 
     @Overwrite
-    public <T> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
     {
-        var wrappedPacket = wrapPacket((CustomPacket<?>)packet);
+        PacketDistributor.ALL.noArg().send(wrapPacket(packet));
+    }
+
+    @Overwrite
+    public <T extends CustomPacket<T>> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
+    {
+        var wrappedPacket = wrapPacket(packet);
         switch (handler.getConnection().getSending()) {
             case CLIENTBOUND -> NetworkUtils.CLIENTBOUND_CONFIG_LISTENER.with(handler).send(wrappedPacket);
             case SERVERBOUND -> NetworkUtils.SERVERBOUND_CONFIG_LISTENER.with(handler).send(wrappedPacket);
@@ -72,9 +79,9 @@ public abstract class MixinPacketHandler
     }
 
     @Overwrite
-    public <T> void sendToServer(T data)
+    public <T extends CustomPacket<T>> void sendToServer(T data)
     {
-        PacketDistributor.SERVER.noArg().send(wrapPacket((CustomPacket<?>)data));
+        PacketDistributor.SERVER.noArg().send(wrapPacket(data));
     }
 
     @Overwrite

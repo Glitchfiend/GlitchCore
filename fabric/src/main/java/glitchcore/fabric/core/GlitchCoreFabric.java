@@ -8,9 +8,11 @@ import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import glitchcore.event.TickEvent;
+import glitchcore.event.server.RegisterCommandsEvent;
 import glitchcore.event.village.WandererTradesEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.loader.api.FabricLoader;
@@ -54,6 +56,10 @@ public class GlitchCoreFabric implements ModInitializer
         ServerTickEvents.END_WORLD_TICK.register(level -> {
             EventManager.fire(new TickEvent.Level(TickEvent.Phase.END, level));
         });
+
+        CommandRegistrationCallback.EVENT.register(((dispatcher, context, selection) -> {
+            EventManager.fire(new RegisterCommandsEvent(dispatcher, selection, context));
+        }));
     }
 
     private static void postRegisterEvents()

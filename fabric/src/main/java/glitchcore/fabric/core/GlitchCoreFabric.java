@@ -7,12 +7,14 @@ package glitchcore.fabric.core;
 import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
+import glitchcore.event.TagsUpdatedEvent;
 import glitchcore.event.TickEvent;
 import glitchcore.event.server.RegisterCommandsEvent;
 import glitchcore.event.village.WandererTradesEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.loader.api.FabricLoader;
@@ -59,6 +61,10 @@ public class GlitchCoreFabric implements ModInitializer
 
         CommandRegistrationCallback.EVENT.register(((dispatcher, context, selection) -> {
             EventManager.fire(new RegisterCommandsEvent(dispatcher, selection, context));
+        }));
+
+        CommonLifecycleEvents.TAGS_LOADED.register(((registries, client) -> {
+            EventManager.fire(new TagsUpdatedEvent(registries, client ? TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED : TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD));
         }));
     }
 

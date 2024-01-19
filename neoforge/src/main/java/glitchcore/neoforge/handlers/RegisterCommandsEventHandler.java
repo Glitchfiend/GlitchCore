@@ -10,7 +10,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class RegisterCommandsEventHandler 
+public class RegisterCommandsEventHandler
 {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event)

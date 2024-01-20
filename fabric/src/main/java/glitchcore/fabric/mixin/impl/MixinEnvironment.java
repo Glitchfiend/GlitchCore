@@ -22,4 +22,10 @@ public abstract class MixinEnvironment
     {
         return FabricLoader.getInstance().getConfigDir();
     }
+
+    @Overwrite
+    public static boolean isModLoaded(String id)
+    {
+        return FabricLoader.getInstance().isModLoaded(id);
+    }
 }

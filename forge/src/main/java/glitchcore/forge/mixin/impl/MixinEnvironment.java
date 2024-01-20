@@ -1,6 +1,7 @@
 package glitchcore.forge.mixin.impl;
 
 import glitchcore.util.Environment;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,5 +22,11 @@ public abstract class MixinEnvironment
     public static Path getConfigPath()
     {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    @Overwrite
+    public static boolean isModLoaded(String id)
+    {
+        return ModList.get().isLoaded(id);
     }
 }

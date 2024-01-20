@@ -4,6 +4,7 @@
  ******************************************************************************/
 package glitchcore.event;
 
+import com.google.common.collect.ImmutableSet;
 import net.jodah.typetools.TypeResolver;
 
 import java.util.*;
@@ -48,9 +49,9 @@ public class EventManager
         }
     }
 
-    public static Set<Class<? extends Event>> getRequiredEvents()
+    public static ImmutableSet<Class<? extends Event>> getRequiredEvents()
     {
-        return listeners.keySet();
+        return ImmutableSet.copyOf(listeners.keySet());
     }
 
     private static <T extends Event> Class<T> getEventClass(Consumer<T> consumer)

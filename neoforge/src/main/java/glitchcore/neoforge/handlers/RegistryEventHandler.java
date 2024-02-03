@@ -9,16 +9,14 @@ import glitchcore.event.RegistryEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryEventHandler
 {
-    public static void setup(IEventBus modEventBus)
-    {
-        modEventBus.addListener(RegistryEventHandler::onRegister);
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SubscribeEvent
     private static void onRegister(RegisterEvent forgeEvent)
     {
         var registryKey = forgeEvent.getRegistryKey();

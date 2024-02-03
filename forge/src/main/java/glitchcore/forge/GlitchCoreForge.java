@@ -20,12 +20,9 @@ public class GlitchCoreForge
         GlitchCore.init();
     }
 
+    @Deprecated
     public static void prepareModEventHandlers(IEventBus modEventBus)
     {
-        for (Class<? extends Event> eventClass : EventManager.getRequiredEvents())
-        {
-            if (eventClass.equals(RegistryEvent.class))
-                RegistryEventHandler.setup(modEventBus);
-        }
+
     }
 }

@@ -10,6 +10,7 @@ import glitchcore.event.RegistryEvent;
 import glitchcore.event.TagsUpdatedEvent;
 import glitchcore.event.TickEvent;
 import glitchcore.event.server.RegisterCommandsEvent;
+import glitchcore.event.village.VillagerTradesEvent;
 import glitchcore.event.village.WandererTradesEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -22,6 +23,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class GlitchCoreFabric implements ModInitializer
 {
@@ -49,6 +52,14 @@ public class GlitchCoreFabric implements ModInitializer
 
         TradeOfferHelper.registerWanderingTraderOffers(2, (list) -> {
             list.addAll(wandererTradesEvent.getRareTrades());
+        });
+
+        BuiltInRegistries.VILLAGER_PROFESSION.forEach(profession -> {
+            for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++)
+            {
+                final int finalLevel = level;
+                TradeOfferHelper.registerVillagerOffers(profession, level, trades -> EventManager.fire(new VillagerTradesEvent(profession, finalLevel, trades)));
+            }
         });
 
         ServerTickEvents.START_WORLD_TICK.register(level -> {

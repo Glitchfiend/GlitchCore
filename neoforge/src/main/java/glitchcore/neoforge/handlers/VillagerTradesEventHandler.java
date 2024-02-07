@@ -5,11 +5,11 @@
 package glitchcore.neoforge.handlers;
 
 import glitchcore.event.EventManager;
-import glitchcore.event.village.WandererTradesEvent;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
+import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VillagerTradesEventHandler

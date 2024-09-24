@@ -13,11 +13,6 @@ public interface CustomPacket<T extends CustomPacket<T>>
 
     void handle(T data, Context context);
 
-    default Phase getPhase()
-    {
-        return Phase.PLAY;
-    }
-
     interface Context
     {
         boolean isClientSide();
@@ -26,10 +21,5 @@ public interface CustomPacket<T extends CustomPacket<T>>
             return !isClientSide();
         }
         Optional<Player> getPlayer();
-    }
-
-    enum Phase
-    {
-        PLAY
     }
 }

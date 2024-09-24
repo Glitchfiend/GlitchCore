@@ -9,13 +9,12 @@ import glitchcore.fabric.network.IFabricPacketHandler;
 import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.HashMap;
@@ -43,33 +42,17 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player)
     {
         FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        switch (packet.getPhase())
-        {
-            case PLAY -> ServerPlayNetworking.send(player, fPacket);
-            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
-        }
+        ServerPlayNetworking.send(player, fPacket);
     }
 
     @Overwrite
     public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
     {
         FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        switch (packet.getPhase())
-        {
-            case PLAY -> server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket));
-            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
-        }
-    }
-
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
-    {
-        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        switch (packet.getPhase())
-        {
-            case CONFIGURATION -> ServerConfigurationNetworking.send(handler, fPacket);
-            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
-        }
+        var buf = PacketByteBufs.create();
+        fPacket.write(buf);
+        server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket.getType()
+            .getId(), buf));
     }
 
     @Overwrite

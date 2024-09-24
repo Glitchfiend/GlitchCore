@@ -4,29 +4,20 @@ import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.ChannelBuilder;
+import net.minecraftforge.network.NetworkRegistry.ChannelBuilder;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.SimpleChannel;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Mixin(value = PacketHandler.class, remap = false)
-public abstract class MixinPacketHandler
-{
-    @Unique
-    private static final PacketDistributor<ServerGamePacketListenerImpl> HANDLER_DISTRIBUTOR = new PacketDistributor<>((distributor, handler) -> handler::send);
-
+public abstract class MixinPacketHandler {
     @Shadow
     @Final
     private ResourceLocation channelName;
@@ -44,50 +35,43 @@ public abstract class MixinPacketHandler
             throw new IllegalStateException("Failed to resolve packet data type: " + packet);
         }
 
-        this.channel.messageBuilder(dataType).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
+        this.channel.messageBuilder(dataType, 1).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
         {
-            forgeContext.enqueueWork(() ->
+            forgeContext.get().enqueueWork(() ->
             {
                 packet.handle(data, new CustomPacket.Context() {
                     @Override
                     public boolean isClientSide() {
-                        return forgeContext.isClientSide();
+                        return forgeContext.get().getNetworkManager().getReceiving() == PacketFlow.CLIENTBOUND;
                     }
 
                     @Override
                     public Optional<Player> getPlayer()
                     {
-                        return Optional.ofNullable((Player)forgeContext.getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+                        return Optional.ofNullable((Player)forgeContext.get().getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
                     }
                 });
             });
-            forgeContext.setPacketHandled(true);
+            forgeContext.get().setPacketHandled(true);
         }).add();
     }
 
     @Overwrite
     public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
     {
-        channel.send(data, PacketDistributor.PLAYER.with(player));
+        channel.send(PacketDistributor.PLAYER.with(() -> player), data);
     }
 
     @Overwrite
     public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
     {
-        channel.send(packet, PacketDistributor.ALL.noArg());
-    }
-
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToHandler(T packet, ServerConfigurationPacketListenerImpl handler)
-    {
-        var connection = handler.getConnection();
-        channel.send(packet, connection);
+        channel.send(PacketDistributor.ALL.noArg(), packet);
     }
 
     @Overwrite
     public <T extends CustomPacket<T>> void sendToServer(T data)
     {
-        channel.send(data, PacketDistributor.SERVER.noArg());
+        channel.send(PacketDistributor.SERVER.noArg(), data);
     }
 
     @Overwrite

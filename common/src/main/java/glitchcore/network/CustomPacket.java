@@ -30,7 +30,6 @@ public interface CustomPacket<T extends CustomPacket<T>>
 
     enum Phase
     {
-        PLAY,
-        CONFIGURATION
+        PLAY
     }
 }

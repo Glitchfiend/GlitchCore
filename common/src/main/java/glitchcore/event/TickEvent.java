@@ -4,8 +4,6 @@
  ******************************************************************************/
 package glitchcore.event;
 
-import net.minecraft.world.level.Level;
-
 public abstract class TickEvent extends Event
 {
     private final Phase phase;

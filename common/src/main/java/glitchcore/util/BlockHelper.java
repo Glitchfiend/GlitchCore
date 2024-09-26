@@ -5,6 +5,7 @@
 package glitchcore.util;
 
 import com.google.common.collect.Maps;
+import java.util.function.Predicate;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.UseOnContext;
@@ -14,8 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.function.Predicate;
 
 public class BlockHelper
 {

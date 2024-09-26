@@ -6,11 +6,10 @@ package glitchcore.event.village;
 
 import com.google.common.collect.ImmutableList;
 import glitchcore.event.Event;
-import net.minecraft.world.entity.npc.VillagerTrades;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 public class WandererTradesEvent extends Event
 {

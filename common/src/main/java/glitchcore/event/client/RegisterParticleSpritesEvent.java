@@ -5,11 +5,10 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
+import java.util.function.BiConsumer;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-
-import java.util.function.BiConsumer;
 
 public class RegisterParticleSpritesEvent extends Event
 {

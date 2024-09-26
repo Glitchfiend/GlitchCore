@@ -8,12 +8,11 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class RegistryHelper implements Consumer<RegistryEvent>
 {

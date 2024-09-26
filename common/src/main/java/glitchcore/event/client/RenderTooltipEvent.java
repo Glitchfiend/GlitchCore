@@ -5,13 +5,12 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
+import java.util.List;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class RenderTooltipEvent extends Event
 {

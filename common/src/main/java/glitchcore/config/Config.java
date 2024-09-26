@@ -4,12 +4,14 @@
  ******************************************************************************/
 package glitchcore.config;
 
-import com.electronwill.nightconfig.core.*;
+import com.electronwill.nightconfig.core.CommentedConfig;
+import com.electronwill.nightconfig.core.ConfigFormat;
+import com.electronwill.nightconfig.core.UnmodifiableCommentedConfig;
+import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import com.electronwill.nightconfig.toml.TomlFormat;
 import com.google.common.base.Predicates;
 import glitchcore.core.GlitchCore;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;

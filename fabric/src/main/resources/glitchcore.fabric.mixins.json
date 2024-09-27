@@ -6,6 +6,7 @@
   "mixins": [
     "MixinServerPlayer",
     "impl.MixinBlockHelper",
+    "impl.MixinConfigSync",
     "impl.MixinEnvironment",
     "impl.MixinPacketHandler",
     "impl.MixinRenderHelper"

@@ -28,21 +28,31 @@ public class MixinConfigSync {
   private static Map<String, Config> configsByPath = new HashMap<>();
 
   @Overwrite
-  public static void sync(Config... configs) {
+  public static void register(Config config) {
+    String relative = Environment.getConfigPath().relativize(config.getPath()).toString();
+    configsByPath.put(relative, config);
+  }
+
+  @Unique
+  private static void reload(String path, String toml) {
+    var config = configsByPath.get(path);
+    config.parse(toml);
+    config.load();
+  }
+
+  static {
     var earlyPhase = new ResourceLocation("glitchcore", "early");
     ServerPlayConnectionEvents.JOIN.addPhaseOrdering(earlyPhase, Event.DEFAULT_PHASE);
+
     // the server sends packets to the player
     ServerPlayConnectionEvents.JOIN.register(earlyPhase, (handler, sender, server) -> {
-      for (Config config : configs) {
-        String path = Environment.getConfigPath().relativize(config.getPath()).toString();
-        configsByPath.put(path, config);
-
+      configsByPath.forEach((path, config) -> {
         var packet = PacketByteBufs.create();
         packet.writeUtf(path);
         packet.writeByteArray(config.encode().getBytes(StandardCharsets.UTF_8));
 
         sender.sendPacket(CONFIG_SYNC_CHANNEL, packet);
-      }
+      });
     });
 
     // the player accepts the packets
@@ -55,12 +65,5 @@ public class MixinConfigSync {
         }
       });
     }
-  }
-
-  @Unique
-  private static void reload(String path, String toml) {
-    var config = configsByPath.get(path);
-    config.parse(toml);
-    config.load();
   }
 }

@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(value = ConfigSync.class)
+@Mixin(value = ConfigSync.class, remap = false)
 public class MixinConfigSync {
   @Unique
   private static final ResourceLocation CONFIG_SYNC_CHANNEL = new ResourceLocation("glitchcorefabric", "config_sync");

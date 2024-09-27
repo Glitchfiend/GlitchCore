@@ -90,7 +90,7 @@ public abstract class Config implements UnmodifiableConfig, CommentedConfig
         return this.path;
     }
 
-    private static String readToml(Path path)
+    public static String readToml(Path path)
     {
         // Create parent directories as needed
         path.getParent().toFile().mkdirs();

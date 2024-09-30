@@ -6,6 +6,7 @@
   "mixins": [
     "MixinServerPlayer",
     "impl.MixinBlockHelper",
+    "impl.MixinConfigSync",
     "impl.MixinEnvironment",
     "impl.MixinPacketHandler",
     "impl.MixinRenderHelper"
@@ -14,7 +15,8 @@
     "client.MixinAbstractContainerScreen",
     "client.MixinGui",
     "client.MixinGuiGraphics",
-    "impl.client.MixinPacketHandler"
+    "impl.client.MixinPacketHandler",
+    "impl.client.MixinConfigSyncClient"
   ],
   "injectors": {
     "defaultRequire": 1

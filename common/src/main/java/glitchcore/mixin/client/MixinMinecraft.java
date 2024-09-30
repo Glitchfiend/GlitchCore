@@ -5,8 +5,9 @@
 package glitchcore.mixin.client;
 
 import glitchcore.event.EventManager;
-import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.event.TickEvent;
+import glitchcore.event.player.PlayerInteractEvent;
+import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
@@ -20,8 +21,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.annotation.Nullable;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft

@@ -5,10 +5,9 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class ItemTooltipEvent extends Event
 {

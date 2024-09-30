@@ -5,10 +5,12 @@
 package glitchcore.event;
 
 import com.google.common.collect.ImmutableSet;
-import net.jodah.typetools.TypeResolver;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
+import net.jodah.typetools.TypeResolver;
 
 public class EventManager
 {

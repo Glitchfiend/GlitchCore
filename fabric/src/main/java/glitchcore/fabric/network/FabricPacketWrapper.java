@@ -4,13 +4,11 @@
  ******************************************************************************/
 package glitchcore.fabric.network;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.network.CustomPacket;
 import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
@@ -27,49 +25,22 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
         this.packet = packet;
         this.fabricPacketType = PacketType.create(this.channel, Impl::new);
 
-        if (packet.getPhase() == CustomPacket.Phase.PLAY)
-        {
-            ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
-                @Override
-                public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
-                    FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
-                        @Override
-                        public boolean isClientSide() {
-                            return false;
-                        }
+        ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
+            @Override
+            public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
+                FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
+                    @Override
+                    public boolean isClientSide() {
+                        return false;
+                    }
 
-                        @Override
-                        public Optional<Player> getPlayer() {
-                            return Optional.of(player);
-                        }
-                    });
-                }
-            });
-        }
-        else if (packet.getPhase() == CustomPacket.Phase.CONFIGURATION)
-        {
-            ServerConfigurationNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerConfigurationNetworking.ConfigurationPacketHandler()
-            {
-                @Override
-                public void receive(FabricPacket packet, ServerConfigurationPacketListenerImpl networkHandler, PacketSender responseSender)
-                {
-                    FabricPacketWrapper.this.packet.handle(((Impl)packet).data, new CustomPacket.Context()
-                    {
-                        @Override
-                        public boolean isClientSide()
-                        {
-                            return false;
-                        }
-
-                        @Override
-                        public Optional<Player> getPlayer()
-                        {
-                            return Optional.empty();
-                        }
-                    });
-                }
-            });
-        }
+                    @Override
+                    public Optional<Player> getPlayer() {
+                        return Optional.of(player);
+                    }
+                });
+            }
+        });
     }
 
     public FabricPacket createPacket(T data)

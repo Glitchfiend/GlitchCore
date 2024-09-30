@@ -4,6 +4,7 @@
  ******************************************************************************/
 package glitchcore.util;
 
+import java.util.function.Supplier;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
-
-import java.util.function.Supplier;
 
 public class RenderHelper
 {

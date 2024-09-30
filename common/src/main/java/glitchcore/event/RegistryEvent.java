@@ -1,11 +1,10 @@
 package glitchcore.event;
 
+import java.util.function.BiConsumer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.BiConsumer;
 
 public final class RegistryEvent extends Event
 {

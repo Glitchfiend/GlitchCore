@@ -77,7 +77,6 @@ subprojects {
         var expandProps = [
             minecraft_version   : minecraft_version,
             forge_version       : forge_version, forge_version_range: forge_version_range, forge_loader_version_range: forge_loader_version_range,
-            neoforge_version    : neoforge_version, neoforge_version_range: neoforge_version_range, neoforge_loader_version_range: neoforge_loader_version_range,
             mod_id              : mod_id, mod_name: mod_name, mod_display_name: mod_display_name, mod_version: mod_version,
             mod_authors         : mod_authors, mod_description: mod_description,
             mod_issues_url      : mod_issues_url, mod_page_url: mod_page_url, mod_git_url: mod_git_url,

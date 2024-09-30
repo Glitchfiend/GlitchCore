@@ -23,11 +23,7 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     public <T extends CustomPacket<T>> void sendToServer(T packet)
     {
         FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        switch (packet.getPhase())
-        {
-            case PLAY -> ClientPlayNetworking.send(fPacket);
-            default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
-        }
+        ClientPlayNetworking.send(fPacket);
     }
 
     @Override

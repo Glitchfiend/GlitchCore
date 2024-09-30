@@ -1,44 +1,36 @@
-/*******************************************************************************
- * Copyright 2023, the Glitchfiend Team.
- * All rights reserved.
- ******************************************************************************/
 package glitchcore.config;
 
-import glitchcore.network.SyncConfigPacket;
+import glitchcore.core.GlitchCore;
 import glitchcore.util.Environment;
-
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
+import net.minecraft.resources.ResourceLocation;
 
-public class ConfigSync
-{
-    private static Map<String, Config> configs = new HashMap<>();
-
-    public static void register(Config config)
-    {
-        String relative = Environment.getConfigPath().relativize(config.getPath()).toString();
-        configs.put(relative, config);
+public class ConfigSync {
+  private static final ResourceLocation CONFIG_SYNC_CHANNEL = new ResourceLocation("glitchcorefabric", "config_sync");
+  private static final Map<String, Config> CONFIGS_BY_PATH = new HashMap<>();
+  private static boolean inited = false;
+  /**
+   * Enables sync between server and client for your config.
+   * NOTE: This function works only on fabric, you need to implement it yourself
+   * if you want to use it on forge
+   *
+   * @param config your config.
+   */
+  public static void register(Config config) {
+    if (!inited) {
+      initSyncs();
+      inited = true;
     }
-
-    public static Stream<SyncConfigPacket> createPackets()
-    {
-        return configs.entrySet().stream().map(e -> {
-            var config = e.getValue();
-
-            // Reload the config from the filesystem, but do not save it
-            config.read();
-            config.load();
-
-            return new SyncConfigPacket(e.getKey(), e.getValue().encode().getBytes(StandardCharsets.UTF_8));
-        });
-    }
-
-    public static void reload(String path, String toml)
-    {
-        var config = configs.get(path);
-        config.parse(toml);
-        config.load();
-    }
+    String relative = Environment.getConfigPath().relativize(config.getPath()).toString();
+    CONFIGS_BY_PATH.put(relative, config);
+  }
+  private static void initSyncs() {
+    throw new UnsupportedOperationException();
+  }
+  private static void reload(String path, String toml) {
+    var config = CONFIGS_BY_PATH.get(path);
+    config.parse(toml);
+    config.load();
+  }
 }

@@ -77,6 +77,11 @@ public abstract class MixinPacketHandler {
     @Overwrite
     private void init()
     {
-        this.channel = ChannelBuilder.named(this.channelName).simpleChannel();
+        String protocolVersion = Integer.toString(1);
+        this.channel = ChannelBuilder.named(this.channelName)
+                .clientAcceptedVersions(protocolVersion::equals)
+                .serverAcceptedVersions(protocolVersion::equals)
+                .networkProtocolVersion(() -> protocolVersion)
+                .simpleChannel();
     }
 }

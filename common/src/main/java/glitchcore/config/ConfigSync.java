@@ -1,5 +1,6 @@
 package glitchcore.config;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.network.PacketHandler;
 import glitchcore.network.SyncConfigPacket;
 import glitchcore.util.Environment;
@@ -19,9 +20,10 @@ public class ConfigSync {
    */
   public static void register(Config config) {
     if (!inited) {
-      configSyncChannel = new ResourceLocation("glitchcorefabric", "config_sync");
+      configSyncChannel = new ResourceLocation(GlitchCore.MOD_ID, "config_sync");
       packetHandler = new PacketHandler(configSyncChannel);
-      packetHandler.register(configSyncChannel, new SyncConfigPacket());
+      packetHandler.register(new ResourceLocation(GlitchCore.MOD_ID, "config_sync_packet"),
+              new SyncConfigPacket());
       initFabric();
       inited = true;
     }

@@ -6,19 +6,19 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Optional;
 
 public interface CustomPacket<T extends CustomPacket<T>> {
-	void encode(FriendlyByteBuf buf);
+    void encode(FriendlyByteBuf buf);
 
-	T decode(FriendlyByteBuf buf);
+    T decode(FriendlyByteBuf buf);
 
-	void handle(T data, Context context);
+    void handle(T data, Context context);
 
-	interface Context {
-		boolean isClientSide();
+    interface Context {
+        boolean isClientSide();
 
-		default boolean isServerSide() {
-			return !isClientSide();
-		}
+        default boolean isServerSide() {
+            return !isClientSide();
+        }
 
-		Optional<Player> getPlayer();
-	}
+        Optional<Player> getPlayer();
+    }
 }

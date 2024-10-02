@@ -4,14 +4,13 @@ import glitchcore.config.Config;
 import glitchcore.config.ConfigSync;
 import glitchcore.network.PacketHandler;
 import glitchcore.network.SyncConfigPacket;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @Mixin(value = ConfigSync.class, remap = false)
 public class MixinConfigSync

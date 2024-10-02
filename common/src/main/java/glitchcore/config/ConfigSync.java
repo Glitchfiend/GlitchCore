@@ -36,12 +36,9 @@ public class ConfigSync
         CONFIGS_BY_PATH.put(relative, config);
     }
 
-    private static void initFabric()
-    {
-    }
+    private static void initFabric() {}
 
-    public static void reload(String path, String toml)
-    {
+    public static void reload(String path, String toml) {
         var config = CONFIGS_BY_PATH.get(path);
         config.parse(toml);
         config.load();

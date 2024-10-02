@@ -22,8 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Mixin(value = ConfigSync.class, remap = false)
-public class MixinConfigSyncClient
-{
+public class MixinConfigSyncClient {
 
     @Shadow
     private static ResourceLocation configSyncChannel;
@@ -32,18 +31,14 @@ public class MixinConfigSyncClient
     public static Map<String, Config> CONFIGS_BY_PATH;
 
     @Shadow
-    public static void reload(String path, String toml)
-    {/*dummy body*/}
+    public static void reload(String path, String toml) {/*dummy body*/}
 
     @Inject(method = "initFabric", at = @At(value = "TAIL"))
-    private static void onInitSyncs(CallbackInfo ci)
-    {
-        ClientPlayNetworking.registerGlobalReceiver(configSyncChannel, new PlayChannelHandler()
-        {
+    private static void onInitSyncs(CallbackInfo ci) {
+        ClientPlayNetworking.registerGlobalReceiver(configSyncChannel, new PlayChannelHandler() {
             @Override
             public void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf,
-                                PacketSender responseSender)
-            {
+                                PacketSender responseSender) {
                 reload(buf.readUtf(), new String(buf.readByteArray(), StandardCharsets.UTF_8));
             }
         });

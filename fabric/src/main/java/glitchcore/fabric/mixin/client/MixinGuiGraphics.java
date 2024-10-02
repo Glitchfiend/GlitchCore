@@ -4,7 +4,6 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.client;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RenderTooltipEvent;
 import glitchcore.fabric.gui.IExtendedGuiGraphics;
@@ -23,41 +22,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
-{
-    @Unique
-    private ItemStack currentTooltipStack = ItemStack.EMPTY;
+public abstract class MixinGuiGraphics implements IExtendedGuiGraphics {
+	@Unique
+	private ItemStack currentTooltipStack = ItemStack.EMPTY;
 
-    @Shadow public abstract int guiWidth();
+	@Shadow
+	public abstract int guiWidth();
 
-    @Shadow public abstract int guiHeight();
+	@Shadow
+	public abstract int guiHeight();
 
-    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("HEAD"))
-    private void onRenderTooltipHead(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
-    {
-        this.currentTooltipStack = itemStack;
-    }
+	@Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("HEAD"))
+	private void onRenderTooltipHead(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
+		this.currentTooltipStack = itemStack;
+	}
 
-    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("TAIL"))
-    private void onRenderTooltipTail(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
-    {
-        this.currentTooltipStack = ItemStack.EMPTY;
-    }
+	@Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("TAIL"))
+	private void onRenderTooltipTail(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
+		this.currentTooltipStack = ItemStack.EMPTY;
+	}
 
-    @Inject(method = "renderTooltipInternal", at=@At("HEAD"))
-    private void onRenderTooltipInternal(Font fallbackFont, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, CallbackInfo ci)
-    {
-        EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
-    }
+	@Inject(method = "renderTooltipInternal", at = @At("HEAD"))
+	private void onRenderTooltipInternal(Font fallbackFont, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, CallbackInfo ci) {
+		EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics) (Object) this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
+	}
 
-    @Override
-    public ItemStack getCurrentTooltipStack()
-    {
-        return this.currentTooltipStack;
-    }
+	@Override
+	public ItemStack getCurrentTooltipStack() {
+		return this.currentTooltipStack;
+	}
 
-    public void setCurrentTooltipStack(ItemStack stack)
-    {
-        this.currentTooltipStack = stack;
-    }
+	public void setCurrentTooltipStack(ItemStack stack) {
+		this.currentTooltipStack = stack;
+	}
 }

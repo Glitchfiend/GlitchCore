@@ -4,7 +4,6 @@
  ******************************************************************************/
 package glitchcore.util;
 
-import java.util.function.Supplier;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -17,30 +16,26 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 
-public class RenderHelper
-{
-    public static void setRenderType(Block block, RenderType type)
-    {
-        throw new UnsupportedOperationException();
-    }
+import java.util.function.Supplier;
 
-    public static void setRenderType(Fluid fluid, RenderType type)
-    {
-        throw new UnsupportedOperationException();
-    }
+public class RenderHelper {
+	public static void setRenderType(Block block, RenderType type) {
+		throw new UnsupportedOperationException();
+	}
 
-    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider)
-    {
-        throw new UnsupportedOperationException();
-    }
+	public static void setRenderType(Fluid fluid, RenderType type) {
+		throw new UnsupportedOperationException();
+	}
 
-    public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererFactory)
-    {
-        throw new UnsupportedOperationException();
-    }
+	public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider) {
+		throw new UnsupportedOperationException();
+	}
 
-    public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier)
-    {
-        throw new UnsupportedOperationException();
-    }
+	public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererFactory) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
+		throw new UnsupportedOperationException();
+	}
 }

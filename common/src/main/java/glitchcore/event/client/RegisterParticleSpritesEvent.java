@@ -5,22 +5,20 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
-import java.util.function.BiConsumer;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 
-public class RegisterParticleSpritesEvent extends Event
-{
-    private final BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> registerSpriteSetFunc;
+import java.util.function.BiConsumer;
 
-    public RegisterParticleSpritesEvent(BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> registerSpriteSetFunc)
-    {
-        this.registerSpriteSetFunc = registerSpriteSetFunc;
-    }
+public class RegisterParticleSpritesEvent extends Event {
+	private final BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> registerSpriteSetFunc;
 
-    public <T extends ParticleOptions> void registerSpriteSet(ParticleType<T> type, ParticleEngine.SpriteParticleRegistration<T> registration)
-    {
-        this.registerSpriteSetFunc.accept(type, registration);
-    }
+	public RegisterParticleSpritesEvent(BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> registerSpriteSetFunc) {
+		this.registerSpriteSetFunc = registerSpriteSetFunc;
+	}
+
+	public <T extends ParticleOptions> void registerSpriteSet(ParticleType<T> type, ParticleEngine.SpriteParticleRegistration<T> registration) {
+		this.registerSpriteSetFunc.accept(type, registration);
+	}
 }

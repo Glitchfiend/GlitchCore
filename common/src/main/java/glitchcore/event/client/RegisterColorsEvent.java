@@ -5,41 +5,34 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
-import java.util.function.BiConsumer;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.level.ItemLike;
 
-public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event
-{
-    private final BiConsumer<ObjColor, Obj> register;
+import java.util.function.BiConsumer;
 
-    public RegisterColorsEvent(BiConsumer<ObjColor, Obj> register)
-    {
-        this.register = register;
-    }
+public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event {
+	private final BiConsumer<ObjColor, Obj> register;
 
-    public void register(ObjColor color, Obj... objs)
-    {
-        for (var obj : objs)
-        {
-            this.register.accept(color, obj);
-        }
-    }
+	public RegisterColorsEvent(BiConsumer<ObjColor, Obj> register) {
+		this.register = register;
+	}
 
-    public static class Item extends RegisterColorsEvent<ItemColor, ItemLike>
-    {
-        public Item(BiConsumer<ItemColor, ItemLike> register)
-        {
-            super(register);
-        }
-    }
+	public void register(ObjColor color, Obj... objs) {
+		for (var obj : objs) {
+			this.register.accept(color, obj);
+		}
+	}
 
-    public static class Block extends RegisterColorsEvent<BlockColor, net.minecraft.world.level.block.Block>
-    {
-        public Block(BiConsumer<BlockColor, net.minecraft.world.level.block.Block> register)
-        {
-            super(register);
-        }
-    }
+	public static class Item extends RegisterColorsEvent<ItemColor, ItemLike> {
+		public Item(BiConsumer<ItemColor, ItemLike> register) {
+			super(register);
+		}
+	}
+
+	public static class Block extends RegisterColorsEvent<BlockColor, net.minecraft.world.level.block.Block> {
+		public Block(BiConsumer<BlockColor, net.minecraft.world.level.block.Block> register) {
+			super(register);
+		}
+	}
 }

@@ -15,68 +15,70 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler {
-    @Shadow
-    @Final
-    private ResourceLocation channelName;
+	@Shadow
+	@Final
+	private ResourceLocation channelName;
 
-    @Unique
-    private SimpleChannel channel;
+	@Unique
+	private SimpleChannel channel;
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
-    {
-        final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
+	@Unique
+	private AtomicInteger messageId = new AtomicInteger();
 
-        if ((Class<?>)dataType == TypeResolver.Unknown.class)
-        {
-            throw new IllegalStateException("Failed to resolve packet data type: " + packet);
-        }
+	@Overwrite
+	public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet) {
+		final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
-        this.channel.messageBuilder(dataType, 1).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
-        {
-            forgeContext.get().enqueueWork(() ->
-            {
-                packet.handle(data, new CustomPacket.Context() {
-                    @Override
-                    public boolean isClientSide() {
-                        return forgeContext.get().getNetworkManager().getReceiving() == PacketFlow.CLIENTBOUND;
-                    }
+		if ((Class<?>) dataType == TypeResolver.Unknown.class) {
+			throw new IllegalStateException("Failed to resolve packet data type: " + packet);
+		}
 
-                    @Override
-                    public Optional<Player> getPlayer()
-                    {
-                        return Optional.ofNullable((Player)forgeContext.get().getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
-                    }
-                });
-            });
-            forgeContext.get().setPacketHandled(true);
-        }).add();
-    }
+		this.channel.messageBuilder(dataType, messageId.incrementAndGet()).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
+		{
+			forgeContext.get().enqueueWork(() ->
+			{
+				packet.handle(data, new CustomPacket.Context() {
+					@Override
+					public boolean isClientSide() {
+						return forgeContext.get().getNetworkManager().getReceiving() == PacketFlow.CLIENTBOUND;
+					}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
-    {
-        channel.send(PacketDistributor.PLAYER.with(() -> player), data);
-    }
+					@Override
+					public Optional<Player> getPlayer() {
+						return Optional.ofNullable((Player) forgeContext.get().getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+					}
+				});
+			});
+			forgeContext.get().setPacketHandled(true);
+		}).add();
+	}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
-    {
-        channel.send(PacketDistributor.ALL.noArg(), packet);
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player) {
+		channel.send(PacketDistributor.PLAYER.with(() -> player), data);
+	}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T data)
-    {
-        channel.send(PacketDistributor.SERVER.noArg(), data);
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server) {
+		channel.send(PacketDistributor.ALL.noArg(), packet);
+	}
 
-    @Overwrite
-    private void init()
-    {
-        this.channel = ChannelBuilder.named(this.channelName).simpleChannel();
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToServer(T data) {
+		channel.send(PacketDistributor.SERVER.noArg(), data);
+	}
+
+	@Overwrite
+	private void init() {
+		String protocolVersion = Integer.toString(1);
+		this.channel = ChannelBuilder.named(this.channelName)
+				.clientAcceptedVersions(protocolVersion::equals)
+				.serverAcceptedVersions(protocolVersion::equals)
+				.networkProtocolVersion(() -> protocolVersion)
+				.simpleChannel();
+	}
 }

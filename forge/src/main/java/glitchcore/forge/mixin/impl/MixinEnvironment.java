@@ -10,23 +10,19 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.nio.file.Path;
 
 @Mixin(value = Environment.class, remap = false)
-public abstract class MixinEnvironment
-{
-    @Overwrite
-    public static boolean isClient()
-    {
-        return FMLEnvironment.dist.isClient();
-    }
+public abstract class MixinEnvironment {
+	@Overwrite
+	public static boolean isClient() {
+		return FMLEnvironment.dist.isClient();
+	}
 
-    @Overwrite
-    public static Path getConfigPath()
-    {
-        return FMLPaths.CONFIGDIR.get();
-    }
+	@Overwrite
+	public static Path getConfigPath() {
+		return FMLPaths.CONFIGDIR.get();
+	}
 
-    @Overwrite
-    public static boolean isModLoaded(String id)
-    {
-        return ModList.get().isLoaded(id);
-    }
+	@Overwrite
+	public static boolean isModLoaded(String id) {
+		return ModList.get().isLoaded(id);
+	}
 }

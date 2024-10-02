@@ -4,6 +4,8 @@
  ******************************************************************************/
 package glitchcore.fabric.core;
 
+import glitchcore.config.Config;
+import glitchcore.config.ConfigSync;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.LevelRenderEvent;
@@ -11,8 +13,10 @@ import glitchcore.event.client.RegisterColorsEvent;
 import glitchcore.event.client.RegisterParticleSpritesEvent;
 import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
+import glitchcore.util.Environment;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -25,42 +29,49 @@ import net.minecraft.world.InteractionResult;
 
 import java.util.function.BiConsumer;
 
-public class GlitchCoreFabricClient implements ClientModInitializer
-{
-    @Override
-    public void onInitializeClient()
-    {
-        // GlitchCore initialization
-        ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
-            EventManager.fire(new ItemTooltipEvent(stack, lines));
-        });
+public class GlitchCoreFabricClient implements ClientModInitializer {
+	@Override
+	public void onInitializeClient() {
+		// GlitchCore initialization
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			if (!ConfigSync.CONFIGS_BY_PATH.isEmpty()) {
+				ConfigSync.CONFIGS_BY_PATH.forEach((path, config) -> {
+					config.parse(Config.readToml(Environment.getConfigPath().resolve(path)));
+					config.load();
+				});
+			}
+		});
 
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            var event = new PlayerInteractEvent.UseBlock(player, hand, hitResult);
-            EventManager.fire(event);
+		ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
+			EventManager.fire(new ItemTooltipEvent(stack, lines));
+		});
 
-            if (event.isCancelled())
-                return event.getCancelResult().getResult();
+		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+			var event = new PlayerInteractEvent.UseBlock(player, hand, hitResult);
+			EventManager.fire(event);
 
-            return InteractionResult.PASS;
-        });
+			if (event.isCancelled())
+				return event.getCancelResult().getResult();
 
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
-            EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, context.worldRenderer(), context.matrixStack(), context.projectionMatrix(), context.worldRenderer().ticks, context.tickDelta(), context.camera(), context.frustum()));
-        });
+			return InteractionResult.PASS;
+		});
 
-        // Perform initialization for dependants
-        FabricLoader.getInstance().getEntrypointContainers("glitchcore", GlitchCoreInitializer.class).forEach(entrypoint -> {
-            GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
-            initializer.onInitializeClient();
-        });
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+			EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, context.worldRenderer(), context.matrixStack(), context.projectionMatrix(), context.worldRenderer().ticks, context.tickDelta(), context.camera(), context.frustum()));
+		});
 
-        EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
-        EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
+		// Perform initialization for dependants
+		FabricLoader.getInstance().getEntrypointContainers("glitchcore", GlitchCoreInitializer.class).forEach(entrypoint -> {
+			GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
+			initializer.onInitializeClient();
+		});
 
-        BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
-            ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
-        };
-        EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
-    }
+		EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
+		EventManager.fire(new RegisterColorsEvent.Item(ColorProviderRegistry.ITEM::register));
+
+		BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
+			ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider) registration.create(provider));
+		};
+		EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
+	}
 }

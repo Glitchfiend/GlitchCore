@@ -5,28 +5,25 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
-import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemTooltipEvent extends Event
-{
-    private final ItemStack stack;
-    private final List<Component> tooltip;
+import java.util.List;
 
-    public ItemTooltipEvent(ItemStack stack, List<Component> tooltip)
-    {
-        this.stack = stack;
-        this.tooltip = tooltip;
-    }
+public class ItemTooltipEvent extends Event {
+	private final ItemStack stack;
+	private final List<Component> tooltip;
 
-    public ItemStack getStack()
-    {
-        return this.stack;
-    }
+	public ItemTooltipEvent(ItemStack stack, List<Component> tooltip) {
+		this.stack = stack;
+		this.tooltip = tooltip;
+	}
 
-    public List<Component> getTooltip()
-    {
-        return this.tooltip;
-    }
+	public ItemStack getStack() {
+		return this.stack;
+	}
+
+	public List<Component> getTooltip() {
+		return this.tooltip;
+	}
 }

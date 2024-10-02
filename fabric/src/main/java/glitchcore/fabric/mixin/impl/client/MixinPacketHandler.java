@@ -11,24 +11,20 @@ import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value = PacketHandler.class, remap = false)
-public abstract class MixinPacketHandler implements IFabricPacketHandler
-{
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T packet)
-    {
-        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        ClientPlayNetworking.send(fPacket);
-    }
+public abstract class MixinPacketHandler implements IFabricPacketHandler {
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToServer(T packet) {
+		FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+		ClientPlayNetworking.send(fPacket);
+	}
 
-    @Override
-    public FabricPacketWrapper<?> createPacketWrapper(ResourceLocation channel, CustomPacket<?> packet)
-    {
-        return new ClientFabricPacketWrapper<>(channel, packet);
-    }
+	@Override
+	public FabricPacketWrapper<?> createPacketWrapper(ResourceLocation channel, CustomPacket<?> packet) {
+		return new ClientFabricPacketWrapper<>(channel, packet);
+	}
 }

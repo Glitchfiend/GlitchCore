@@ -10,33 +10,33 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.nio.charset.StandardCharsets;
 
 public class SyncConfigPacket implements CustomPacket<SyncConfigPacket> {
-    private String path;
-    private byte[] data;
+	private String path;
+	private byte[] data;
 
-    public SyncConfigPacket(String path, byte[] data) {
-        this.path = path;
-        this.data = data;
-    }
+	public SyncConfigPacket(String path, byte[] data) {
+		this.path = path;
+		this.data = data;
+	}
 
-    public SyncConfigPacket() {
-    }
+	public SyncConfigPacket() {
+	}
 
-    @Override
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeUtf(this.path);
-        buf.writeByteArray(this.data);
-    }
+	@Override
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeUtf(this.path);
+		buf.writeByteArray(this.data);
+	}
 
-    @Override
-    public SyncConfigPacket decode(FriendlyByteBuf buf) {
-        return new SyncConfigPacket(buf.readUtf(), buf.readByteArray());
-    }
+	@Override
+	public SyncConfigPacket decode(FriendlyByteBuf buf) {
+		return new SyncConfigPacket(buf.readUtf(), buf.readByteArray());
+	}
 
-    @Override
-    public void handle(SyncConfigPacket data, Context context) {
-        if (context.isServerSide())
-            return;
+	@Override
+	public void handle(SyncConfigPacket data, Context context) {
+		if (context.isServerSide())
+			return;
 
-        ConfigSync.reload(data.path, new String(data.data, StandardCharsets.UTF_8));
-    }
+		ConfigSync.reload(data.path, new String(data.data, StandardCharsets.UTF_8));
+	}
 }

@@ -17,56 +17,56 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Optional;
 
 public class FabricPacketWrapper<T extends CustomPacket<T>> {
-    protected final ResourceLocation channel;
-    protected final CustomPacket<T> packet;
-    protected final PacketType<?> fabricPacketType;
+	protected final ResourceLocation channel;
+	protected final CustomPacket<T> packet;
+	protected final PacketType<?> fabricPacketType;
 
-    public FabricPacketWrapper(ResourceLocation channel, CustomPacket<T> packet) {
-        this.channel = channel;
-        this.packet = packet;
-        this.fabricPacketType = PacketType.create(this.channel, Impl::new);
+	public FabricPacketWrapper(ResourceLocation channel, CustomPacket<T> packet) {
+		this.channel = channel;
+		this.packet = packet;
+		this.fabricPacketType = PacketType.create(this.channel, Impl::new);
 
-        ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
-            @Override
-            public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
-                FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
-                    @Override
-                    public boolean isClientSide() {
-                        return false;
-                    }
+		ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
+			@Override
+			public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
+				FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
+					@Override
+					public boolean isClientSide() {
+						return false;
+					}
 
-                    @Override
-                    public Optional<Player> getPlayer() {
-                        return Optional.of(player);
-                    }
-                });
-            }
-        });
-    }
+					@Override
+					public Optional<Player> getPlayer() {
+						return Optional.of(player);
+					}
+				});
+			}
+		});
+	}
 
-    public FabricPacket createPacket(T data) {
-        return new Impl(data);
-    }
+	public FabricPacket createPacket(T data) {
+		return new Impl(data);
+	}
 
-    class Impl implements FabricPacket {
-        protected final T data;
+	class Impl implements FabricPacket {
+		protected final T data;
 
-        private Impl(T data) {
-            this.data = data;
-        }
+		private Impl(T data) {
+			this.data = data;
+		}
 
-        private Impl(FriendlyByteBuf buf) {
-            this.data = FabricPacketWrapper.this.packet.decode(buf);
-        }
+		private Impl(FriendlyByteBuf buf) {
+			this.data = FabricPacketWrapper.this.packet.decode(buf);
+		}
 
-        @Override
-        public void write(FriendlyByteBuf buf) {
-            this.data.encode(buf);
-        }
+		@Override
+		public void write(FriendlyByteBuf buf) {
+			this.data.encode(buf);
+		}
 
-        @Override
-        public PacketType<?> getType() {
-            return FabricPacketWrapper.this.fabricPacketType;
-        }
-    }
+		@Override
+		public PacketType<?> getType() {
+			return FabricPacketWrapper.this.fabricPacketType;
+		}
+	}
 }

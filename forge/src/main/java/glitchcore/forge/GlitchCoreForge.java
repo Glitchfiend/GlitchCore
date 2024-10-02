@@ -10,12 +10,12 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod(value = GlitchCore.MOD_ID)
 public class GlitchCoreForge {
-    public GlitchCoreForge() {
-        GlitchCore.init();
-    }
+	public GlitchCoreForge() {
+		GlitchCore.init();
+	}
 
-    @Deprecated
-    public static void prepareModEventHandlers(IEventBus modEventBus) {
+	@Deprecated
+	public static void prepareModEventHandlers(IEventBus modEventBus) {
 
-    }
+	}
 }

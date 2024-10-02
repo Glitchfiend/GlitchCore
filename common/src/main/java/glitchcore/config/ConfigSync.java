@@ -11,34 +11,34 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConfigSync {
-    private static ResourceLocation configSyncChannel;
-    public static PacketHandler packetHandler;
-    public static final Map<String, Config> CONFIGS_BY_PATH = new HashMap<>();
-    private static AtomicBoolean inited = new AtomicBoolean();
+	private static ResourceLocation configSyncChannel;
+	public static PacketHandler packetHandler;
+	public static final Map<String, Config> CONFIGS_BY_PATH = new HashMap<>();
+	private static AtomicBoolean inited = new AtomicBoolean();
 
-    /**
-     * Enables sync between server and client for your config.
-     *
-     * @param config your config.
-     */
-    public static void register(Config config) {
-        if (inited.compareAndSet(false, true)) {
-            configSyncChannel = new ResourceLocation(GlitchCore.MOD_ID, "config_sync");
-            packetHandler = new PacketHandler(configSyncChannel);
-            packetHandler.register(new ResourceLocation(GlitchCore.MOD_ID, "config_sync_packet"),
-                    new SyncConfigPacket());
-            initFabric();
-        }
-        String relative = Environment.getConfigPath().relativize(config.getPath()).toString();
-        CONFIGS_BY_PATH.put(relative, config);
-    }
+	/**
+	 * Enables sync between server and client for your config.
+	 *
+	 * @param config your config.
+	 */
+	public static void register(Config config) {
+		if (inited.compareAndSet(false, true)) {
+			configSyncChannel = new ResourceLocation(GlitchCore.MOD_ID, "config_sync");
+			packetHandler = new PacketHandler(configSyncChannel);
+			packetHandler.register(new ResourceLocation(GlitchCore.MOD_ID, "config_sync_packet"),
+					new SyncConfigPacket());
+			initFabric();
+		}
+		String relative = Environment.getConfigPath().relativize(config.getPath()).toString();
+		CONFIGS_BY_PATH.put(relative, config);
+	}
 
-    private static void initFabric() {
-    }
+	private static void initFabric() {
+	}
 
-    public static void reload(String path, String toml) {
-        var config = CONFIGS_BY_PATH.get(path);
-        config.parse(toml);
-        config.load();
-    }
+	public static void reload(String path, String toml) {
+		var config = CONFIGS_BY_PATH.get(path);
+		config.parse(toml);
+		config.load();
+	}
 }

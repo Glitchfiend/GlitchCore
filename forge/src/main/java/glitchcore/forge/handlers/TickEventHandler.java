@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TickEventHandler {
-    @SubscribeEvent
-    public static void onLevelTick(TickEvent.LevelTickEvent event) {
-        glitchcore.event.TickEvent.Phase phase = switch (event.phase) {
-            case START -> glitchcore.event.TickEvent.Phase.START;
-            case END -> glitchcore.event.TickEvent.Phase.END;
-        };
+	@SubscribeEvent
+	public static void onLevelTick(TickEvent.LevelTickEvent event) {
+		glitchcore.event.TickEvent.Phase phase = switch (event.phase) {
+			case START -> glitchcore.event.TickEvent.Phase.START;
+			case END -> glitchcore.event.TickEvent.Phase.END;
+		};
 
-        EventManager.fire(new glitchcore.event.TickEvent.Level(phase, event.level));
-    }
+		EventManager.fire(new glitchcore.event.TickEvent.Level(phase, event.level));
+	}
 }

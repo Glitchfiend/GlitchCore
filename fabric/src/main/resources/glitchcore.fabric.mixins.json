@@ -15,8 +15,8 @@
     "client.MixinAbstractContainerScreen",
     "client.MixinGui",
     "client.MixinGuiGraphics",
-    "impl.client.MixinConfigSyncClient",
-    "impl.client.MixinPacketHandler"
+    "impl.client.MixinPacketHandler",
+    "impl.client.MixinConfigSyncClient"
   ],
   "injectors": {
     "defaultRequire": 1

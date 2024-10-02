@@ -10,18 +10,18 @@ import java.nio.file.Path;
 
 @Mixin(value = Environment.class, remap = false)
 public abstract class MixinEnvironment {
-	@Overwrite
-	public static boolean isClient() {
-		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
-	}
+    @Overwrite
+    public static boolean isClient() {
+        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+    }
 
-	@Overwrite
-	public static Path getConfigPath() {
-		return FabricLoader.getInstance().getConfigDir();
-	}
+    @Overwrite
+    public static Path getConfigPath() {
+        return FabricLoader.getInstance().getConfigDir();
+    }
 
-	@Overwrite
-	public static boolean isModLoaded(String id) {
-		return FabricLoader.getInstance().isModLoaded(id);
-	}
+    @Overwrite
+    public static boolean isModLoaded(String id) {
+        return FabricLoader.getInstance().isModLoaded(id);
+    }
 }

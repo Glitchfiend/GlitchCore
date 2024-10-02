@@ -18,26 +18,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.function.Predicate;
 
 public class BlockHelper {
-	public static void registerStrippable(Block log, Block stripped) {
-		AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-		AxeItem.STRIPPABLES.put(log, stripped);
-	}
+    public static void registerStrippable(Block log, Block stripped) {
+        AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
+        AxeItem.STRIPPABLES.put(log, stripped);
+    }
 
-	public static void registerFlattenable(Block block, BlockState flattened) {
-		ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
-		ShovelItem.FLATTENABLES.put(block, flattened);
-	}
+    public static void registerFlattenable(Block block, BlockState flattened) {
+        ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
+        ShovelItem.FLATTENABLES.put(block, flattened);
+    }
 
-	public static void registerCompostable(float chance, ItemLike item) {
-		ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
-	}
+    public static void registerCompostable(float chance, ItemLike item) {
+        ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+    }
 
-	public static void registerFlammable(Block block, int encouragement, int flammability) {
-		FireBlock fireblock = (FireBlock) Blocks.FIRE;
-		fireblock.setFlammable(block, encouragement, flammability);
-	}
+    public static void registerFlammable(Block block, int encouragement, int flammability) {
+        FireBlock fireblock = (FireBlock) Blocks.FIRE;
+        fireblock.setFlammable(block, encouragement, flammability);
+    }
 
-	public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
-		throw new UnsupportedOperationException();
-	}
+    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
+        throw new UnsupportedOperationException();
+    }
 }

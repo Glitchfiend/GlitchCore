@@ -7,7 +7,7 @@ package glitchcore.fabric.gui;
 import net.minecraft.world.item.ItemStack;
 
 public interface IExtendedGuiGraphics {
-	ItemStack getCurrentTooltipStack();
+    ItemStack getCurrentTooltipStack();
 
-	void setCurrentTooltipStack(ItemStack stack);
+    void setCurrentTooltipStack(ItemStack stack);
 }

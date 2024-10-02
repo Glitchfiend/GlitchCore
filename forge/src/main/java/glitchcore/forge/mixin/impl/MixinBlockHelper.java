@@ -17,8 +17,8 @@ import java.util.function.Predicate;
 
 @Mixin(value = BlockHelper.class, remap = false)
 public class MixinBlockHelper {
-	@Overwrite
-	public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
-		ToolModificationEventHandler.tillables.put(input, Pair.of(usePredicate, tilled));
-	}
+    @Overwrite
+    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
+        ToolModificationEventHandler.tillables.put(input, Pair.of(usePredicate, tilled));
+    }
 }

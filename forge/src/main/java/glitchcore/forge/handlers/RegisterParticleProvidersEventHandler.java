@@ -15,8 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegisterParticleProvidersEventHandler {
-	@SubscribeEvent
-	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
-		EventManager.fire(new RegisterParticleSpritesEvent((type, registration) -> event.registerSpriteSet((ParticleType) type, (ParticleEngine.SpriteParticleRegistration) registration)));
-	}
+    @SubscribeEvent
+    public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
+        EventManager.fire(new RegisterParticleSpritesEvent((type, registration) -> event.registerSpriteSet((ParticleType) type, (ParticleEngine.SpriteParticleRegistration) registration)));
+    }
 }

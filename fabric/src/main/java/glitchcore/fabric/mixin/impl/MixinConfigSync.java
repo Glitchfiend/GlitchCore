@@ -15,19 +15,19 @@ import java.util.Map;
 
 @Mixin(value = ConfigSync.class, remap = false)
 public class MixinConfigSync {
-	@Shadow
-	public static PacketHandler packetHandler;
-	@Shadow
-	@Final
-	public static Map<String, Config> CONFIGS_BY_PATH;
+    @Shadow
+    public static PacketHandler packetHandler;
+    @Shadow
+    @Final
+    public static Map<String, Config> CONFIGS_BY_PATH;
 
-	@Overwrite
-	public static void initFabric() {
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			CONFIGS_BY_PATH.forEach((path, config) -> {
-				packetHandler.sendToPlayer(new SyncConfigPacket(path,
-						config.encode().getBytes(StandardCharsets.UTF_8)), handler.getPlayer());
-			});
-		});
-	}
+    @Overwrite
+    public static void initFabric() {
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            CONFIGS_BY_PATH.forEach((path, config) -> {
+                packetHandler.sendToPlayer(new SyncConfigPacket(path,
+                        config.encode().getBytes(StandardCharsets.UTF_8)), handler.getPlayer());
+            });
+        });
+    }
 }

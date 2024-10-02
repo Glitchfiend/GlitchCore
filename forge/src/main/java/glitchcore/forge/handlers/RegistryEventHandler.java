@@ -19,6 +19,6 @@ public class RegistryEventHandler
     public static void onRegister(RegisterEvent forgeEvent)
     {
         var registryKey = forgeEvent.getRegistryKey();
-        EventManager.fire(new RegistryEvent(registryKey, (location, value) -> forgeEvent.register((ResourceKey<? extends Registry<Object>>) registryKey, location, () -> value)));
+        EventManager.fire(new RegistryEvent(registryKey, (location, value) -> forgeEvent.register((ResourceKey<? extends Registry<Object>>)registryKey, location, () -> value)));
     }
 }

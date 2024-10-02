@@ -41,18 +41,18 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     @Overwrite
     public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player)
     {
-        FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
         ServerPlayNetworking.send(player, fPacket);
     }
 
     @Overwrite
     public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
     {
-        FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
         var buf = PacketByteBufs.create();
         fPacket.write(buf);
         server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket.getType()
-                .getId(), buf));
+            .getId(), buf));
     }
 
     @Overwrite
@@ -81,7 +81,7 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
-        if ((Class<?>) dataType == TypeResolver.Unknown.class)
+        if ((Class<?>)dataType == TypeResolver.Unknown.class)
         {
             throw new IllegalStateException("Failed to resolve packet data type: " + packet);
         }

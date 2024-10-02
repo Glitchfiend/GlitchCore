@@ -21,11 +21,10 @@ public abstract class MixinVanillaGuiOverlay
     @Shadow
     IGuiOverlay overlay;
 
-    @Inject(method = "<init>", at = @At("RETURN"))
+    @Inject(method = "<init>", at=@At("RETURN"))
     private void onInit(String enumName, int ordinal, String id, IGuiOverlay overlay, CallbackInfo ci)
     {
-        this.overlay = switch (enumName)
-        {
+        this.overlay = switch (enumName) {
             case "FROSTBITE" -> wrapRenderer(overlay, RenderGuiEvent.Type.FROSTBITE);
             case "FOOD_LEVEL" -> wrapRenderer(overlay, RenderGuiEvent.Type.FOOD);
             case "AIR_LEVEL" -> wrapRendererWithRightModification(overlay, RenderGuiEvent.Type.AIR);

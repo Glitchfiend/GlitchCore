@@ -27,28 +27,26 @@ public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
     @Unique
     private ItemStack currentTooltipStack = ItemStack.EMPTY;
 
-    @Shadow
-    public abstract int guiWidth();
+    @Shadow public abstract int guiWidth();
 
-    @Shadow
-    public abstract int guiHeight();
+    @Shadow public abstract int guiHeight();
 
-    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("HEAD"))
+    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("HEAD"))
     private void onRenderTooltipHead(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
     {
         this.currentTooltipStack = itemStack;
     }
 
-    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("TAIL"))
+    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("TAIL"))
     private void onRenderTooltipTail(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
     {
         this.currentTooltipStack = ItemStack.EMPTY;
     }
 
-    @Inject(method = "renderTooltipInternal", at = @At("HEAD"))
+    @Inject(method = "renderTooltipInternal", at=@At("HEAD"))
     private void onRenderTooltipInternal(Font fallbackFont, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, CallbackInfo ci)
     {
-        EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics) (Object) this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
+        EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
     }
 
     @Override

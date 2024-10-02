@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerLevel.class)
 public class MixinServerLevel
 {
-    @Inject(method="addPlayer", at = @At(value="HEAD"))
+    @Inject(method="addPlayer", at=@At(value="HEAD"))
     public void onAddPlayer(ServerPlayer player, CallbackInfo ci)
     {
         EventManager.fire(new PlayerEvent.JoinLevel(player));

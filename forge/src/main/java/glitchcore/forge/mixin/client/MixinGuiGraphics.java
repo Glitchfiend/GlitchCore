@@ -25,11 +25,9 @@ public abstract class MixinGuiGraphics
     @Shadow
     private ItemStack tooltipStack;
 
-    @Shadow
-    public abstract int guiWidth();
+    @Shadow public abstract int guiWidth();
 
-    @Shadow
-    public abstract int guiHeight();
+    @Shadow public abstract int guiHeight();
 
     @ModifyVariable(method = "renderTooltipInternal", at = @At(value = "LOAD", ordinal = 0), ordinal = 0, argsOnly = true)
     private List<ClientTooltipComponent> modifyRenderTooltipComponents(List<ClientTooltipComponent> components, Font fallbackFont, List<ClientTooltipComponent> components2, int x, int y, ClientTooltipPositioner positioner)
@@ -38,7 +36,7 @@ public abstract class MixinGuiGraphics
         components = new ArrayList<>(components);
 
         // Fire tooltip render event
-        EventManager.fire(new RenderTooltipEvent(this.tooltipStack, (GuiGraphics) (Object) this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
+        EventManager.fire(new RenderTooltipEvent(this.tooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
         return components;
     }
 }

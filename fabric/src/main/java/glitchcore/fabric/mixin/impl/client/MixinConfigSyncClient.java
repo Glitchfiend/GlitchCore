@@ -34,8 +34,7 @@ public class MixinConfigSyncClient {
 	@Shadow
 	public static void reload(String path, String toml) {/*dummy body*/}
 
-	@SuppressWarnings("all")
-	@Inject(method = "initSyncs", at = @At(value = "TAIL"))
+	@Inject(method = "initFabric", at = @At(value = "TAIL"))
 	private static void onInitSyncs(CallbackInfo ci) {
 		ClientPlayNetworking.registerGlobalReceiver(configSyncChannel, new PlayChannelHandler() {
 			@Override

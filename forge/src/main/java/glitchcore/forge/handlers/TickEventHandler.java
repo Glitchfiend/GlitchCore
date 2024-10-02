@@ -15,7 +15,8 @@ public class TickEventHandler
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event)
     {
-        glitchcore.event.TickEvent.Phase phase = switch (event.phase) {
+        glitchcore.event.TickEvent.Phase phase = switch (event.phase)
+        {
             case START -> glitchcore.event.TickEvent.Phase.START;
             case END -> glitchcore.event.TickEvent.Phase.END;
         };

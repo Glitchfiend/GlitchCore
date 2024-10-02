@@ -22,7 +22,8 @@ public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event
 
     public void register(ObjColor color, Obj... objs)
     {
-        for (var obj : objs) {
+        for (var obj : objs)
+        {
             this.register.accept(color, obj);
         }
     }

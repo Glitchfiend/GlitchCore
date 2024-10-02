@@ -35,7 +35,8 @@ public abstract class MixinItemStack
         var event = new PlayerInteractEvent.UseItem(player, hand);
         EventManager.fire(event);
 
-        if (event.isCancelled()) {
+        if (event.isCancelled())
+        {
             cir.setReturnValue(event.getCancelResult());
         }
     }

@@ -62,7 +62,8 @@ public class MixinMinecraft
             at = @At(value = "INVOKE", target = "net/minecraft/world/item/ItemStack.isEmpty()Z", ordinal = 0))
     public void onStartUseItem(CallbackInfo ci)
     {
-        if (this.startUseItem_stack.isEmpty() && (this.hitResult == null || this.hitResult.getType() == HitResult.Type.MISS)) {
+        if (this.startUseItem_stack.isEmpty() && (this.hitResult == null || this.hitResult.getType() == HitResult.Type.MISS))
+        {
             EventManager.fire(new PlayerInteractEvent.UseEmpty(this.player, this.startUseItem_hand));
         }
     }

@@ -18,7 +18,8 @@ public class InteractionEventHandler
         var gcEvent = new glitchcore.event.player.PlayerInteractEvent.UseBlock(event.getEntity(), event.getHand(), event.getHitVec());
         EventManager.fire(gcEvent);
 
-        if (gcEvent.isCancelled()) {
+        if (gcEvent.isCancelled())
+        {
             event.setCancellationResult(gcEvent.getCancelResult().getResult());
             event.setCanceled(true);
         }

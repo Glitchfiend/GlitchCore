@@ -48,7 +48,8 @@ public abstract class Config implements UnmodifiableConfig, CommentedConfig
         var value = config.getOrElse(key, defaultValue);
 
         // Revert to default if validation fails
-        if (!validator.test(value)) {
+        if (!validator.test(value))
+        {
             GlitchCore.LOGGER.warn("Invalid value {} for key {}. Reverting to default", value, key);
             value = defaultValue;
         }
@@ -95,9 +96,11 @@ public abstract class Config implements UnmodifiableConfig, CommentedConfig
         // Create parent directories as needed
         path.getParent().toFile().mkdirs();
 
-        try {
+        try
+        {
             return Files.readString(path);
-        } catch (Exception ignored) {
+        } catch (Exception ignored)
+        {
         }
         return "";
     }

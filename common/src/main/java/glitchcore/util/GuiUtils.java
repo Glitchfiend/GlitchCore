@@ -13,7 +13,8 @@ public class GuiUtils
 {
     public static void setupOverlayRenderState(boolean blend, boolean depthTest)
     {
-        if (blend) {
+        if (blend)
+        {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
         } else RenderSystem.disableBlend();

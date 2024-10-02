@@ -24,7 +24,8 @@ public class ConfigSync
      */
     public static void register(Config config)
     {
-        if (inited.compareAndSet(false, true)) {
+        if (inited.compareAndSet(false, true))
+        {
             configSyncChannel = new ResourceLocation(GlitchCore.MOD_ID, "config_sync");
             packetHandler = new PacketHandler(configSyncChannel);
             packetHandler.register(new ResourceLocation(GlitchCore.MOD_ID, "config_sync_packet"),

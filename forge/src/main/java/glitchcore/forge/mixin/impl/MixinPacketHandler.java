@@ -35,7 +35,8 @@ public abstract class MixinPacketHandler
     {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
-        if ((Class<?>) dataType == TypeResolver.Unknown.class) {
+        if ((Class<?>) dataType == TypeResolver.Unknown.class)
+        {
             throw new IllegalStateException("Failed to resolve packet data type: " + packet);
         }
 

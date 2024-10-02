@@ -19,7 +19,8 @@ public class LevelRenderEventHandler
     @SubscribeEvent
     public static void onRender(RenderLevelStageEvent event)
     {
-        if (event.getStage().equals(AFTER_PARTICLES)) {
+        if (event.getStage().equals(AFTER_PARTICLES))
+        {
             fireStage(LevelRenderEvent.Stage.AFTER_PARTICLES, event);
         }
     }

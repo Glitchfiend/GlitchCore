@@ -27,7 +27,8 @@ public class VillagerTradesEventHandler
     @SubscribeEvent
     public static void onVillagerTrades(VillagerTradesEvent event)
     {
-        for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++) {
+        for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++)
+        {
             EventManager.fire(new glitchcore.event.village.VillagerTradesEvent(event.getType(), level, event.getTrades().get(level)));
         }
     }

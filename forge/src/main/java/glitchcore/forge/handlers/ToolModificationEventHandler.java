@@ -27,9 +27,12 @@ public class ToolModificationEventHandler
     {
         BlockState originalState = event.getState();
 
-        if (event.getToolAction() == ToolActions.HOE_TILL && tillables.containsKey(originalState.getBlock())) {
-            for (var tillable : tillables.get(originalState.getBlock())) {
-                if (tillable.getFirst().test(event.getContext())) {
+        if (event.getToolAction() == ToolActions.HOE_TILL && tillables.containsKey(originalState.getBlock()))
+        {
+            for (var tillable : tillables.get(originalState.getBlock()))
+            {
+                if (tillable.getFirst().test(event.getContext()))
+                {
                     event.setFinalState(tillable.getSecond());
                     return;
                 }

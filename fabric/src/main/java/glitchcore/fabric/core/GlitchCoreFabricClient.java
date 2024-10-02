@@ -36,7 +36,8 @@ public class GlitchCoreFabricClient implements ClientModInitializer
     {
         // GlitchCore initialization
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            if (!ConfigSync.CONFIGS_BY_PATH.isEmpty()) {
+            if (!ConfigSync.CONFIGS_BY_PATH.isEmpty())
+            {
                 ConfigSync.CONFIGS_BY_PATH.forEach((path, config) -> {
                     config.parse(Config.readToml(Environment.getConfigPath().resolve(path)));
                     config.load();

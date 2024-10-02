@@ -34,7 +34,6 @@ public abstract class TickEvent extends Event
     public static class Level extends TickEvent
     {
         private final net.minecraft.world.level.Level level;
-
         public Level(Phase phase, net.minecraft.world.level.Level level)
         {
             super(phase);

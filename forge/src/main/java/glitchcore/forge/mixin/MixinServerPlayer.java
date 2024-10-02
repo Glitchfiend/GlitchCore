@@ -28,9 +28,9 @@ public abstract class MixinServerPlayer extends Player
         super(p_250508_, p_250289_, p_251702_, p_252153_);
     }
 
-    @Inject(method = "changeDimension", at = @At(value = "TAIL"), remap = false)
+    @Inject(method="changeDimension", at=@At(value="TAIL"), remap = false)
     public void onChangeDimension(ServerLevel level, ITeleporter teleporter, CallbackInfoReturnable<Entity> cir)
     {
-        EventManager.fire(new PlayerEvent.ChangeDimension((ServerPlayer) (Player) this));
+        EventManager.fire(new PlayerEvent.ChangeDimension((ServerPlayer)(Player)this));
     }
 }

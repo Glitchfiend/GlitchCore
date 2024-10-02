@@ -5,13 +5,12 @@
 package glitchcore.event;
 
 import com.google.common.collect.ImmutableSet;
-import net.jodah.typetools.TypeResolver;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import net.jodah.typetools.TypeResolver;
 
 public class EventManager
 {
@@ -31,7 +30,8 @@ public class EventManager
                 arr = Arrays.copyOf(arr, len + 1);
                 arr[len] = listener;
                 listeners.replace(eventClass, arr);
-            } else
+            }
+            else
             {
                 listeners.computeIfAbsent(eventClass, (key) -> new Consumer[]{listener});
             }
@@ -44,7 +44,7 @@ public class EventManager
 
         for (var listener : Optional.ofNullable(listeners.get(eventClass)).orElse(new Consumer[0]))
         {
-            ((Consumer<T>) listener).accept(event);
+            ((Consumer<T>)listener).accept(event);
 
             if (event.isCancellable() && event.isCancelled())
                 break;
@@ -59,7 +59,7 @@ public class EventManager
     private static <T extends Event> Class<T> getEventClass(Consumer<T> consumer)
     {
         final Class<T> eventClass = (Class<T>) TypeResolver.resolveRawArgument(Consumer.class, consumer.getClass());
-        if ((Class<?>) eventClass == TypeResolver.Unknown.class)
+        if ((Class<?>)eventClass == TypeResolver.Unknown.class)
         {
             throw new IllegalStateException("Failed to resolve consumer event type: " + consumer.toString());
         }

@@ -20,9 +20,7 @@ public class SyncConfigPacket implements CustomPacket<SyncConfigPacket>
         this.data = data;
     }
 
-    public SyncConfigPacket()
-    {
-    }
+    public SyncConfigPacket() {}
 
     @Override
     public void encode(FriendlyByteBuf buf)

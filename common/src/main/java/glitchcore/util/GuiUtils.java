@@ -17,7 +17,8 @@ public class GuiUtils
         {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-        } else RenderSystem.disableBlend();
+        }
+        else RenderSystem.disableBlend();
 
         if (depthTest)
             RenderSystem.enableDepthTest();

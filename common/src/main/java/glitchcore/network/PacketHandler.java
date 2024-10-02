@@ -18,27 +18,13 @@ public final class PacketHandler
         this.init();
     }
 
-    public void register(ResourceLocation name, CustomPacket<?> packet)
-    {
-        throw new UnsupportedOperationException();
-    }
+    public void register(ResourceLocation name, CustomPacket<?> packet) { throw new UnsupportedOperationException(); }
 
-    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
-    {
-        throw new UnsupportedOperationException();
-    }
+    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player) { throw new UnsupportedOperationException(); }
 
-    public <T extends CustomPacket<T>> void sendToAll(T data, MinecraftServer server)
-    {
-        throw new UnsupportedOperationException();
-    }
+    public <T extends CustomPacket<T>> void sendToAll(T data, MinecraftServer server) { throw new UnsupportedOperationException(); }
 
-    public <T extends CustomPacket<T>> void sendToServer(T data)
-    {
-        throw new UnsupportedOperationException();
-    }
+    public <T extends CustomPacket<T>> void sendToServer(T data) { throw new UnsupportedOperationException(); }
 
-    private void init()
-    {
-    }
+    private void init() {}
 }

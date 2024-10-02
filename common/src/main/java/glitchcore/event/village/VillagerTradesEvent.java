@@ -5,10 +5,9 @@
 package glitchcore.event.village;
 
 import glitchcore.event.Event;
+import java.util.List;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-
-import java.util.List;
 
 public class VillagerTradesEvent extends Event
 {

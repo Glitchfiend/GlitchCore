@@ -23,13 +23,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack
 {
-    @Shadow
-    public abstract ItemStack copy();
+    @Shadow public abstract ItemStack copy();
 
     @Unique
     private ItemStack finishUsingItemCopy;
 
-    @Inject(method = "use", at = @At("HEAD"), cancellable = true)
+    @Inject(method="use", at=@At("HEAD"), cancellable = true)
     public void onUse(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir)
     {
         var event = new PlayerInteractEvent.UseItem(player, hand);
@@ -41,14 +40,14 @@ public abstract class MixinItemStack
         }
     }
 
-    @Inject(method = "finishUsingItem", at = @At("HEAD"))
+    @Inject(method="finishUsingItem", at=@At("HEAD"))
     public void onFinishUsingItemBegin(Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir)
     {
         // Store a copy of the item before it is used (tags are wiped after)
         this.finishUsingItemCopy = this.copy();
     }
 
-    @Inject(method = "finishUsingItem", at = @At("TAIL"), cancellable = true)
+    @Inject(method="finishUsingItem", at=@At("TAIL"), cancellable = true)
     public void onFinishUsingItem(Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir)
     {
         var event = new LivingEntityUseItemEvent.Finish(entity, this.finishUsingItemCopy, cir.getReturnValue());

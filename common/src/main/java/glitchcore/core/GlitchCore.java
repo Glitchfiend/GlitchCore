@@ -13,7 +13,6 @@ public class GlitchCore
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     @Deprecated
-    public static void init()
-    {
+    public static void init() {
     }
 }

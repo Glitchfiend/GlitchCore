@@ -22,10 +22,9 @@ public abstract class MixinKeyboardHandler
     @Final
     private Minecraft minecraft;
 
-    @Shadow
-    private boolean handledDebugKey;
+    @Shadow private boolean handledDebugKey;
 
-    @Inject(method = "keyPress", at = @At("TAIL"))
+    @Inject(method = "keyPress", at=@At("TAIL"))
     public void onKeyInput(long window, int key, int scanCode, int action, int modifiers, CallbackInfo ci)
     {
         if (window != this.minecraft.getWindow().getWindow())

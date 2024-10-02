@@ -5,11 +5,10 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
+import java.util.function.BiConsumer;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.level.ItemLike;
-
-import java.util.function.BiConsumer;
 
 public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event
 {

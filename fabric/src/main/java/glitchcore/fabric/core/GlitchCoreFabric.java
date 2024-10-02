@@ -85,7 +85,7 @@ public class GlitchCoreFabric implements ModInitializer
         {
             ResourceKey<? extends Registry<?>> registryKey = ResourceKey.createRegistryKey(registryName);
             Registry<?> registry = BuiltInRegistries.REGISTRY.get(registryName);
-            EventManager.fire(new RegistryEvent(registryKey, (location, value) -> Registry.register((Registry<? super Object>) registry, location, value)));
+            EventManager.fire(new RegistryEvent(registryKey, (location, value) -> Registry.register((Registry<? super Object>)registry, location, value)));
         }
     }
 }

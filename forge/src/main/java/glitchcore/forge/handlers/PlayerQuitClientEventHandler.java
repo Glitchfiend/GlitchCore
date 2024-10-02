@@ -10,13 +10,13 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class PlayerQuitClientEventHandler {
-    @SubscribeEvent
-    public static void onQuit(ClientPlayerNetworkEvent.LoggingOut e) {
-        if (!ConfigSync.CONFIGS_BY_PATH.isEmpty()) {
-            ConfigSync.CONFIGS_BY_PATH.forEach((path, config) -> {
-                config.parse(Config.readToml(Environment.getConfigPath().resolve(path)));
-                config.load();
-            });
-        }
-    }
+	@SubscribeEvent
+	public static void onQuit(ClientPlayerNetworkEvent.LoggingOut e) {
+		if (!ConfigSync.CONFIGS_BY_PATH.isEmpty()) {
+			ConfigSync.CONFIGS_BY_PATH.forEach((path, config) -> {
+				config.parse(Config.readToml(Environment.getConfigPath().resolve(path)));
+				config.load();
+			});
+		}
+	}
 }

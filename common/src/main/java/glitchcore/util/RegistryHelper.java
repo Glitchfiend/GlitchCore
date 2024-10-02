@@ -8,43 +8,38 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public class RegistryHelper implements Consumer<RegistryEvent>
-{
-    private final Multimap<ResourceKey<? extends Registry<?>>, Registrar<?>> registrars = ArrayListMultimap.create();
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-    private RegistryHelper()
-    {
-        // Register self as an event handler
-        EventManager.addListener(this);
-    }
+public class RegistryHelper implements Consumer<RegistryEvent> {
+	private final Multimap<ResourceKey<? extends Registry<?>>, Registrar<?>> registrars = ArrayListMultimap.create();
 
-    public static RegistryHelper create()
-    {
-        return new RegistryHelper();
-    }
+	private RegistryHelper() {
+		// Register self as an event handler
+		EventManager.addListener(this);
+	}
 
-    public <T> void addRegistrar(ResourceKey<? extends Registry<T>> registry, Registrar<T> registrar)
-    {
-        this.registrars.put(registry, registrar);
-    }
+	public static RegistryHelper create() {
+		return new RegistryHelper();
+	}
 
-    @Override
-    public void accept(RegistryEvent registryEvent)
-    {
-        this.registrars.get(registryEvent.getRegistryKey()).forEach(registrar ->
-        {
-            ((Registrar<?>)registrar).registerAll(registryEvent::register);
-        });
-    }
+	public <T> void addRegistrar(ResourceKey<? extends Registry<T>> registry, Registrar<T> registrar) {
+		this.registrars.put(registry, registrar);
+	}
 
-    public interface Registrar<T>
-    {
-        void registerAll(BiConsumer<ResourceLocation, T> register);
-    }
+	@Override
+	public void accept(RegistryEvent registryEvent) {
+		this.registrars.get(registryEvent.getRegistryKey()).forEach(registrar ->
+		{
+			((Registrar<?>) registrar).registerAll(registryEvent::register);
+		});
+	}
+
+	public interface Registrar<T> {
+		void registerAll(BiConsumer<ResourceLocation, T> register);
+	}
 }

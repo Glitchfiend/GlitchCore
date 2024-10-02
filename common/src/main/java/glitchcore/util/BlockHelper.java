@@ -5,7 +5,6 @@
 package glitchcore.util;
 
 import com.google.common.collect.Maps;
-import java.util.function.Predicate;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.UseOnContext;
@@ -16,33 +15,29 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockHelper
-{
-    public static void registerStrippable(Block log, Block stripped)
-    {
-        AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-        AxeItem.STRIPPABLES.put(log, stripped);
-    }
+import java.util.function.Predicate;
 
-    public static void registerFlattenable(Block block, BlockState flattened)
-    {
-        ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
-        ShovelItem.FLATTENABLES.put(block, flattened);
-    }
+public class BlockHelper {
+	public static void registerStrippable(Block log, Block stripped) {
+		AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
+		AxeItem.STRIPPABLES.put(log, stripped);
+	}
 
-    public static void registerCompostable(float chance, ItemLike item)
-    {
-        ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
-    }
+	public static void registerFlattenable(Block block, BlockState flattened) {
+		ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
+		ShovelItem.FLATTENABLES.put(block, flattened);
+	}
 
-    public static void registerFlammable(Block block, int encouragement, int flammability)
-    {
-        FireBlock fireblock = (FireBlock) Blocks.FIRE;
-        fireblock.setFlammable(block, encouragement, flammability);
-    }
+	public static void registerCompostable(float chance, ItemLike item) {
+		ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+	}
 
-    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled)
-    {
-        throw new UnsupportedOperationException();
-    }
+	public static void registerFlammable(Block block, int encouragement, int flammability) {
+		FireBlock fireblock = (FireBlock) Blocks.FIRE;
+		fireblock.setFlammable(block, encouragement, flammability);
+	}
+
+	public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
+		throw new UnsupportedOperationException();
+	}
 }

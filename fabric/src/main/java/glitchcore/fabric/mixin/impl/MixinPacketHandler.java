@@ -22,70 +22,61 @@ import java.util.Map;
 
 // Priority = 0 to facilitate overriding
 @Mixin(value = PacketHandler.class, remap = false, priority = 0)
-public abstract class MixinPacketHandler implements IFabricPacketHandler
-{
-    @Shadow
-    @Final
-    private ResourceLocation channelName;
+public abstract class MixinPacketHandler implements IFabricPacketHandler {
+	@Shadow
+	@Final
+	private ResourceLocation channelName;
 
-    @Unique
-    private Map<Class<?>, FabricPacketWrapper> wrappers = new HashMap<>();
+	@Unique
+	private Map<Class<?>, FabricPacketWrapper> wrappers = new HashMap<>();
 
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
-    {
-        wrappers.put(getPacketDataType(packet), createPacketWrapper(name, packet));
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet) {
+		wrappers.put(getPacketDataType(packet), createPacketWrapper(name, packet));
+	}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player)
-    {
-        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        ServerPlayNetworking.send(player, fPacket);
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player) {
+		FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+		ServerPlayNetworking.send(player, fPacket);
+	}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
-    {
-        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
-        var buf = PacketByteBufs.create();
-        fPacket.write(buf);
-        server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket.getType()
-            .getId(), buf));
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server) {
+		FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+		var buf = PacketByteBufs.create();
+		fPacket.write(buf);
+		server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(fPacket.getType()
+				.getId(), buf));
+	}
 
-    @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T packet)
-    {
-        throw new UnsupportedOperationException("Attempted to call sendToServer from server");
-    }
+	@Overwrite
+	public <T extends CustomPacket<T>> void sendToServer(T packet) {
+		throw new UnsupportedOperationException("Attempted to call sendToServer from server");
+	}
 
-    @Overwrite
-    private void init()
-    {
-    }
+	@Overwrite
+	private void init() {
+	}
 
-    @Override
-    public <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet)
-    {
-        var dataType = getPacketDataType(packet);
+	@Override
+	public <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet) {
+		var dataType = getPacketDataType(packet);
 
-        if (!this.wrappers.containsKey(dataType))
-            throw new RuntimeException("Unregistered packet of type " + dataType);
+		if (!this.wrappers.containsKey(dataType))
+			throw new RuntimeException("Unregistered packet of type " + dataType);
 
-        return this.wrappers.get(dataType).createPacket(packet);
-    }
+		return this.wrappers.get(dataType).createPacket(packet);
+	}
 
-    private static <T extends CustomPacket<T>> Class<?> getPacketDataType(CustomPacket<T> packet)
-    {
-        final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
+	private static <T extends CustomPacket<T>> Class<?> getPacketDataType(CustomPacket<T> packet) {
+		final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
-        if ((Class<?>)dataType == TypeResolver.Unknown.class)
-        {
-            throw new IllegalStateException("Failed to resolve packet data type: " + packet);
-        }
+		if ((Class<?>) dataType == TypeResolver.Unknown.class) {
+			throw new IllegalStateException("Failed to resolve packet data type: " + packet);
+		}
 
-        return dataType;
-    }
+		return dataType;
+	}
 }

@@ -16,10 +16,10 @@ import java.util.Map;
 @Mixin(value = ConfigSync.class, remap = false)
 public class MixinConfigSync {
 	@Shadow
-	private static PacketHandler packetHandler;
+	public static PacketHandler packetHandler;
 	@Shadow
 	@Final
-	private static Map<String, Config> CONFIGS_BY_PATH;
+	public static Map<String, Config> CONFIGS_BY_PATH;
 
 	@Overwrite
 	public static void initFabric() {

@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,17 +26,18 @@ import java.util.Map;
 public class MixinConfigSyncClient {
 
 	@Shadow
-	private static ResourceLocation CONFIG_SYNC_CHANNEL;
+	private static ResourceLocation configSyncChannel;
+	@Final
 	@Shadow
-	private static Map<String, Config> CONFIGS_BY_PATH;
+	public static Map<String, Config> CONFIGS_BY_PATH;
 
 	@Shadow
-	private static void reload(String path, String toml) {/*dummy body*/}
+	public static void reload(String path, String toml) {/*dummy body*/}
 
 	@SuppressWarnings("all")
 	@Inject(method = "initSyncs", at = @At(value = "TAIL"))
 	private static void onInitSyncs(CallbackInfo ci) {
-		ClientPlayNetworking.registerGlobalReceiver(CONFIG_SYNC_CHANNEL, new PlayChannelHandler() {
+		ClientPlayNetworking.registerGlobalReceiver(configSyncChannel, new PlayChannelHandler() {
 			@Override
 			public void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf,
 								PacketSender responseSender) {

@@ -5,10 +5,7 @@
 package glitchcore.fabric.network;
 
 import glitchcore.network.CustomPacket;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,22 +25,17 @@ public class FabricPacketWrapper<T extends CustomPacket<T>>
         this.packet = packet;
         this.fabricPacketType = PacketType.create(this.channel, Impl::new);
 
-        ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler()
-        {
+        ServerPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ServerPlayNetworking.PlayPacketHandler() {
             @Override
-            public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender)
-            {
-                FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context()
-                {
+            public void receive(FabricPacket packet, ServerPlayer player, PacketSender responseSender) {
+                FabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
                     @Override
-                    public boolean isClientSide()
-                    {
+                    public boolean isClientSide() {
                         return false;
                     }
 
                     @Override
-                    public Optional<Player> getPlayer()
-                    {
+                    public Optional<Player> getPlayer() {
                         return Optional.of(player);
                     }
                 });

@@ -21,7 +21,7 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler
     @Overwrite
     public <T extends CustomPacket<T>> void sendToServer(T packet)
     {
-        FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
+        FabricPacket fPacket = createFabricPacket((CustomPacket)packet);
         ClientPlayNetworking.send(fPacket);
     }
 

@@ -20,23 +20,18 @@ public class ClientFabricPacketWrapper<T extends CustomPacket<T>> extends Fabric
     {
         super(channel, packet);
 
-        ClientPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ClientPlayNetworking.PlayPacketHandler()
-        {
+        ClientPlayNetworking.registerGlobalReceiver(this.fabricPacketType, new ClientPlayNetworking.PlayPacketHandler() {
 
             @Override
-            public void receive(FabricPacket packet, LocalPlayer player, PacketSender responseSender)
-            {
-                ClientFabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context()
-                {
+            public void receive(FabricPacket packet, LocalPlayer player, PacketSender responseSender) {
+                ClientFabricPacketWrapper.this.packet.handle(((Impl) packet).data, new CustomPacket.Context() {
                     @Override
-                    public boolean isClientSide()
-                    {
+                    public boolean isClientSide() {
                         return true;
                     }
 
                     @Override
-                    public Optional<Player> getPlayer()
-                    {
+                    public Optional<Player> getPlayer() {
                         return Optional.of(player);
                     }
                 });

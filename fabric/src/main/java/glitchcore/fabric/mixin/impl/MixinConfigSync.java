@@ -13,8 +13,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(value = ConfigSync.class, remap = false)
-public class MixinConfigSync
-{
+public class MixinConfigSync {
     @Shadow
     public static PacketHandler packetHandler;
     @Shadow

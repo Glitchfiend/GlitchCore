@@ -6,16 +6,20 @@ package glitchcore.util;
 
 import java.nio.file.Path;
 
-public final class Environment {
-    public static boolean isClient() {
+public final class Environment
+{
+    public static boolean isClient()
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static Path getConfigPath() {
+    public static Path getConfigPath()
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static boolean isModLoaded(String id) {
+    public static boolean isModLoaded(String id)
+    {
         throw new UnsupportedOperationException();
     }
 }

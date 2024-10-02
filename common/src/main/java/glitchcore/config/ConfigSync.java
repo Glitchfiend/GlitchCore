@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ConfigSync {
+public class ConfigSync
+{
     private static ResourceLocation configSyncChannel;
     public static PacketHandler packetHandler;
     public static final Map<String, Config> CONFIGS_BY_PATH = new HashMap<>();
@@ -21,7 +22,8 @@ public class ConfigSync {
      *
      * @param config your config.
      */
-    public static void register(Config config) {
+    public static void register(Config config)
+    {
         if (inited.compareAndSet(false, true)) {
             configSyncChannel = new ResourceLocation(GlitchCore.MOD_ID, "config_sync");
             packetHandler = new PacketHandler(configSyncChannel);
@@ -33,10 +35,12 @@ public class ConfigSync {
         CONFIGS_BY_PATH.put(relative, config);
     }
 
-    private static void initFabric() {
+    private static void initFabric()
+    {
     }
 
-    public static void reload(String path, String toml) {
+    public static void reload(String path, String toml)
+    {
         var config = CONFIGS_BY_PATH.get(path);
         config.parse(toml);
         config.load();

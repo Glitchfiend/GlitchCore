@@ -18,11 +18,13 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ToolModificationEventHandler {
+public class ToolModificationEventHandler
+{
     public static final Multimap<Block, Pair<Predicate<UseOnContext>, BlockState>> tillables = HashMultimap.create();
 
     @SubscribeEvent
-    public static void onToolModification(BlockEvent.BlockToolModificationEvent event) {
+    public static void onToolModification(BlockEvent.BlockToolModificationEvent event)
+    {
         BlockState originalState = event.getState();
 
         if (event.getToolAction() == ToolActions.HOE_TILL && tillables.containsKey(originalState.getBlock())) {

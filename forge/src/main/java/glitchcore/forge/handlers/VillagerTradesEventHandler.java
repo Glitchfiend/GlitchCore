@@ -12,9 +12,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class VillagerTradesEventHandler {
+public class VillagerTradesEventHandler
+{
     @SubscribeEvent
-    public static void onWandererTrades(WandererTradesEvent event) {
+    public static void onWandererTrades(WandererTradesEvent event)
+    {
         var gcEvent = new glitchcore.event.village.WandererTradesEvent();
         EventManager.fire(gcEvent);
 
@@ -23,7 +25,8 @@ public class VillagerTradesEventHandler {
     }
 
     @SubscribeEvent
-    public static void onVillagerTrades(VillagerTradesEvent event) {
+    public static void onVillagerTrades(VillagerTradesEvent event)
+    {
         for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++) {
             EventManager.fire(new glitchcore.event.village.VillagerTradesEvent(event.getType(), level, event.getTrades().get(level)));
         }

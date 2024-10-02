@@ -29,9 +29,11 @@ import net.minecraft.world.InteractionResult;
 
 import java.util.function.BiConsumer;
 
-public class GlitchCoreFabricClient implements ClientModInitializer {
+public class GlitchCoreFabricClient implements ClientModInitializer
+{
     @Override
-    public void onInitializeClient() {
+    public void onInitializeClient()
+    {
         // GlitchCore initialization
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (!ConfigSync.CONFIGS_BY_PATH.isEmpty()) {

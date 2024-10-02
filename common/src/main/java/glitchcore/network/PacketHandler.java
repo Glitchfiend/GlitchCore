@@ -8,30 +8,37 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public final class PacketHandler {
+public final class PacketHandler
+{
     private final ResourceLocation channelName;
 
-    public PacketHandler(ResourceLocation channelName) {
+    public PacketHandler(ResourceLocation channelName)
+    {
         this.channelName = channelName;
         this.init();
     }
 
-    public void register(ResourceLocation name, CustomPacket<?> packet) {
+    public void register(ResourceLocation name, CustomPacket<?> packet)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player) {
+    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public <T extends CustomPacket<T>> void sendToAll(T data, MinecraftServer server) {
+    public <T extends CustomPacket<T>> void sendToAll(T data, MinecraftServer server)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public <T extends CustomPacket<T>> void sendToServer(T data) {
+    public <T extends CustomPacket<T>> void sendToServer(T data)
+    {
         throw new UnsupportedOperationException();
     }
 
-    private void init() {
+    private void init()
+    {
     }
 }

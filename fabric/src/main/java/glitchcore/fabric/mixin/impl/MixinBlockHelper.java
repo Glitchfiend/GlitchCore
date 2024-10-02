@@ -15,9 +15,11 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.util.function.Predicate;
 
 @Mixin(value = BlockHelper.class, remap = false)
-public class MixinBlockHelper {
+public class MixinBlockHelper
+{
     @Overwrite
-    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled) {
+    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled)
+    {
         TillableBlockRegistry.register(input, usePredicate, tilled);
     }
 }

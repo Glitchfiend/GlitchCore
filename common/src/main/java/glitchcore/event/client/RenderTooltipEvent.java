@@ -13,7 +13,8 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class RenderTooltipEvent extends Event {
+public class RenderTooltipEvent extends Event
+{
     private final ItemStack stack;
     private final GuiGraphics graphics;
     private final int x;
@@ -24,7 +25,8 @@ public class RenderTooltipEvent extends Event {
     private final Font fallbackFont;
     private final ClientTooltipPositioner positioner;
 
-    public RenderTooltipEvent(ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, Font fallbackFont, ClientTooltipPositioner positioner) {
+    public RenderTooltipEvent(ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, Font fallbackFont, ClientTooltipPositioner positioner)
+    {
         this.stack = stack;
         this.graphics = graphics;
         this.x = x;
@@ -36,39 +38,48 @@ public class RenderTooltipEvent extends Event {
         this.positioner = positioner;
     }
 
-    public ItemStack getStack() {
+    public ItemStack getStack()
+    {
         return this.stack;
     }
 
-    public GuiGraphics getGraphics() {
+    public GuiGraphics getGraphics()
+    {
         return graphics;
     }
 
-    public int getX() {
+    public int getX()
+    {
         return x;
     }
 
-    public int getY() {
+    public int getY()
+    {
         return y;
     }
 
-    public int getScreenWidth() {
+    public int getScreenWidth()
+    {
         return screenWidth;
     }
 
-    public int getScreenHeight() {
+    public int getScreenHeight()
+    {
         return screenHeight;
     }
 
-    public List<ClientTooltipComponent> getComponents() {
+    public List<ClientTooltipComponent> getComponents()
+    {
         return components;
     }
 
-    public Font getFallbackFont() {
+    public Font getFallbackFont()
+    {
         return fallbackFont;
     }
 
-    public ClientTooltipPositioner getPositioner() {
+    public ClientTooltipPositioner getPositioner()
+    {
         return positioner;
     }
 }

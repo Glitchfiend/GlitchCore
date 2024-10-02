@@ -4,18 +4,22 @@
  ******************************************************************************/
 package glitchcore.event;
 
-public abstract class Event {
+public abstract class Event
+{
     private boolean cancelled = false;
 
-    public boolean isCancellable() {
+    public boolean isCancellable()
+    {
         return false;
     }
 
-    public boolean isCancelled() {
+    public boolean isCancelled()
+    {
         return this.cancelled;
     }
 
-    public void setCancelled(boolean value) {
+    public void setCancelled(boolean value)
+    {
         if (!this.isCancellable())
             throw new UnsupportedOperationException("Attempted to cancel event which cannot be cancelled!");
 

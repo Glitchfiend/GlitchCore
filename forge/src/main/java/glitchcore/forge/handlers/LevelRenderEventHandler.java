@@ -14,15 +14,18 @@ import net.minecraftforge.fml.common.Mod;
 import static net.minecraftforge.client.event.RenderLevelStageEvent.Stage.AFTER_PARTICLES;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class LevelRenderEventHandler {
+public class LevelRenderEventHandler
+{
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event) {
+    public static void onRender(RenderLevelStageEvent event)
+    {
         if (event.getStage().equals(AFTER_PARTICLES)) {
             fireStage(LevelRenderEvent.Stage.AFTER_PARTICLES, event);
         }
     }
 
-    private static void fireStage(LevelRenderEvent.Stage stage, RenderLevelStageEvent event) {
+    private static void fireStage(LevelRenderEvent.Stage stage, RenderLevelStageEvent event)
+    {
         EventManager.fire(new LevelRenderEvent(stage, event.getLevelRenderer(), event.getPoseStack(), event.getProjectionMatrix(), event.getRenderTick(), event.getPartialTick(), event.getCamera(), event.getFrustum()));
     }
 }

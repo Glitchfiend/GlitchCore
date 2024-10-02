@@ -22,7 +22,8 @@ import java.util.Map;
 
 // Priority = 0 to facilitate overriding
 @Mixin(value = PacketHandler.class, remap = false, priority = 0)
-public abstract class MixinPacketHandler implements IFabricPacketHandler {
+public abstract class MixinPacketHandler implements IFabricPacketHandler
+{
     @Shadow
     @Final
     private ResourceLocation channelName;
@@ -32,18 +33,21 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler {
 
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet) {
+    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
+    {
         wrappers.put(getPacketDataType(packet), createPacketWrapper(name, packet));
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player) {
+    public <T extends CustomPacket<T>> void sendToPlayer(T packet, ServerPlayer player)
+    {
         FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
         ServerPlayNetworking.send(player, fPacket);
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server) {
+    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
+    {
         FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
         var buf = PacketByteBufs.create();
         fPacket.write(buf);
@@ -52,16 +56,19 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler {
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T packet) {
+    public <T extends CustomPacket<T>> void sendToServer(T packet)
+    {
         throw new UnsupportedOperationException("Attempted to call sendToServer from server");
     }
 
     @Overwrite
-    private void init() {
+    private void init()
+    {
     }
 
     @Override
-    public <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet) {
+    public <T extends CustomPacket<T>> FabricPacket createFabricPacket(T packet)
+    {
         var dataType = getPacketDataType(packet);
 
         if (!this.wrappers.containsKey(dataType))
@@ -70,7 +77,8 @@ public abstract class MixinPacketHandler implements IFabricPacketHandler {
         return this.wrappers.get(dataType).createPacket(packet);
     }
 
-    private static <T extends CustomPacket<T>> Class<?> getPacketDataType(CustomPacket<T> packet) {
+    private static <T extends CustomPacket<T>> Class<?> getPacketDataType(CustomPacket<T> packet)
+    {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
         if ((Class<?>) dataType == TypeResolver.Unknown.class) {

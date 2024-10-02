@@ -9,13 +9,16 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod(value = GlitchCore.MOD_ID)
-public class GlitchCoreForge {
-    public GlitchCoreForge() {
+public class GlitchCoreForge
+{
+    public GlitchCoreForge()
+    {
         GlitchCore.init();
     }
 
     @Deprecated
-    public static void prepareModEventHandlers(IEventBus modEventBus) {
+    public static void prepareModEventHandlers(IEventBus modEventBus)
+    {
 
     }
 }

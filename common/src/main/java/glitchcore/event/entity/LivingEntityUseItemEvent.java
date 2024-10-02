@@ -8,36 +8,44 @@ import glitchcore.event.Event;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public abstract class LivingEntityUseItemEvent extends Event {
+public abstract class LivingEntityUseItemEvent extends Event
+{
     private final LivingEntity entity;
     private final ItemStack item;
 
-    public LivingEntityUseItemEvent(LivingEntity entity, ItemStack item) {
+    public LivingEntityUseItemEvent(LivingEntity entity, ItemStack item)
+    {
         this.entity = entity;
         this.item = item;
     }
 
-    public LivingEntity getEntity() {
+    public LivingEntity getEntity()
+    {
         return this.entity;
     }
 
-    public ItemStack getItem() {
+    public ItemStack getItem()
+    {
         return this.item;
     }
 
-    public static class Finish extends LivingEntityUseItemEvent {
+    public static class Finish extends LivingEntityUseItemEvent
+    {
         private ItemStack result;
 
-        public Finish(LivingEntity entity, ItemStack item, ItemStack result) {
+        public Finish(LivingEntity entity, ItemStack item, ItemStack result)
+        {
             super(entity, item);
             this.result = result;
         }
 
-        public void setResult(ItemStack result) {
+        public void setResult(ItemStack result)
+        {
             this.result = result;
         }
 
-        public ItemStack getResult() {
+        public ItemStack getResult()
+        {
             return this.result;
         }
     }

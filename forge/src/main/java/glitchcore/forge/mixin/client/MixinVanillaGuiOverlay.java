@@ -14,14 +14,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = VanillaGuiOverlay.class, remap = false)
-public abstract class MixinVanillaGuiOverlay {
+public abstract class MixinVanillaGuiOverlay
+{
     @Mutable
     @Final
     @Shadow
     IGuiOverlay overlay;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void onInit(String enumName, int ordinal, String id, IGuiOverlay overlay, CallbackInfo ci) {
+    private void onInit(String enumName, int ordinal, String id, IGuiOverlay overlay, CallbackInfo ci)
+    {
         this.overlay = switch (enumName) {
             case "FROSTBITE" -> wrapRenderer(overlay, RenderGuiEvent.Type.FROSTBITE);
             case "FOOD_LEVEL" -> wrapRenderer(overlay, RenderGuiEvent.Type.FOOD);
@@ -31,7 +33,8 @@ public abstract class MixinVanillaGuiOverlay {
     }
 
     @Unique
-    private static IGuiOverlay wrapRenderer(IGuiOverlay original, RenderGuiEvent.Type type) {
+    private static IGuiOverlay wrapRenderer(IGuiOverlay original, RenderGuiEvent.Type type)
+    {
         return (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> {
             EventManager.fire(new RenderGuiEvent.Pre(type, gui, guiGraphics, partialTick, screenWidth, screenHeight));
             original.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);
@@ -39,7 +42,8 @@ public abstract class MixinVanillaGuiOverlay {
     }
 
     @Unique
-    private static IGuiOverlay wrapRendererWithRightModification(IGuiOverlay original, RenderGuiEvent.Type type) {
+    private static IGuiOverlay wrapRendererWithRightModification(IGuiOverlay original, RenderGuiEvent.Type type)
+    {
         return (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> {
             int rightTop = screenHeight - gui.rightHeight;
             var event = new RenderGuiEvent.Pre(type, gui, guiGraphics, partialTick, screenWidth, screenHeight, rightTop);

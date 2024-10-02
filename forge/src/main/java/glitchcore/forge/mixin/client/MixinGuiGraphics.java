@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics {
+public abstract class MixinGuiGraphics
+{
     @Shadow
     private ItemStack tooltipStack;
 
@@ -31,7 +32,8 @@ public abstract class MixinGuiGraphics {
     public abstract int guiHeight();
 
     @ModifyVariable(method = "renderTooltipInternal", at = @At(value = "LOAD", ordinal = 0), ordinal = 0, argsOnly = true)
-    private List<ClientTooltipComponent> modifyRenderTooltipComponents(List<ClientTooltipComponent> components, Font fallbackFont, List<ClientTooltipComponent> components2, int x, int y, ClientTooltipPositioner positioner) {
+    private List<ClientTooltipComponent> modifyRenderTooltipComponents(List<ClientTooltipComponent> components, Font fallbackFont, List<ClientTooltipComponent> components2, int x, int y, ClientTooltipPositioner positioner)
+    {
         // Make components modifiable
         components = new ArrayList<>(components);
 

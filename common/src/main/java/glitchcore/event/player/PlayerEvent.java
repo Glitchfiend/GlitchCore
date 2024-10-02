@@ -7,25 +7,32 @@ package glitchcore.event.player;
 import glitchcore.event.Event;
 import net.minecraft.world.entity.player.Player;
 
-public abstract class PlayerEvent extends Event {
+public abstract class PlayerEvent extends Event
+{
     protected final Player player;
 
-    public PlayerEvent(Player player) {
+    public PlayerEvent(Player player)
+    {
         this.player = player;
     }
 
-    public Player getPlayer() {
+    public Player getPlayer()
+    {
         return this.player;
     }
 
-    public static class JoinLevel extends PlayerEvent {
-        public JoinLevel(Player player) {
+    public static class JoinLevel extends PlayerEvent
+    {
+        public JoinLevel(Player player)
+        {
             super(player);
         }
     }
 
-    public static class ChangeDimension extends PlayerEvent {
-        public ChangeDimension(Player player) {
+    public static class ChangeDimension extends PlayerEvent
+    {
+        public ChangeDimension(Player player)
+        {
             super(player);
         }
     }

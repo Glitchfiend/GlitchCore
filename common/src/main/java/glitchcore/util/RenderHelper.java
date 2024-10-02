@@ -18,24 +18,30 @@ import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
 
-public class RenderHelper {
-    public static void setRenderType(Block block, RenderType type) {
+public class RenderHelper
+{
+    public static void setRenderType(Block block, RenderType type)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static void setRenderType(Fluid fluid, RenderType type) {
+    public static void setRenderType(Fluid fluid, RenderType type)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider) {
+    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererFactory) {
+    public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererFactory)
+    {
         throw new UnsupportedOperationException();
     }
 
-    public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
+    public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier)
+    {
         throw new UnsupportedOperationException();
     }
 }

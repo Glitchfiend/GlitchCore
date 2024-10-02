@@ -14,7 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Mixin(value = ConfigSync.class, remap = false)
-public class MixinConfigSync {
+public class MixinConfigSync
+{
     @Shadow
     public static PacketHandler packetHandler;
     @Shadow
@@ -22,7 +23,8 @@ public class MixinConfigSync {
     public static Map<String, Config> CONFIGS_BY_PATH;
 
     @Overwrite
-    public static void initFabric() {
+    public static void initFabric()
+    {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             CONFIGS_BY_PATH.forEach((path, config) -> {
                 packetHandler.sendToPlayer(new SyncConfigPacket(path,

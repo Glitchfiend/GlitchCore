@@ -16,15 +16,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value = PacketHandler.class, remap = false)
-public abstract class MixinPacketHandler implements IFabricPacketHandler {
+public abstract class MixinPacketHandler implements IFabricPacketHandler
+{
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T packet) {
+    public <T extends CustomPacket<T>> void sendToServer(T packet)
+    {
         FabricPacket fPacket = createFabricPacket((CustomPacket) packet);
         ClientPlayNetworking.send(fPacket);
     }
 
     @Override
-    public FabricPacketWrapper<?> createPacketWrapper(ResourceLocation channel, CustomPacket<?> packet) {
+    public FabricPacketWrapper<?> createPacketWrapper(ResourceLocation channel, CustomPacket<?> packet)
+    {
         return new ClientFabricPacketWrapper<>(channel, packet);
     }
 }

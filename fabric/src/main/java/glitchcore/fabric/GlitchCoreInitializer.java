@@ -4,10 +4,13 @@
  ******************************************************************************/
 package glitchcore.fabric;
 
-public interface GlitchCoreInitializer {
-    default void onInitialize() {
+public interface GlitchCoreInitializer
+{
+    default void onInitialize()
+    {
     }
 
-    default void onInitializeClient() {
+    default void onInitializeClient()
+    {
     }
 }

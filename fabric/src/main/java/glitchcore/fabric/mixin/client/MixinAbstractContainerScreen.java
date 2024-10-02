@@ -18,18 +18,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 @Mixin(AbstractContainerScreen.class)
-public class MixinAbstractContainerScreen {
+public class MixinAbstractContainerScreen
+{
     @Shadow
     @Nullable
     protected Slot hoveredSlot;
 
     @Inject(method = "renderTooltip", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
-    public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci) {
+    public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
+    {
         ((IExtendedGuiGraphics) guiGraphics).setCurrentTooltipStack(this.hoveredSlot.getItem());
     }
 
     @Inject(method = "renderTooltip", at = @At(value = "TAIL"))
-    public void onPostRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci) {
+    public void onPostRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
+    {
         ((IExtendedGuiGraphics) guiGraphics).setCurrentTooltipStack(ItemStack.EMPTY);
     }
 }

@@ -26,29 +26,35 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.util.function.Supplier;
 
 @Mixin(value = RenderHelper.class, remap = false)
-public class MixinRenderHelper {
+public class MixinRenderHelper
+{
     @Overwrite
-    public static void setRenderType(Block block, RenderType type) {
+    public static void setRenderType(Block block, RenderType type)
+    {
         BlockRenderLayerMap.INSTANCE.putBlock(block, type);
     }
 
     @Overwrite
-    public static void setRenderType(Fluid fluid, RenderType type) {
+    public static void setRenderType(Fluid fluid, RenderType type)
+    {
         BlockRenderLayerMap.INSTANCE.putFluid(fluid, type);
     }
 
     @Overwrite
-    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider) {
+    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider)
+    {
         BlockEntityRenderers.register(blockEntityType, blockEntityRendererProvider);
     }
 
     @Overwrite
-    public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider) {
+    public static <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider)
+    {
         EntityRendererRegistry.register(entityType, entityRendererProvider);
     }
 
     @Overwrite
-    public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
+    public static void registerLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier)
+    {
         EntityModelLayerRegistry.registerModelLayer(layerLocation, supplier::get);
     }
 }

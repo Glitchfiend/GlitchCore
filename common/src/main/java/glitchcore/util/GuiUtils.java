@@ -9,8 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 
-public class GuiUtils {
-    public static void setupOverlayRenderState(boolean blend, boolean depthTest) {
+public class GuiUtils
+{
+    public static void setupOverlayRenderState(boolean blend, boolean depthTest)
+    {
         if (blend) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
@@ -25,7 +27,8 @@ public class GuiUtils {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
     }
 
-    public static boolean shouldDrawSurvivalElements() {
+    public static boolean shouldDrawSurvivalElements()
+    {
         var minecraft = Minecraft.getInstance();
         return minecraft.gameMode.canHurtPlayer() && minecraft.getCameraEntity() instanceof Player;
     }

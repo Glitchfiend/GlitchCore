@@ -25,9 +25,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerData;
 
-public class GlitchCoreFabric implements ModInitializer {
+public class GlitchCoreFabric implements ModInitializer
+{
     @Override
-    public void onInitialize() {
+    public void onInitialize()
+    {
         // GlitchCore initialization
         GlitchCore.init();
 
@@ -75,7 +77,8 @@ public class GlitchCoreFabric implements ModInitializer {
         }));
     }
 
-    private static void postRegisterEvents() {
+    private static void postRegisterEvents()
+    {
         // We use LOADERS to ensure objects are registered at the correct time relative to each other
         for (ResourceLocation registryName : BuiltInRegistries.LOADERS.keySet()) {
             ResourceKey<? extends Registry<?>> registryKey = ResourceKey.createRegistryKey(registryName);

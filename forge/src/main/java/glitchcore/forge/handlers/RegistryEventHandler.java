@@ -13,9 +13,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class RegistryEventHandler {
+public class RegistryEventHandler
+{
     @SubscribeEvent
-    public static void onRegister(RegisterEvent forgeEvent) {
+    public static void onRegister(RegisterEvent forgeEvent)
+    {
         var registryKey = forgeEvent.getRegistryKey();
         EventManager.fire(new RegistryEvent(registryKey, (location, value) -> forgeEvent.register((ResourceKey<? extends Registry<Object>>) registryKey, location, () -> value)));
     }

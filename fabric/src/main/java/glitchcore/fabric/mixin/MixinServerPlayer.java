@@ -19,14 +19,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
-public abstract class MixinServerPlayer extends Player {
+public abstract class MixinServerPlayer extends Player
+{
 
-    public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_) {
+    public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_)
+    {
         super(p_250508_, p_250289_, p_251702_, p_252153_);
     }
 
     @Inject(method = "changeDimension", at = @At(value = "TAIL"))
-    public void onChangeDimension(ServerLevel serverLevel, CallbackInfoReturnable<Entity> cir) {
+    public void onChangeDimension(ServerLevel serverLevel, CallbackInfoReturnable<Entity> cir)
+    {
         EventManager.fire(new PlayerEvent.ChangeDimension((ServerPlayer) (Player) this));
     }
 }

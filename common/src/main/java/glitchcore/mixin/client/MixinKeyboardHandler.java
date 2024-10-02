@@ -16,7 +16,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyboardHandler.class)
-public abstract class MixinKeyboardHandler {
+public abstract class MixinKeyboardHandler
+{
     @Shadow
     @Final
     private Minecraft minecraft;
@@ -25,7 +26,8 @@ public abstract class MixinKeyboardHandler {
     private boolean handledDebugKey;
 
     @Inject(method = "keyPress", at = @At("TAIL"))
-    public void onKeyInput(long window, int key, int scanCode, int action, int modifiers, CallbackInfo ci) {
+    public void onKeyInput(long window, int key, int scanCode, int action, int modifiers, CallbackInfo ci)
+    {
         if (window != this.minecraft.getWindow().getWindow())
             return;
 

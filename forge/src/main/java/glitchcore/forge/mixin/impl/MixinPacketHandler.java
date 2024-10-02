@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(value = PacketHandler.class, remap = false)
-public abstract class MixinPacketHandler {
+public abstract class MixinPacketHandler
+{
     @Shadow
     @Final
     private ResourceLocation channelName;
@@ -30,7 +31,8 @@ public abstract class MixinPacketHandler {
     private AtomicInteger messageId = new AtomicInteger();
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet) {
+    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
+    {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 
         if ((Class<?>) dataType == TypeResolver.Unknown.class) {
@@ -41,14 +43,17 @@ public abstract class MixinPacketHandler {
         {
             forgeContext.get().enqueueWork(() ->
             {
-                packet.handle(data, new CustomPacket.Context() {
+                packet.handle(data, new CustomPacket.Context()
+                {
                     @Override
-                    public boolean isClientSide() {
+                    public boolean isClientSide()
+                    {
                         return forgeContext.get().getNetworkManager().getReceiving() == PacketFlow.CLIENTBOUND;
                     }
 
                     @Override
-                    public Optional<Player> getPlayer() {
+                    public Optional<Player> getPlayer()
+                    {
                         return Optional.ofNullable((Player) forgeContext.get().getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
                     }
                 });
@@ -58,22 +63,26 @@ public abstract class MixinPacketHandler {
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player) {
+    public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player)
+    {
         channel.send(PacketDistributor.PLAYER.with(() -> player), data);
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server) {
+    public <T extends CustomPacket<T>> void sendToAll(T packet, MinecraftServer server)
+    {
         channel.send(PacketDistributor.ALL.noArg(), packet);
     }
 
     @Overwrite
-    public <T extends CustomPacket<T>> void sendToServer(T data) {
+    public <T extends CustomPacket<T>> void sendToServer(T data)
+    {
         channel.send(PacketDistributor.SERVER.noArg(), data);
     }
 
     @Overwrite
-    private void init() {
+    private void init()
+    {
         String protocolVersion = Integer.toString(1);
         this.channel = ChannelBuilder.named(this.channelName)
                 .clientAcceptedVersions(protocolVersion::equals)

@@ -4,7 +4,6 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.client;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RenderTooltipEvent;
 import glitchcore.fabric.gui.IExtendedGuiGraphics;

@@ -15,6 +15,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(value = PacketHandler.class, remap = false)
 public abstract class MixinPacketHandler {
@@ -24,6 +25,9 @@ public abstract class MixinPacketHandler {
 
     @Unique
     private SimpleChannel channel;
+
+    @Unique
+    private AtomicInteger messageId = new AtomicInteger();
 
     @Overwrite
     public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
@@ -35,7 +39,7 @@ public abstract class MixinPacketHandler {
             throw new IllegalStateException("Failed to resolve packet data type: " + packet);
         }
 
-        this.channel.messageBuilder(dataType, 1).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
+        this.channel.messageBuilder(dataType, messageId.incrementAndGet()).encoder(CustomPacket::encode).decoder(packet::decode).consumerMainThread((data, forgeContext) ->
         {
             forgeContext.get().enqueueWork(() ->
             {
@@ -77,6 +81,11 @@ public abstract class MixinPacketHandler {
     @Overwrite
     private void init()
     {
-        this.channel = ChannelBuilder.named(this.channelName).simpleChannel();
+        String protocolVersion = Integer.toString(1);
+        this.channel = ChannelBuilder.named(this.channelName)
+                .clientAcceptedVersions(protocolVersion::equals)
+                .serverAcceptedVersions(protocolVersion::equals)
+                .networkProtocolVersion(() -> protocolVersion)
+                .simpleChannel();
     }
 }

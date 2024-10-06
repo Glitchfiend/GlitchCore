@@ -4,6 +4,8 @@
  ******************************************************************************/
 package glitchcore.fabric.core;
 
+import glitchcore.config.Config;
+import glitchcore.config.ConfigSync;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.ItemTooltipEvent;
 import glitchcore.event.client.LevelRenderEvent;
@@ -11,8 +13,10 @@ import glitchcore.event.client.RegisterColorsEvent;
 import glitchcore.event.client.RegisterParticleSpritesEvent;
 import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
+import glitchcore.util.Environment;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -31,6 +35,16 @@ public class GlitchCoreFabricClient implements ClientModInitializer
     public void onInitializeClient()
     {
         // GlitchCore initialization
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            if (!ConfigSync.CONFIGS_BY_PATH.isEmpty())
+            {
+                ConfigSync.CONFIGS_BY_PATH.forEach((path, config) -> {
+                    config.parse(Config.readToml(Environment.getConfigPath().resolve(path)));
+                    config.load();
+                });
+            }
+        });
+
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             EventManager.fire(new ItemTooltipEvent(stack, lines));
         });

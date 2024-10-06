@@ -4,7 +4,6 @@
  ******************************************************************************/
 package glitchcore.forge.handlers;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

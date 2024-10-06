@@ -4,7 +4,6 @@
  ******************************************************************************/
 package glitchcore.forge.handlers;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RegisterParticleSpritesEvent;
 import net.minecraft.client.particle.ParticleEngine;

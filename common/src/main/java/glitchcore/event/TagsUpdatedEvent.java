@@ -4,22 +4,23 @@
  ******************************************************************************/
 package glitchcore.event;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 
 public class TagsUpdatedEvent extends Event
 {
-    private final RegistryAccess registryAccess;
+    private final HolderLookup.Provider lookupProvider;
     private final UpdateCause updateCause;
 
-    public TagsUpdatedEvent(RegistryAccess registryAccess, UpdateCause cause)
+    public TagsUpdatedEvent(HolderLookup.Provider lookupProvider, UpdateCause cause)
     {
-        this.registryAccess = registryAccess;
+        this.lookupProvider = lookupProvider;
         this.updateCause = cause;
     }
 
-    public RegistryAccess getRegistryAccess()
+    public HolderGetter.Provider getLookupProvider()
     {
-        return registryAccess;
+        return this.lookupProvider;
     }
 
     public UpdateCause getUpdateCause()

@@ -38,7 +38,7 @@ public abstract class MixinGuiGraphics
         components = new ArrayList<>(components);
 
         // Fire tooltip render event
-        EventManager.fire(new RenderTooltipEvent(this.tooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, fallbackFont, positioner));
+        EventManager.fire(new RenderTooltipEvent(this.tooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, positioner));
         return components;
     }
 }

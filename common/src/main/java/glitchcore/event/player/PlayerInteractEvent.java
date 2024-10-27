@@ -5,7 +5,7 @@
 package glitchcore.event.player;
 
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
@@ -13,13 +13,13 @@ import net.minecraft.world.phys.BlockHitResult;
 public abstract class PlayerInteractEvent extends PlayerEvent
 {
     private final InteractionHand hand;
-    private InteractionResultHolder<ItemStack> cancelResult;
+    private InteractionResult cancelResult;
 
     public PlayerInteractEvent(Player player, InteractionHand hand)
     {
         super(player);
         this.hand = hand;
-        this.cancelResult = InteractionResultHolder.pass(player.getItemInHand(hand));
+        this.cancelResult = InteractionResult.PASS;
     }
 
     @Override
@@ -38,12 +38,12 @@ public abstract class PlayerInteractEvent extends PlayerEvent
         return getPlayer().getItemInHand(hand);
     }
 
-    public InteractionResultHolder<ItemStack> getCancelResult()
+    public InteractionResult getCancelResult()
     {
         return this.cancelResult;
     }
 
-    public void setCancelResult(InteractionResultHolder<ItemStack> result)
+    public void setCancelResult(InteractionResult result)
     {
         this.cancelResult = result;
     }

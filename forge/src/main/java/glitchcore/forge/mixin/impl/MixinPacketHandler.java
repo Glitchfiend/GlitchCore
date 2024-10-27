@@ -1,5 +1,6 @@
 package glitchcore.forge.mixin.impl;
 
+import glitchcore.core.GlitchCore;
 import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.jodah.typetools.TypeResolver;

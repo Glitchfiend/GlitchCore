@@ -40,11 +40,12 @@ public abstract class MixinGui
         EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FOOD, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight()));
     }
 
-    @ModifyVariable(method="renderPlayerHealth", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"), ordinal = 4, require = 1)
-    private int onBeginRenderAir(int rightTop, GuiGraphics guiGraphics)
-    {
-        var event = new RenderGuiEvent.Pre(RenderGuiEvent.Type.AIR, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight(), rightTop - 10);
-        EventManager.fire(event);
-        return event.getRowTop() + 10;
-    }
+    // TODO: Will require testing against Tough As Nails
+//    @ModifyVariable(method="renderPlayerHealth", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"), ordinal = 4, require = 1)
+//    private int onBeginRenderAir(int rightTop, GuiGraphics guiGraphics)
+//    {
+//        var event = new RenderGuiEvent.Pre(RenderGuiEvent.Type.AIR, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight(), rightTop - 10);
+//        EventManager.fire(event);
+//        return event.getRowTop() + 10;
+//    }
 }

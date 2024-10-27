@@ -22,7 +22,7 @@ public class MixinAbstractContainerScreen
 {
     @Shadow @Nullable protected Slot hoveredSlot;
 
-    @Inject(method="renderTooltip", at=@At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
+    @Inject(method="renderTooltip", at=@At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/ResourceLocation;)V"))
     public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
     {
         ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(this.hoveredSlot.getItem());

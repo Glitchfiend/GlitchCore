@@ -42,7 +42,7 @@ public class GlitchCoreFabricClient implements ClientModInitializer
             EventManager.fire(event);
 
             if (event.isCancelled())
-                return event.getCancelResult().getResult();
+                return event.getCancelResult();
 
             return InteractionResult.PASS;
         });

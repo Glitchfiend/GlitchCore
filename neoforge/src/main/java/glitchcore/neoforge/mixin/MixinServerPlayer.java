@@ -9,10 +9,9 @@ import glitchcore.event.EventManager;
 import glitchcore.event.player.PlayerEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,8 +25,8 @@ public abstract class MixinServerPlayer extends Player
         super(p_250508_, p_250289_, p_251702_, p_252153_);
     }
 
-    @Inject(method="changeDimension", at=@At(value="TAIL"), remap = false)
-    public void onChangeDimension(DimensionTransition transition, CallbackInfoReturnable<Entity> cir)
+    @Inject(method="teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/server/level/ServerPlayer;", at=@At(value="TAIL"), remap = false)
+    public void onTeleport(TeleportTransition p_379854_, CallbackInfoReturnable<ServerPlayer> cir)
     {
         EventManager.fire(new PlayerEvent.ChangeDimension((ServerPlayer)(Player)this));
     }

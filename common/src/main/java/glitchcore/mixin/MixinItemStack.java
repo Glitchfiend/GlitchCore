@@ -8,7 +8,7 @@ import glitchcore.event.EventManager;
 import glitchcore.event.entity.LivingEntityUseItemEvent;
 import glitchcore.event.player.PlayerInteractEvent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +29,7 @@ public abstract class MixinItemStack
     private ItemStack finishUsingItemCopy;
 
     @Inject(method="use", at=@At("HEAD"), cancellable = true)
-    public void onUse(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir)
+    public void onUse(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir)
     {
         var event = new PlayerInteractEvent.UseItem(player, hand);
         EventManager.fire(event);

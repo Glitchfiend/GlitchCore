@@ -22,10 +22,9 @@ public class RenderTooltipEvent extends Event
     private final int screenWidth;
     private final int screenHeight;
     private final List<ClientTooltipComponent> components;
-    private final Font fallbackFont;
     private final ClientTooltipPositioner positioner;
 
-    public RenderTooltipEvent(ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, Font fallbackFont, ClientTooltipPositioner positioner)
+    public RenderTooltipEvent(ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, ClientTooltipPositioner positioner)
     {
         this.stack = stack;
         this.graphics = graphics;
@@ -34,7 +33,6 @@ public class RenderTooltipEvent extends Event
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.components = components;
-        this.fallbackFont = fallbackFont;
         this.positioner = positioner;
     }
 
@@ -71,11 +69,6 @@ public class RenderTooltipEvent extends Event
     public List<ClientTooltipComponent> getComponents()
     {
         return components;
-    }
-
-    public Font getFallbackFont()
-    {
-        return fallbackFont;
     }
 
     public ClientTooltipPositioner getPositioner()

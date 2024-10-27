@@ -9,6 +9,7 @@ import glitchcore.event.client.RenderGuiEvent;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -43,8 +44,8 @@ public abstract class MixinGui
         EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FOOD, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight()));
     }
 
-    @Inject(method="renderAirLevel", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"))
-    private void onBeginRenderAir(GuiGraphics guiGraphics, CallbackInfo ci)
+    @Inject(method="renderAirBubbles", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"))
+    private void onBeginRenderAir(GuiGraphics guiGraphics, Player player, int height, int x, int y, CallbackInfo ci)
     {
         int rightTop = guiGraphics.guiHeight() - this.rightHeight;
         var event = new RenderGuiEvent.Pre(RenderGuiEvent.Type.AIR, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight(), rightTop);

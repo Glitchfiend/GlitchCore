@@ -21,7 +21,7 @@ public class InteractionEventHandler
 
         if (gcEvent.isCancelled())
         {
-            event.setCancellationResult(gcEvent.getCancelResult().getResult());
+            event.setCancellationResult(gcEvent.getCancelResult());
             event.setCanceled(true);
         }
     }

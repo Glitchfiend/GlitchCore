@@ -11,6 +11,17 @@ mixin {
     config("${mod_id}.forge.mixins.json")
 }
 
+// As of 1.20.6 Forge no longer has reobf tasks. This has broken mixins adding configs correctly into the manifest file
+// See: https://github.com/SpongePowered/MixinGradle/blob/f800b26d2b180d98d9aa9355e5b3086d71218508/src/main/groovy/org/spongepowered/asm/gradle/plugins/MixinExtension.groovy#L184
+// Instead, we will do it ourselves.
+jar {
+    manifest {
+        attributes([
+                'MixinConfigs': "${mod_id}.mixins.json" + "," + "${mod_id}.forge.mixins.json",
+        ])
+    }
+}
+
 minecraft {
     mappings channel: 'official', version: minecraft_version
     copyIdeResources = true //Calls processResources when in dev

@@ -26,7 +26,7 @@ public abstract class MixinServerPlayer extends Player
         super(p_250508_, p_250289_, p_251702_, p_252153_);
     }
 
-    @Inject(method="teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/server/level/ServerPlayer;", at=@At(value="TAIL"), remap = false)
+    @Inject(method="teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/server/level/ServerPlayer;", at=@At(value="TAIL"))
     public void onTeleport(TeleportTransition p_379854_, CallbackInfoReturnable<ServerPlayer> cir)
     {
         EventManager.fire(new PlayerEvent.ChangeDimension((ServerPlayer)(Player)this));

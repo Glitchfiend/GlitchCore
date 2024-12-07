@@ -30,8 +30,8 @@ public class MixinLevelRenderer
 
     @Shadow @Final private Minecraft minecraft;
 
-    @Inject(method = "lambda$addParticlesPass$2", at=@At(value="INVOKE", target="Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V", shift= At.Shift.AFTER))
-    public void onAddParticles(FogParameters p_363695_, ResourceHandle resourcehandle1, ResourceHandle resourcehandle, LightTexture p_366434_, Camera camera, float p_365755_, Frustum frustum, CallbackInfo ci)
+    @Inject(method = "lambda$addParticlesPass$2", at=@At(value="INVOKE", target="Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/culling/Frustum;)V", shift= At.Shift.AFTER))
+    public void onAddParticles(FogParameters p_363695_, ResourceHandle resourcehandle1, ResourceHandle resourcehandle, Camera camera, float p_365755_, Frustum frustum, CallbackInfo ci)
     {
         EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, (LevelRenderer)(Object)this, new PoseStack(), RenderSystem.getProjectionMatrix(), this.ticks, this.minecraft.getDeltaTracker(), camera, frustum));
     }

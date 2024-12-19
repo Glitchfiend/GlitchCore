@@ -50,7 +50,7 @@ public abstract class ModelProviderBase implements DataProvider
     }
 
     public ModelProviderBase(PackOutput output, String modId) {
-        this(output, modId, true)
+        this(output, modId, true);
     }
 
     abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);

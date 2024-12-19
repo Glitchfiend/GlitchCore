@@ -39,12 +39,18 @@ public abstract class ModelProviderBase implements DataProvider
     private final PackOutput.PathProvider itemInfoPathProvider;
     private final PackOutput.PathProvider modelPathProvider;
     private final String modId;
+    private final boolean autogenBlockItemInfos;
 
-    public ModelProviderBase(PackOutput output, String modId) {
+    public ModelProviderBase(PackOutput output, String modId, boolean autogenBlockItemInfos) {
         this.blockStatePathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "blockstates");
         this.itemInfoPathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "items");
         this.modelPathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models");
         this.modId = modId;
+        this.autogenBlockItemInfos = autogenBlockItemInfos;
+    }
+
+    public ModelProviderBase(PackOutput output, String modId) {
+        this(output, modId, true)
     }
 
     abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
@@ -121,14 +127,17 @@ public abstract class ModelProviderBase implements DataProvider
 
         public void finalizeAndValidate()
         {
-            BuiltInRegistries.ITEM.listElements().filter(ModelProviderBase.this::isModded).forEach(p_388426_ -> {
-                if (!this.copies.containsKey(p_388426_)) {
-                    if (p_388426_.value() instanceof BlockItem blockitem && !this.itemInfos.containsKey(blockitem)) {
-                        ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(blockitem.getBlock());
-                        this.accept(blockitem, ItemModelUtils.plainModel(resourcelocation));
+            if (ModelProviderBase.this.autogenBlockItemInfos)
+            {
+                BuiltInRegistries.ITEM.listElements().filter(ModelProviderBase.this::isModded).forEach(p_388426_ -> {
+                    if (!this.copies.containsKey(p_388426_)) {
+                        if (p_388426_.value() instanceof BlockItem blockitem && !this.itemInfos.containsKey(blockitem)) {
+                            ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(blockitem.getBlock());
+                            this.accept(blockitem, ItemModelUtils.plainModel(resourcelocation));
+                        }
                     }
-                }
-            });
+                });
+            }
             this.copies.forEach((p_386494_, p_386575_) -> {
                 ClientItem clientitem = this.itemInfos.get(p_386575_);
                 if (clientitem == null) {

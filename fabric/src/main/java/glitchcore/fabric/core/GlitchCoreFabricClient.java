@@ -5,10 +5,7 @@
 package glitchcore.fabric.core;
 
 import glitchcore.event.EventManager;
-import glitchcore.event.client.ItemTooltipEvent;
-import glitchcore.event.client.LevelRenderEvent;
-import glitchcore.event.client.RegisterColorsEvent;
-import glitchcore.event.client.RegisterParticleSpritesEvent;
+import glitchcore.event.client.*;
 import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import net.fabricmc.api.ClientModInitializer;
@@ -57,6 +54,8 @@ public class GlitchCoreFabricClient implements ClientModInitializer
             initializer.onInitializeClient();
         });
 
+        EventManager.fire(new RegisterLayerDefinitionsEvent());
+        EventManager.fire(new RegisterRenderersEvent());
         EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
 
         BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {

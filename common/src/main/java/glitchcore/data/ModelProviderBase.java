@@ -4,14 +4,16 @@
  ******************************************************************************/
 package glitchcore.data;
 
+import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
-import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.renderer.block.model.BlockModelDefinition;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.core.Holder;
@@ -53,7 +55,7 @@ public abstract class ModelProviderBase implements DataProvider
         this(output, modId, true);
     }
 
-    abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
+    abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockModelDefinitionGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
     abstract protected ItemModelGenerators createItemModelGenerators(ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
 
     @Override
@@ -86,20 +88,23 @@ public abstract class ModelProviderBase implements DataProvider
         return "Model Definitions";
     }
 
-    static class BlockStateGeneratorCollector implements Consumer<BlockStateGenerator>
+    static class BlockStateGeneratorCollector implements Consumer<BlockModelDefinitionGenerator>
     {
-        private final Map<Block, BlockStateGenerator> generators = new HashMap<>();
+        private final Map<Block, BlockModelDefinitionGenerator> generators = new HashMap<>();
 
-        public void accept(BlockStateGenerator p_388748_) {
-            Block block = p_388748_.getBlock();
-            BlockStateGenerator blockstategenerator = this.generators.put(block, p_388748_);
+        public void accept(BlockModelDefinitionGenerator p_388748_) {
+            Block block = p_388748_.block();
+            BlockModelDefinitionGenerator blockstategenerator = this.generators.put(block, p_388748_);
             if (blockstategenerator != null) {
                 throw new IllegalStateException("Duplicate blockstate definition for " + block);
             }
         }
 
-        public CompletableFuture<?> save(CachedOutput p_388014_, PackOutput.PathProvider p_388192_) {
-            return saveAll(p_388014_, p_387598_ -> p_388192_.json(p_387598_.builtInRegistryHolder().key().location()), this.generators);
+        public CompletableFuture<?> save(CachedOutput p_388014_, PackOutput.PathProvider p_388192_)
+        {
+            Map<Block, BlockModelDefinition> map = Maps.transformValues(this.generators, BlockModelDefinitionGenerator::create);
+            Function<Block, Path> function = p_387598_ -> p_388192_.json(p_387598_.builtInRegistryHolder().key().location());
+            return DataProvider.saveAll(p_388014_, BlockModelDefinition.CODEC, function, map);
         }
     }
 
@@ -113,7 +118,7 @@ public abstract class ModelProviderBase implements DataProvider
             this.register(item, new ClientItem(model, ClientItem.Properties.DEFAULT));
         }
 
-        private void register(Item p_388205_, ClientItem p_388233_) {
+        public void register(Item p_388205_, ClientItem p_388233_) {
             ClientItem clientitem = this.itemInfos.put(p_388205_, p_388233_);
             if (clientitem != null) {
                 throw new IllegalStateException("Duplicate item model definition for " + p_388205_);

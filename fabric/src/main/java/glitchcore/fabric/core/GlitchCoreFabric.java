@@ -46,19 +46,21 @@ public class GlitchCoreFabric implements ModInitializer
         var wandererTradesEvent = new WandererTradesEvent();
         EventManager.fire(wandererTradesEvent);
 
-        TradeOfferHelper.registerWanderingTraderOffers(1, (list) -> {
-            list.addAll(wandererTradesEvent.getGenericTrades());
+        TradeOfferHelper.registerWanderingTraderOffers(builder -> {
+            var commonTrades = wandererTradesEvent.getGenericTrades();
+            var rareTrades = wandererTradesEvent.getRareTrades();
+
+            if (!commonTrades.isEmpty()) builder.addAll(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, commonTrades);
+            if (!rareTrades.isEmpty()) builder.addAll(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_SPECIAL_ITEMS_POOL, rareTrades);
         });
 
-        TradeOfferHelper.registerWanderingTraderOffers(2, (list) -> {
-            list.addAll(wandererTradesEvent.getRareTrades());
-        });
-
-        BuiltInRegistries.VILLAGER_PROFESSION.forEach(profession -> {
+        BuiltInRegistries.VILLAGER_PROFESSION.entrySet().forEach(entry -> {
+            var key = entry.getKey();
+            var profession = entry.getValue();
             for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++)
             {
                 final int finalLevel = level;
-                TradeOfferHelper.registerVillagerOffers(profession, level, trades -> EventManager.fire(new VillagerTradesEvent(profession, finalLevel, trades)));
+                TradeOfferHelper.registerVillagerOffers(key, level, trades -> EventManager.fire(new VillagerTradesEvent(key, finalLevel, trades)));
             }
         });
 

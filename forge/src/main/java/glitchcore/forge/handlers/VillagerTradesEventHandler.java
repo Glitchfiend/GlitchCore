@@ -20,8 +20,8 @@ public class VillagerTradesEventHandler
         var gcEvent = new glitchcore.event.village.WandererTradesEvent();
         EventManager.fire(gcEvent);
 
-        event.getGenericTrades().addAll(gcEvent.getGenericTrades());
-        event.getRareTrades().addAll(gcEvent.getRareTrades());
+        event.getPools().get(0).getEntries().addAll(gcEvent.getGenericTrades());
+        event.getPools().get(1).getEntries().addAll(gcEvent.getRareTrades());
     }
 
     @SubscribeEvent

@@ -5,6 +5,7 @@
 package glitchcore.event.village;
 
 import glitchcore.event.Event;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
@@ -13,18 +14,18 @@ import java.util.function.Function;
 
 public class VillagerTradesEvent extends Event
 {
-    private final VillagerProfession profession;
+    private final ResourceKey<VillagerProfession> profession;
     private final int level;
     private final List<VillagerTrades.ItemListing> trades;
 
-    public VillagerTradesEvent(VillagerProfession profession, int level, List<VillagerTrades.ItemListing> trades)
+    public VillagerTradesEvent(ResourceKey<VillagerProfession> profession, int level, List<VillagerTrades.ItemListing> trades)
     {
         this.profession = profession;
         this.level = level;
         this.trades = trades;
     }
 
-    public VillagerProfession getProfession()
+    public ResourceKey<VillagerProfession> getProfession()
     {
         return this.profession;
     }

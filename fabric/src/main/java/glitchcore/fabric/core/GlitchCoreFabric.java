@@ -50,8 +50,8 @@ public class GlitchCoreFabric implements ModInitializer
             var commonTrades = wandererTradesEvent.getGenericTrades();
             var rareTrades = wandererTradesEvent.getRareTrades();
 
-            if (!commonTrades.isEmpty()) builder.addAll(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, commonTrades);
-            if (!rareTrades.isEmpty()) builder.addAll(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_SPECIAL_ITEMS_POOL, rareTrades);
+            if (!commonTrades.isEmpty()) builder.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, commonTrades);
+            if (!rareTrades.isEmpty()) builder.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_SPECIAL_ITEMS_POOL, rareTrades);
         });
 
         BuiltInRegistries.VILLAGER_PROFESSION.entrySet().forEach(entry -> {

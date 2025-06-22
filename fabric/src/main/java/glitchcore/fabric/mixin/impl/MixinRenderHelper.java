@@ -5,16 +5,15 @@
 package glitchcore.fabric.mixin.impl;
 
 import glitchcore.util.RenderHelper;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -30,15 +29,15 @@ import java.util.function.Supplier;
 public class MixinRenderHelper
 {
     @Overwrite
-    public static void setRenderType(Block block, RenderType type)
+    public static void setRenderType(Block block, ChunkSectionLayer layer)
     {
-        BlockRenderLayerMap.INSTANCE.putBlock(block, type);
+        BlockRenderLayerMap.putBlock(block, layer);
     }
 
     @Overwrite
-    public static void setRenderType(Fluid fluid, RenderType type)
+    public static void setRenderType(Fluid fluid, ChunkSectionLayer layer)
     {
-        BlockRenderLayerMap.INSTANCE.putFluid(fluid, type);
+        BlockRenderLayerMap.putFluid(fluid, layer);
     }
 
     @Overwrite

@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.function.Predicate;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber
 public class ToolModificationEventHandler
 {
     public static final Multimap<Block, Pair<Predicate<UseOnContext>, BlockState>> tillables = HashMultimap.create();

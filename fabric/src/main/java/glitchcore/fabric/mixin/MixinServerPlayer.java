@@ -20,10 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player
 {
-
-    public MixinServerPlayer(Level p_250508_, BlockPos p_250289_, float p_251702_, GameProfile p_252153_)
-    {
-        super(p_250508_, p_250289_, p_251702_, p_252153_);
+    public MixinServerPlayer(Level level, GameProfile gameProfile) {
+        super(level, gameProfile);
     }
 
     @Inject(method="teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/server/level/ServerPlayer;", at=@At(value="TAIL"))

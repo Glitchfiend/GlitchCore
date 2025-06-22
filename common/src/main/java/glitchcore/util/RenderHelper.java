@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,12 +21,12 @@ import java.util.function.Supplier;
 
 public class RenderHelper
 {
-    public static void setRenderType(Block block, RenderType type)
+    public static void setRenderType(Block block, ChunkSectionLayer layer)
     {
         throw new UnsupportedOperationException();
     }
 
-    public static void setRenderType(Fluid fluid, RenderType type)
+    public static void setRenderType(Fluid fluid, ChunkSectionLayer layer)
     {
         throw new UnsupportedOperationException();
     }

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.Entity;
@@ -29,15 +30,15 @@ import java.util.function.Supplier;
 public class MixinRenderHelper
 {
     @Overwrite
-    public static void setRenderType(Block block, RenderType type)
+    public static void setRenderType(Block block, ChunkSectionLayer layer)
     {
-        ItemBlockRenderTypes.setRenderLayer(block, type);
+        ItemBlockRenderTypes.setRenderLayer(block, layer);
     }
 
     @Overwrite
-    public static void setRenderType(Fluid fluid, RenderType type)
+    public static void setRenderType(Fluid fluid, ChunkSectionLayer layer)
     {
-        ItemBlockRenderTypes.setRenderLayer(fluid, type);
+        ItemBlockRenderTypes.setRenderLayer(fluid, layer);
     }
 
     @Overwrite

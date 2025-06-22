@@ -31,7 +31,7 @@ public abstract class MixinGuiGraphics
 
     @Shadow public abstract int guiHeight();
 
-    @ModifyVariable(method = "renderTooltipInternal", at  = @At(value = "LOAD", ordinal = 0), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;IILnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;Lnet/minecraft/resources/ResourceLocation;)V", at  = @At(value = "LOAD", ordinal = 0), ordinal = 0, argsOnly = true)
     private List<ClientTooltipComponent> modifyRenderTooltipComponents(List<ClientTooltipComponent> components, Font fallbackFont, List<ClientTooltipComponent> components2, int x, int y, ClientTooltipPositioner positioner)
     {
         // Make components modifiable

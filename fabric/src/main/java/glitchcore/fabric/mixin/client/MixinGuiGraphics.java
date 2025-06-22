@@ -33,19 +33,8 @@ public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
 
     @Shadow public abstract int guiHeight();
 
-    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("HEAD"))
-    private void onRenderTooltipHead(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
-    {
-        this.currentTooltipStack = itemStack;
-    }
 
-    @Inject(method="renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at=@At("TAIL"))
-    private void onRenderTooltipTail(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci)
-    {
-        this.currentTooltipStack = ItemStack.EMPTY;
-    }
-
-    @Inject(method = "renderTooltipInternal", at=@At("HEAD"))
+    @Inject(method = "renderTooltip", at=@At("HEAD"))
     private void onRenderTooltipInternal(Font font, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, ResourceLocation resourceLocation, CallbackInfo ci)
     {
         EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, positioner));

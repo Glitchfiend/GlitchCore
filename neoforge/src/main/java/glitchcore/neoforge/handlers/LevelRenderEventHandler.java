@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import static net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage.AFTER_PARTICLES;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class LevelRenderEventHandler
 {
     @SubscribeEvent
@@ -28,6 +28,6 @@ public class LevelRenderEventHandler
 
     private static void fireStage(LevelRenderEvent.Stage stage, RenderLevelStageEvent event)
     {
-        EventManager.fire(new LevelRenderEvent(stage, event.getLevelRenderer(), event.getPoseStack(), event.getProjectionMatrix(), event.getRenderTick(), event.getPartialTick(), event.getCamera(), event.getFrustum()));
+        EventManager.fire(new LevelRenderEvent(stage, event.getLevelRenderer(), event.getPoseStack(), event.getModelViewMatrix(), event.getRenderTick(), event.getPartialTick(), event.getCamera(), event.getFrustum()));
     }
 }

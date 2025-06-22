@@ -24,15 +24,20 @@ public class MixinAbstractContainerScreen
 {
     @Shadow @Nullable protected Slot hoveredSlot;
 
-    @Inject(method="renderTooltip", at=@At(value = "HEAD"))
-    public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
-    {
-        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(Optional.of(this.hoveredSlot).map(Slot::getItem).orElse(ItemStack.EMPTY));
+   @Inject(method = "renderTooltip", at = @At("HEAD"))
+public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci) {
+    if (guiGraphics instanceof IExtendedGuiGraphics extended) {
+        extended.setCurrentTooltipStack(Optional.ofNullable(this.hoveredSlot)
+            .map(Slot::getItem)
+            .orElse(ItemStack.EMPTY));
     }
+}
 
-    @Inject(method="renderTooltip", at=@At(value = "TAIL"))
-    public void onPostRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
-    {
-        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(ItemStack.EMPTY);
+@Inject(method = "renderTooltip", at = @At("TAIL"))
+public void onPostRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci) {
+    if (guiGraphics instanceof IExtendedGuiGraphics extended) {
+        extended.setCurrentTooltipStack(ItemStack.EMPTY);
     }
+}
+
 }

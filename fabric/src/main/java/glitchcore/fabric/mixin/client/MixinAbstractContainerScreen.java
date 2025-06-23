@@ -27,7 +27,7 @@ public class MixinAbstractContainerScreen
     @Inject(method="renderTooltip", at=@At(value = "HEAD"))
     public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
     {
-        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(Optional.of(this.hoveredSlot).map(Slot::getItem).orElse(ItemStack.EMPTY));
+        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(Optional.ofNullable(this.hoveredSlot).map(Slot::getItem).orElse(ItemStack.EMPTY));
     }
 
     @Inject(method="renderTooltip", at=@At(value = "TAIL"))

@@ -2,6 +2,7 @@ plugins {
     id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
     id "com.matthewprenger.cursegradle" version "1.4.0"
+    id 'com.github.johnrengelman.shadow' version '8.+'
 }
 
 base.archivesName.set("${mod_name}-forge")
@@ -16,6 +17,7 @@ mixin {
 // See: https://github.com/SpongePowered/MixinGradle/blob/f800b26d2b180d98d9aa9355e5b3086d71218508/src/main/groovy/org/spongepowered/asm/gradle/plugins/MixinExtension.groovy#L184
 // Instead, we will do it ourselves.
 jar {
+    archiveClassifier = 'slim'
     manifest {
         attributes([
                 'MixinConfigs': "${mod_id}.mixins.json" + "," + "${mod_id}.forge.mixins.json",
@@ -61,6 +63,19 @@ minecraft {
     }
 }
 
+configurations {
+    shade
+    implementation.extendsFrom shade
+}
+
+shadowJar {
+    archiveClassifier = ''
+    configurations = [project.configurations.shade]
+    relocate 'net.jodah.typetools', "${mod_id}.relocated.net.jodah.typetools"
+}
+
+assemble.dependsOn shadowJar
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":Common")
@@ -68,7 +83,7 @@ dependencies {
 
     // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transtive dependencies request 6.0+
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
-    implementation("net.jodah:typetools:0.6.3")
+    shade "net.jodah:typetools:0.6.3"
 }
 
 tasks.withType(JavaCompile).configureEach {

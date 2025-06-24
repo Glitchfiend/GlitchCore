@@ -108,7 +108,21 @@ subprojects {
                 versionNumber = mod_version
                 versionName = "${mod_version} for ${name} ${minecraft_version}"
                 versionType = release_channel
-                uploadFile = name.equals("Fabric") ? remapJar : jar
+
+                switch (name) {
+                    case "Fabric":
+                        uploadFile = remapJar
+                        break;
+
+                    case "Forge":
+                        uploadFile = shadowJar
+                        break;
+
+                    default:
+                        uploadFile = jar
+                        break;
+                }
+
                 gameVersions = [minecraft_version]
                 loaders = [name.toLowerCase()]
 
@@ -125,7 +139,12 @@ subprojects {
                     artifactId project.archivesBaseName
                     groupId project.group
                     version project.version
-                    from components.java
+
+                    if (name.equals("Forge")) {
+                        from components.shadowJar
+                    } else {
+                        from components.java
+                    }
 
                     pom {
                         name = project.archivesBaseName

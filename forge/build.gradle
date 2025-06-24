@@ -125,7 +125,7 @@ curseforge {
         addGameVersion minecraft_version
         addGameVersion name
 
-        mainArtifact(jar) {
+        mainArtifact(shadowJar) {
             displayName = "${mod_display_name} ${name} ${version}"
         }
     }

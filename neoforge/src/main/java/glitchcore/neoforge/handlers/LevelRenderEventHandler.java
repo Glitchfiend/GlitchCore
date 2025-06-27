@@ -12,18 +12,15 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
-import static net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage.AFTER_PARTICLES;
+import static glitchcore.event.client.LevelRenderEvent.Stage.AFTER_PARTICLES;
 
 @EventBusSubscriber(value = Dist.CLIENT)
 public class LevelRenderEventHandler
 {
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event)
+    public static void onRender(RenderLevelStageEvent.AfterParticles event)
     {
-        if (event.getStage().equals(AFTER_PARTICLES))
-        {
-            fireStage(LevelRenderEvent.Stage.AFTER_PARTICLES, event);
-        }
+        fireStage(AFTER_PARTICLES, event);
     }
 
     private static void fireStage(LevelRenderEvent.Stage stage, RenderLevelStageEvent event)

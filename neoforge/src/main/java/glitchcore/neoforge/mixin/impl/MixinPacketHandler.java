@@ -14,6 +14,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -56,6 +58,10 @@ public abstract class MixinPacketHandler
                 default -> throw new UnsupportedOperationException("Attempted to register packet with unsupported phase " + packet.getPhase());
             }
         });
+
+        container.getEventBus().addListener((RegisterClientPayloadHandlersEvent event) -> {
+            event.register(factory.type(), factory.getPayloadHandler());
+        });
     }
 
     @Overwrite
@@ -84,7 +90,7 @@ public abstract class MixinPacketHandler
     @Overwrite
     public <T extends CustomPacket<T>> void sendToServer(T data)
     {
-        PacketDistributor.sendToServer(createPayload(data));
+        ClientPacketDistributor.sendToServer(createPayload(data));
     }
 
     @Overwrite

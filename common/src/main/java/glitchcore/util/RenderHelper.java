@@ -31,7 +31,7 @@ public class RenderHelper
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider)
+    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T, ?> blockEntityRendererProvider)
     {
         throw new UnsupportedOperationException();
     }

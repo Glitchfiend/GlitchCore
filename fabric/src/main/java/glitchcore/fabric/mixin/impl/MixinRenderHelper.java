@@ -41,7 +41,7 @@ public class MixinRenderHelper
     }
 
     @Overwrite
-    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider)
+    public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T, ?> blockEntityRendererProvider)
     {
         BlockEntityRenderers.register(blockEntityType, blockEntityRendererProvider);
     }

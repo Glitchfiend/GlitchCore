@@ -10,7 +10,7 @@ accessible method net/minecraft/util/thread/BlockableEventLoop submitAsync (Ljav
 accessible field net/minecraft/client/renderer/LevelRenderer ticks I
 
 # Particles
-accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+accessible class net/minecraft/client/particle/ParticleResources$SpriteParticleRegistration
 
 # Blocks
 accessible field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;

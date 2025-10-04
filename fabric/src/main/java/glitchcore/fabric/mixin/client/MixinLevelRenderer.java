@@ -2,7 +2,7 @@
  * Copyright 2025, the Glitchfiend Team.
  * All rights reserved.
  ******************************************************************************/
-package glitchcore.forge.mixin.client;
+package glitchcore.fabric.mixin.client;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 @Mixin(LevelRenderer.class)
-public class MixinLevelRenderer 
+public class MixinLevelRenderer
 {
     @Shadow
     private int ticks;
@@ -62,7 +62,7 @@ public class MixinLevelRenderer
         this.clearLastFrustum();
     }
 
-    @Inject(method = "lambda$addParticlesPass$2", at=@At(value="INVOKE", target="Lnet/minecraft/client/renderer/state/ParticlesRenderState;reset()V", shift= At.Shift.AFTER))
+    @Inject(method = "method_62213", at=@At(value="INVOKE", target="Lnet/minecraft/client/renderer/state/ParticlesRenderState;reset()V", shift= At.Shift.AFTER))
     public void onAddParticles(GpuBufferSlice p_420874_, ResourceHandle p_420875_, ResourceHandle p_420876_, CallbackInfo ci)
     {
         EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, (LevelRenderer)(Object)this, new PoseStack(), RenderSystem.getModelViewMatrix(), this.ticks, this.minecraft.getDeltaTracker(), this.levelRenderState.cameraRenderState, this.lastFrustum));

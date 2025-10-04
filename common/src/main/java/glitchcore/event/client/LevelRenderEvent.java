@@ -10,6 +10,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import org.joml.Matrix4f;
 
 public class LevelRenderEvent extends Event
@@ -20,10 +21,10 @@ public class LevelRenderEvent extends Event
     private final Matrix4f projectionMatrix;
     private final int renderTick;
     private final DeltaTracker deltaTracker;
-    private final Camera camera;
+    private final CameraRenderState camera;
     private final Frustum frustum;
 
-    public LevelRenderEvent(Stage stage, LevelRenderer levelRenderer, PoseStack poseStack, Matrix4f projectionMatrix, int renderTick, DeltaTracker deltaTracker, Camera camera, Frustum frustum)
+    public LevelRenderEvent(Stage stage, LevelRenderer levelRenderer, PoseStack poseStack, Matrix4f projectionMatrix, int renderTick, DeltaTracker deltaTracker, CameraRenderState camera, Frustum frustum)
     {
         this.stage = stage;
         this.levelRenderer = levelRenderer;
@@ -65,7 +66,7 @@ public class LevelRenderEvent extends Event
         return this.deltaTracker;
     }
 
-    public Camera getCamera()
+    public CameraRenderState getCamera()
     {
         return this.camera;
     }

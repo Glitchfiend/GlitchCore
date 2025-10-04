@@ -12,12 +12,12 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleResources;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.InteractionResult;
 
@@ -44,10 +44,6 @@ public class GlitchCoreFabricClient implements ClientModInitializer
             return InteractionResult.PASS;
         });
 
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
-            EventManager.fire(new LevelRenderEvent(LevelRenderEvent.Stage.AFTER_PARTICLES, context.worldRenderer(), context.matrixStack(), context.projectionMatrix(), context.worldRenderer().ticks, context.tickCounter(), context.camera(), context.frustum()));
-        });
-
         // Perform initialization for dependants
         FabricLoader.getInstance().getEntrypointContainers("glitchcore", GlitchCoreInitializer.class).forEach(entrypoint -> {
             GlitchCoreInitializer initializer = entrypoint.getEntrypoint();
@@ -58,7 +54,7 @@ public class GlitchCoreFabricClient implements ClientModInitializer
         EventManager.fire(new RegisterRenderersEvent());
         EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
 
-        BiConsumer<ParticleType<?>, ParticleEngine.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
+        BiConsumer<ParticleType<?>, ParticleResources.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
             ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
         };
         EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));

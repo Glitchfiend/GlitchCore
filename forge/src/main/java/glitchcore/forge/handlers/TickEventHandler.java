@@ -13,13 +13,14 @@ import net.minecraftforge.fml.common.Mod;
 public class TickEventHandler
 {
     @SubscribeEvent
-    public static void onLevelTick(TickEvent.LevelTickEvent event)
+    public static void onLevelTick(TickEvent.LevelTickEvent.Pre event)
     {
-        glitchcore.event.TickEvent.Phase phase = switch (event.phase) {
-            case START -> glitchcore.event.TickEvent.Phase.START;
-            case END -> glitchcore.event.TickEvent.Phase.END;
-        };
+        EventManager.fire(new glitchcore.event.TickEvent.Level(glitchcore.event.TickEvent.Phase.START, event.level()));
+    }
 
-        EventManager.fire(new glitchcore.event.TickEvent.Level(phase, event.level));
+    @SubscribeEvent
+    public static void onLevelTick(TickEvent.LevelTickEvent.Post event)
+    {
+        EventManager.fire(new glitchcore.event.TickEvent.Level(glitchcore.event.TickEvent.Phase.END, event.level()));
     }
 }

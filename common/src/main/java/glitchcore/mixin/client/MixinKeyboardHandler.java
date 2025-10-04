@@ -8,6 +8,7 @@ import glitchcore.event.EventManager;
 import glitchcore.event.client.InputEvent;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,13 +26,13 @@ public abstract class MixinKeyboardHandler
     @Shadow private boolean handledDebugKey;
 
     @Inject(method = "keyPress", at=@At("TAIL"))
-    public void onKeyInput(long window, int key, int scanCode, int action, int modifiers, CallbackInfo ci)
+    public void onKeyInput(long window, int action, KeyEvent event, CallbackInfo ci)
     {
-        if (window != this.minecraft.getWindow().getWindow())
+        if (window != this.minecraft.getWindow().handle())
             return;
 
-        var event = new InputEvent.Key(key, scanCode, action, modifiers, this.handledDebugKey);
-        EventManager.fire(event);
-        this.handledDebugKey = event.getHandledDebugKey();
+        var gcEvent = new InputEvent.Key(event.key(), event.scancode(), action, event.modifiers(), this.handledDebugKey);
+        EventManager.fire(gcEvent);
+        this.handledDebugKey = gcEvent.getHandledDebugKey();
     }
 }

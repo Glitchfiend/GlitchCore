@@ -15,7 +15,7 @@ public abstract class MixinEnvironment
     @Overwrite
     public static boolean isClient()
     {
-        return FMLEnvironment.dist.isClient();
+        return FMLEnvironment.getDist().isClient();
     }
 
     @Overwrite

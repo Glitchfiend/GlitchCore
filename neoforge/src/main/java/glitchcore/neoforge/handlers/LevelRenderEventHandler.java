@@ -6,6 +6,7 @@ package glitchcore.neoforge.handlers;
 
 import glitchcore.event.EventManager;
 import glitchcore.event.client.LevelRenderEvent;
+import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,6 +26,6 @@ public class LevelRenderEventHandler
 
     private static void fireStage(LevelRenderEvent.Stage stage, RenderLevelStageEvent event)
     {
-        EventManager.fire(new LevelRenderEvent(stage, event.getLevelRenderer(), event.getPoseStack(), event.getModelViewMatrix(), event.getRenderTick(), event.getPartialTick(), event.getCamera(), event.getFrustum()));
+        EventManager.fire(new LevelRenderEvent(stage, event.getLevelRenderer(), event.getPoseStack(), event.getModelViewMatrix(), event.getLevelRenderer().getTicks(), Minecraft.getInstance().getDeltaTracker(), event.getLevelRenderState().cameraRenderState, event.getLevelRenderer().getCapturedFrustum()));
     }
 }

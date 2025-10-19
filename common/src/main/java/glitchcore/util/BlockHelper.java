@@ -13,8 +13,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class BlockHelper
@@ -45,5 +48,10 @@ public class BlockHelper
     public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled)
     {
         throw new UnsupportedOperationException();
+    }
+
+    public static <T extends BlockEntity> void addBlockEntityBlocks(BlockEntityType<T> type, Block... blocks)
+    {
+        type.validBlocks.addAll(Set.of(blocks));
     }
 }

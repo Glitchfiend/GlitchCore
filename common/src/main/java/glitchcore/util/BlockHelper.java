@@ -4,6 +4,7 @@
  ******************************************************************************/
 package glitchcore.util;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ShovelItem;
@@ -52,6 +53,6 @@ public class BlockHelper
 
     public static <T extends BlockEntity> void addBlockEntityBlocks(BlockEntityType<T> type, Block... blocks)
     {
-        type.validBlocks.addAll(Set.of(blocks));
+        type.validBlocks = ImmutableSet.<Block>builder().addAll(type.validBlocks).add(blocks).build();
     }
 }

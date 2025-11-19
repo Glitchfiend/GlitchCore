@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -53,6 +54,7 @@ public class BlockHelper
 
     public static <T extends BlockEntity> void addBlockEntityBlocks(BlockEntityType<T> type, Block... blocks)
     {
-        type.validBlocks = ImmutableSet.<Block>builder().addAll(type.validBlocks).add(blocks).build();
+        type.validBlocks = new HashSet<Block>(type.validBlocks);
+        type.validBlocks.addAll(Set.of(blocks));
     }
 }

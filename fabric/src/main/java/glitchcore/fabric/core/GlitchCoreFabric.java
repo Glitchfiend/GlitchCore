@@ -22,9 +22,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.npc.VillagerData;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.villager.VillagerData;
 
 public class GlitchCoreFabric implements ModInitializer
 {
@@ -84,7 +83,7 @@ public class GlitchCoreFabric implements ModInitializer
     private static void postRegisterEvents()
     {
         // We use LOADERS to ensure objects are registered at the correct time relative to each other
-        for (ResourceLocation registryName : BuiltInRegistries.LOADERS.keySet())
+        for (Identifier registryName : BuiltInRegistries.LOADERS.keySet())
         {
             ResourceKey<? extends Registry<?>> registryKey = ResourceKey.createRegistryKey(registryName);
             BuiltInRegistries.REGISTRY.get(registryName).ifPresent(registry -> {

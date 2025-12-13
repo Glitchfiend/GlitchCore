@@ -5,7 +5,7 @@
 package glitchcore.network;
 
 import net.minecraft.network.Connection;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
@@ -13,15 +13,15 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 public final class PacketHandler
 {
-    private final ResourceLocation channelName;
+    private final Identifier channelName;
 
-    public PacketHandler(ResourceLocation channelName)
+    public PacketHandler(Identifier channelName)
     {
         this.channelName = channelName;
         this.init();
     }
 
-    public void register(ResourceLocation name, CustomPacket<?> packet) { throw new UnsupportedOperationException(); }
+    public void register(Identifier name, CustomPacket<?> packet) { throw new UnsupportedOperationException(); }
 
     public <T extends CustomPacket<T>> void sendToPlayer(T data, ServerPlayer player) { throw new UnsupportedOperationException(); }
 

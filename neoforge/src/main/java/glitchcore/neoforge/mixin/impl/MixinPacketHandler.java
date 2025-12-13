@@ -8,7 +8,7 @@ import net.jodah.typetools.TypeResolver;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
@@ -30,16 +30,16 @@ public abstract class MixinPacketHandler
 {
     @Shadow
     @Final
-    private ResourceLocation channelName;
+    private Identifier channelName;
 
     @Unique
     private Map<Class<?>, CustomPacketPayload.Type<?>> ids = new HashMap<>();
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
+    public <T extends CustomPacket<T>> void register(Identifier name, CustomPacket<T> packet)
     {
         // Store data type -> id mappings
-        var type = new CustomPacketPayload.Type<>(ResourceLocation.parse(name.toString()));
+        var type = new CustomPacketPayload.Type<>(Identifier.parse(name.toString()));
         ids.put(getPacketDataType(packet), type);
 
         // Register an event handler for NeoForge's payload event

@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
@@ -30,13 +30,13 @@ public abstract class MixinPacketHandler
 
     @Shadow
     @Final
-    private ResourceLocation channelName;
+    private Identifier channelName;
 
     @Unique
     private SimpleChannel channel;
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
+    public <T extends CustomPacket<T>> void register(Identifier name, CustomPacket<T> packet)
     {
         final Class<T> dataType = (Class<T>) TypeResolver.resolveRawArgument(CustomPacket.class, packet.getClass());
 

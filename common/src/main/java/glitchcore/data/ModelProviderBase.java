@@ -21,7 +21,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -55,8 +55,8 @@ public abstract class ModelProviderBase implements DataProvider
         this(output, modId, true);
     }
 
-    abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockModelDefinitionGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
-    abstract protected ItemModelGenerators createItemModelGenerators(ItemModelOutput itemModelOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput);
+    abstract protected BlockModelGenerators createBlockModelGenerators(Consumer<BlockModelDefinitionGenerator> blockStateOutput, ItemModelOutput itemModelOutput, BiConsumer<Identifier, ModelInstance> modelOutput);
+    abstract protected ItemModelGenerators createItemModelGenerators(ItemModelOutput itemModelOutput, BiConsumer<Identifier, ModelInstance> modelOutput);
 
     @Override
     public CompletableFuture<?> run(CachedOutput output)
@@ -103,7 +103,7 @@ public abstract class ModelProviderBase implements DataProvider
         public CompletableFuture<?> save(CachedOutput p_388014_, PackOutput.PathProvider p_388192_)
         {
             Map<Block, BlockModelDefinition> map = Maps.transformValues(this.generators, BlockModelDefinitionGenerator::create);
-            Function<Block, Path> function = p_387598_ -> p_388192_.json(p_387598_.builtInRegistryHolder().key().location());
+            Function<Block, Path> function = p_387598_ -> p_388192_.json(p_387598_.builtInRegistryHolder().key().identifier());
             return DataProvider.saveAll(p_388014_, BlockModelDefinition.CODEC, function, map);
         }
     }
@@ -114,8 +114,8 @@ public abstract class ModelProviderBase implements DataProvider
         private final Map<Item, Item> copies = new HashMap<>();
 
         @Override
-        public void accept(Item item, ItemModel.Unbaked model) {
-            this.register(item, new ClientItem(model, ClientItem.Properties.DEFAULT));
+        public void accept(Item item, ItemModel.Unbaked unbaked, ClientItem.Properties properties) {
+            this.register(item, new ClientItem(unbaked, properties));
         }
 
         public void register(Item p_388205_, ClientItem p_388233_) {
@@ -137,8 +137,8 @@ public abstract class ModelProviderBase implements DataProvider
                 BuiltInRegistries.ITEM.listElements().filter(ModelProviderBase.this::isModded).forEach(p_388426_ -> {
                     if (!this.copies.containsKey(p_388426_)) {
                         if (p_388426_.value() instanceof BlockItem blockitem && !this.itemInfos.containsKey(blockitem)) {
-                            ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(blockitem.getBlock());
-                            this.accept(blockitem, ItemModelUtils.plainModel(resourcelocation));
+                            Identifier Identifier = ModelLocationUtils.getModelLocation(blockitem.getBlock());
+                            this.accept(blockitem, ItemModelUtils.plainModel(Identifier));
                         }
                     }
                 });
@@ -156,16 +156,16 @@ public abstract class ModelProviderBase implements DataProvider
         public CompletableFuture<?> save(CachedOutput output, PackOutput.PathProvider pathProvider)
         {
             return DataProvider.saveAll(
-                    output, ClientItem.CODEC, p_388594_ -> pathProvider.json(p_388594_.builtInRegistryHolder().key().location()), this.itemInfos
+                    output, ClientItem.CODEC, p_388594_ -> pathProvider.json(p_388594_.builtInRegistryHolder().key().identifier()), this.itemInfos
             );
         }
     }
 
-    static class SimpleModelCollector implements BiConsumer<ResourceLocation, ModelInstance>
+    static class SimpleModelCollector implements BiConsumer<Identifier, ModelInstance>
     {
-        private final Map<ResourceLocation, ModelInstance> models = new HashMap<>();
+        private final Map<Identifier, ModelInstance> models = new HashMap<>();
 
-        public void accept(ResourceLocation location, ModelInstance instance)
+        public void accept(Identifier location, ModelInstance instance)
         {
             Supplier<JsonElement> supplier = this.models.put(location, instance);
             if (supplier != null) {
@@ -181,6 +181,6 @@ public abstract class ModelProviderBase implements DataProvider
 
     private boolean isModded(Holder.Reference<?> reference)
     {
-        return reference.key().location().getNamespace().equals(this.modId);
+        return reference.key().identifier().getNamespace().equals(this.modId);
     }
 }

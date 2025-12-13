@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(KeyboardHandler.class)
 public abstract class MixinKeyboardHandler
@@ -23,16 +24,11 @@ public abstract class MixinKeyboardHandler
     @Final
     private Minecraft minecraft;
 
-    @Shadow private boolean handledDebugKey;
-
-    @Inject(method = "keyPress", at=@At("TAIL"))
-    public void onKeyInput(long window, int action, KeyEvent event, CallbackInfo ci)
+    @Inject(method = "handleDebugKeys", at=@At("RETURN"))
+    public void onKeyInput(KeyEvent event, CallbackInfoReturnable<Boolean> cir)
     {
-        if (window != this.minecraft.getWindow().handle())
-            return;
-
-        var gcEvent = new InputEvent.Key(event.key(), event.scancode(), action, event.modifiers(), this.handledDebugKey);
+        var gcEvent = new InputEvent.Key(event.key(), event.scancode(), event.modifiers(), cir.getReturnValue());
         EventManager.fire(gcEvent);
-        this.handledDebugKey = gcEvent.getHandledDebugKey();
+        cir.setReturnValue(gcEvent.getHandledDebugKey());
     }
 }

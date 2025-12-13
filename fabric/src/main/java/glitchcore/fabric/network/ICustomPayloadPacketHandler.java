@@ -2,11 +2,11 @@ package glitchcore.fabric.network;
 
 import glitchcore.network.CustomPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface ICustomPayloadPacketHandler
 {
-    default GCPayloadFactory<?> createPayloadFactory(ResourceLocation channel, CustomPacket<?> packet)
+    default GCPayloadFactory<?> createPayloadFactory(Identifier channel, CustomPacket<?> packet)
     {
         return new GCPayloadFactory<>(channel, packet);
     }

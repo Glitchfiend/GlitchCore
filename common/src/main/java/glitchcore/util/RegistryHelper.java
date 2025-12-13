@@ -10,7 +10,7 @@ import glitchcore.event.EventManager;
 import glitchcore.event.RegistryEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -46,6 +46,6 @@ public class RegistryHelper implements Consumer<RegistryEvent>
 
     public interface Registrar<T>
     {
-        void registerAll(BiConsumer<ResourceLocation, T> register);
+        void registerAll(BiConsumer<Identifier, T> register);
     }
 }

@@ -7,14 +7,14 @@ package glitchcore.fabric.network;
 import glitchcore.network.CustomPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
 public class GCPayloadFactoryClient<T extends CustomPacket<T>> extends GCPayloadFactory<T>
 {
-    public GCPayloadFactoryClient(ResourceLocation channel, CustomPacket<T> packet)
+    public GCPayloadFactoryClient(Identifier channel, CustomPacket<T> packet)
     {
         super(channel, packet);
 

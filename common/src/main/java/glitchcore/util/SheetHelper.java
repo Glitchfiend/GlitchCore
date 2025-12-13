@@ -6,21 +6,21 @@ package glitchcore.util;
 
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class SheetHelper
 {
     private static Material createSignMaterial(WoodType type)
     {
-        ResourceLocation location = ResourceLocation.tryParse(type.name());
-        return new Material(Sheets.SIGN_SHEET, ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "entity/signs/" + location.getPath()));
+        Identifier location = Identifier.tryParse(type.name());
+        return new Material(Sheets.SIGN_SHEET, Identifier.fromNamespaceAndPath(location.getNamespace(), "entity/signs/" + location.getPath()));
     }
 
     private static Material createHangingSignMaterial(WoodType type)
     {
-        ResourceLocation location = ResourceLocation.tryParse(type.name());
-        return new Material(Sheets.SIGN_SHEET, ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "entity/signs/hanging/" + location.getPath()));
+        Identifier location = Identifier.tryParse(type.name());
+        return new Material(Sheets.SIGN_SHEET, Identifier.fromNamespaceAndPath(location.getNamespace(), "entity/signs/hanging/" + location.getPath()));
     }
 
     public static void addWoodType(WoodType woodType)

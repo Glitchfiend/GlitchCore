@@ -5,7 +5,7 @@
 package glitchcore.forge.handlers;
 
 import glitchcore.event.EventManager;
-import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;

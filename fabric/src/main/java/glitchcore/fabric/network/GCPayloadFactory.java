@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
@@ -20,9 +20,9 @@ public class GCPayloadFactory<T extends CustomPacket<T>>
     protected final CustomPacket<T> packet;
     private final StreamCodec<? super FriendlyByteBuf, Impl> codec;
 
-    public GCPayloadFactory(ResourceLocation name, CustomPacket<T> packet)
+    public GCPayloadFactory(Identifier name, CustomPacket<T> packet)
     {
-        this.type = new CustomPacketPayload.Type(ResourceLocation.parse(name.toString()));
+        this.type = new CustomPacketPayload.Type(Identifier.parse(name.toString()));
         this.packet = packet;
         this.codec = CustomPacketPayload.codec(Impl::write, Impl::new);
 

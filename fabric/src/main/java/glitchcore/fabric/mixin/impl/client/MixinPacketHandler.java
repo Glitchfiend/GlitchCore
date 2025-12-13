@@ -11,7 +11,7 @@ import glitchcore.network.CustomPacket;
 import glitchcore.network.PacketHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -30,7 +30,7 @@ public abstract class MixinPacketHandler implements ICustomPayloadPacketHandler
     }
 
     @Override
-    public GCPayloadFactory<?> createPayloadFactory(ResourceLocation channel, CustomPacket<?> packet)
+    public GCPayloadFactory<?> createPayloadFactory(Identifier channel, CustomPacket<?> packet)
     {
         return new GCPayloadFactoryClient<>(channel, packet);
     }

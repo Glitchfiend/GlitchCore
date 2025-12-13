@@ -12,7 +12,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.jodah.typetools.TypeResolver;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
@@ -27,14 +27,14 @@ public abstract class MixinPacketHandler implements ICustomPayloadPacketHandler
 {
     @Shadow
     @Final
-    private ResourceLocation channelName;
+    private Identifier channelName;
 
     @Unique
     private Map<Class<?>, GCPayloadFactory> factories = new HashMap<>();
 
 
     @Overwrite
-    public <T extends CustomPacket<T>> void register(ResourceLocation name, CustomPacket<T> packet)
+    public <T extends CustomPacket<T>> void register(Identifier name, CustomPacket<T> packet)
     {
         factories.put(getPacketDataType(packet), createPayloadFactory(name, packet));
     }

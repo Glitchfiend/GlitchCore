@@ -6,7 +6,7 @@ package glitchcore.event.village;
 
 import com.google.common.collect.ImmutableList;
 import glitchcore.event.Event;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 
 import java.util.ArrayList;
 import java.util.Collections;

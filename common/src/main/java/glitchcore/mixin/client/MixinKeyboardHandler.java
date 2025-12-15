@@ -24,11 +24,13 @@ public abstract class MixinKeyboardHandler
     @Final
     private Minecraft minecraft;
 
-    @Inject(method = "handleDebugKeys", at=@At("RETURN"))
+    @Inject(method = "handleDebugKeys", at=@At("RETURN"), cancellable = true)
     public void onKeyInput(KeyEvent event, CallbackInfoReturnable<Boolean> cir)
     {
         var gcEvent = new InputEvent.Key(event.key(), event.scancode(), event.modifiers(), cir.getReturnValue());
         EventManager.fire(gcEvent);
-        cir.setReturnValue(gcEvent.getHandledDebugKey());
+
+        if (gcEvent.getHandledDebugKey())
+            cir.setReturnValue(true);
     }
 }

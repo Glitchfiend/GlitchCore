@@ -13,17 +13,26 @@ import glitchcore.event.server.RegisterCommandsEvent;
 import glitchcore.event.village.VillagerTradesEvent;
 import glitchcore.event.village.WandererTradesEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
+import glitchcore.util.Remapper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
+import net.fabricmc.fabric.api.event.registry.FabricRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.npc.villager.VillagerData;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Set;
 
 public class GlitchCoreFabric implements ModInitializer
 {
@@ -78,6 +87,20 @@ public class GlitchCoreFabric implements ModInitializer
         CommonLifecycleEvents.TAGS_LOADED.register(((registries, client) -> {
             EventManager.fire(new TagsUpdatedEvent(registries, client ? TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED : TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD));
         }));
+
+        // Remap the BuiltInRegistries
+        for (Field field : BuiltInRegistries.class.getFields())
+        {
+            if (FabricRegistry.class.isAssignableFrom(field.getType()))
+            {
+                try {
+                    var fabricRegistry = (FabricRegistry)field.get(null);
+                    ResourceKey<? extends Registry<?>> registryKey = ((Registry)fabricRegistry).key();
+                    Remapper.getRemaps(registryKey).forEach((key, value) -> fabricRegistry.addAlias(key.identifier(), value.identifier()));
+
+                } catch (IllegalAccessException ignored) {}
+            }
+        }
     }
 
     private static void postRegisterEvents()

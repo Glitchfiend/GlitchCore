@@ -75,14 +75,4 @@ public class Remapper
 
         return builder.build();
     }
-
-    static
-    {
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "redwood_log")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "fir_leaves")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "cypress_leaves")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "redwood_leaves")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "yellow_maple_leaves")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-        remap(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("biomesoplenty", "red_maple_leaves")), ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("minecraft", "cobblestone")));
-    }
 }

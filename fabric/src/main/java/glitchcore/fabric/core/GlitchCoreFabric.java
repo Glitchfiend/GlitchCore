@@ -10,29 +10,20 @@ import glitchcore.event.RegistryEvent;
 import glitchcore.event.TagsUpdatedEvent;
 import glitchcore.event.TickEvent;
 import glitchcore.event.server.RegisterCommandsEvent;
-import glitchcore.event.village.VillagerTradesEvent;
-import glitchcore.event.village.WandererTradesEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import glitchcore.util.Remapper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
 import net.fabricmc.fabric.api.event.registry.FabricRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.npc.villager.VillagerData;
+import net.minecraft.resources.ResourceKey;
 
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Set;
 
 public class GlitchCoreFabric implements ModInitializer
 {
@@ -51,32 +42,11 @@ public class GlitchCoreFabric implements ModInitializer
         // Fire events which must occur during initialization
         postRegisterEvents();
 
-        var wandererTradesEvent = new WandererTradesEvent();
-        EventManager.fire(wandererTradesEvent);
-
-        TradeOfferHelper.registerWanderingTraderOffers(builder -> {
-            var commonTrades = wandererTradesEvent.getGenericTrades();
-            var rareTrades = wandererTradesEvent.getRareTrades();
-
-            if (!commonTrades.isEmpty()) builder.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, commonTrades);
-            if (!rareTrades.isEmpty()) builder.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_SPECIAL_ITEMS_POOL, rareTrades);
-        });
-
-        BuiltInRegistries.VILLAGER_PROFESSION.entrySet().forEach(entry -> {
-            var key = entry.getKey();
-            var profession = entry.getValue();
-            for (int level = VillagerData.MIN_VILLAGER_LEVEL; level <= VillagerData.MAX_VILLAGER_LEVEL; level++)
-            {
-                final int finalLevel = level;
-                TradeOfferHelper.registerVillagerOffers(key, level, trades -> EventManager.fire(new VillagerTradesEvent(key, finalLevel, trades)));
-            }
-        });
-
-        ServerTickEvents.START_WORLD_TICK.register(level -> {
+        ServerTickEvents.START_LEVEL_TICK.register(level -> {
             EventManager.fire(new TickEvent.Level(TickEvent.Phase.START, level));
         });
 
-        ServerTickEvents.END_WORLD_TICK.register(level -> {
+        ServerTickEvents.END_LEVEL_TICK.register(level -> {
             EventManager.fire(new TickEvent.Level(TickEvent.Phase.END, level));
         });
 

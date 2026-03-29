@@ -5,8 +5,7 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +15,7 @@ import java.util.List;
 public class RenderTooltipEvent extends Event
 {
     private final ItemStack stack;
-    private final GuiGraphics graphics;
+    private final GuiGraphicsExtractor graphics;
     private final int x;
     private final int y;
     private final int screenWidth;
@@ -24,7 +23,7 @@ public class RenderTooltipEvent extends Event
     private final List<ClientTooltipComponent> components;
     private final ClientTooltipPositioner positioner;
 
-    public RenderTooltipEvent(ItemStack stack, GuiGraphics graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, ClientTooltipPositioner positioner)
+    public RenderTooltipEvent(ItemStack stack, GuiGraphicsExtractor graphics, int x, int y, int screenWidth, int screenHeight, List<ClientTooltipComponent> components, ClientTooltipPositioner positioner)
     {
         this.stack = stack;
         this.graphics = graphics;
@@ -41,7 +40,7 @@ public class RenderTooltipEvent extends Event
         return this.stack;
     }
 
-    public GuiGraphics getGraphics()
+    public GuiGraphicsExtractor getGraphics()
     {
         return graphics;
     }

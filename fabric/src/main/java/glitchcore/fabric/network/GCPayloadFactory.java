@@ -28,8 +28,8 @@ public class GCPayloadFactory<T extends CustomPacket<T>>
 
         if (packet.getPhase() == CustomPacket.Phase.PLAY)
         {
-            PayloadTypeRegistry.playC2S().register(this.type, this.codec);
-            PayloadTypeRegistry.playS2C().register(this.type, this.codec);
+            PayloadTypeRegistry.serverboundPlay().register(this.type, this.codec);
+            PayloadTypeRegistry.clientboundPlay().register(this.type, this.codec);
             ServerPlayNetworking.registerGlobalReceiver(this.type, new ServerPlayNetworking.PlayPayloadHandler<Impl>() {
                 @Override
                 public void receive(Impl payload, ServerPlayNetworking.Context context)
@@ -50,8 +50,8 @@ public class GCPayloadFactory<T extends CustomPacket<T>>
         }
         else if (packet.getPhase() == CustomPacket.Phase.CONFIGURATION)
         {
-            PayloadTypeRegistry.configurationC2S().register(this.type, this.codec);
-            PayloadTypeRegistry.configurationS2C().register(this.type, this.codec);
+            PayloadTypeRegistry.serverboundConfiguration().register(this.type, this.codec);
+            PayloadTypeRegistry.clientboundConfiguration().register(this.type, this.codec);
             ServerConfigurationNetworking.registerGlobalReceiver(this.type, new ServerConfigurationNetworking.ConfigurationPacketHandler<Impl>()
             {
                 @Override

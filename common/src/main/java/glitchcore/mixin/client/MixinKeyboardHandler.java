@@ -20,11 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(KeyboardHandler.class)
 public abstract class MixinKeyboardHandler
 {
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private Minecraft minecraft;
 
-    @Inject(method = "handleDebugKeys", at=@At("RETURN"), cancellable = true)
+    @Inject(method = "handleDebugKeys", at=@At("RETURN"), cancellable = true, remap = false)
     public void onKeyInput(KeyEvent event, CallbackInfoReturnable<Boolean> cir)
     {
         var gcEvent = new InputEvent.Key(event.key(), event.scancode(), event.modifiers(), cir.getReturnValue());

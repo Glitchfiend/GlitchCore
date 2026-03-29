@@ -27,6 +27,6 @@ public abstract class MixinEnvironment
     @Overwrite
     public static boolean isModLoaded(String id)
     {
-        return ModList.get().isLoaded(id);
+        return ModList.isLoaded(id);
     }
 }

@@ -56,7 +56,7 @@ public abstract class MixinPacketHandler implements ICustomPayloadPacketHandler
         CustomPacketPayload payload = createCustomPacketPayload((CustomPacket)packet);
         switch (packet.getPhase())
         {
-            case PLAY -> server.getPlayerList().broadcastAll(ServerPlayNetworking.createS2CPacket(payload));
+            case PLAY -> server.getPlayerList().broadcastAll(ServerPlayNetworking.createClientboundPacket(payload));
             default -> throw new UnsupportedOperationException("Attempted to send packet with unsupported phase " + packet.getPhase());
         }
     }

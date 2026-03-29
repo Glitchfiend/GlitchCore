@@ -15,7 +15,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 public class ColorsEventHandler
 {
     @SubscribeEvent
-    public static void onRegisterBlockColors(RegisterColorHandlersEvent.Block event)
+    public static void onRegisterBlockColors(RegisterColorHandlersEvent.BlockTintSources event)
     {
         EventManager.fire(new RegisterColorsEvent.Block(event::register));
     }

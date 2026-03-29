@@ -1,4 +1,4 @@
-accessWidener v1 named
+accessWidener v1 official
 
 # Registry ordering
 accessible field net/minecraft/core/registries/BuiltInRegistries LOADERS Ljava/util/Map;
@@ -19,3 +19,5 @@ accessible field net/minecraft/world/item/ShovelItem FLATTENABLES Ljava/util/Map
 mutable field net/minecraft/world/item/ShovelItem FLATTENABLES Ljava/util/Map;
 accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
 mutable field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
+
+accessible method net/minecraft/world/level/block/FireBlock setFlammable (Lnet/minecraft/world/level/block/Block;II)V

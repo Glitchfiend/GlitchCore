@@ -7,19 +7,15 @@ package glitchcore.forge.mixin.impl;
 import glitchcore.util.RenderHelper;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -29,18 +25,6 @@ import java.util.function.Supplier;
 @Mixin(value = RenderHelper.class, remap = false)
 public class MixinRenderHelper
 {
-    @Overwrite
-    public static void setRenderType(Block block, ChunkSectionLayer layer)
-    {
-        ItemBlockRenderTypes.setRenderLayer(block, layer);
-    }
-
-    @Overwrite
-    public static void setRenderType(Fluid fluid, ChunkSectionLayer layer)
-    {
-        ItemBlockRenderTypes.setRenderLayer(fluid, layer);
-    }
-
     @Overwrite
     public static <T extends BlockEntity, S extends BlockEntityRenderState> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T, S> blockEntityRendererProvider)
     {

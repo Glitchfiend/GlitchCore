@@ -8,7 +8,7 @@ import glitchcore.event.EventManager;
 import glitchcore.event.client.RenderGuiEvent;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,26 +26,26 @@ public abstract class MixinGui
     @Shadow
     public int rightHeight;
 
-    @Inject(method="render", at=@At(value="HEAD"))
-    public void onRender(GuiGraphics p_282884_, DeltaTracker deltaTracker, CallbackInfo ci)
+    @Inject(method="extractRenderState", at=@At(value="HEAD"), remap = false)
+    public void onExtractRenderState(GuiGraphicsExtractor p_282884_, DeltaTracker deltaTracker, CallbackInfo ci)
     {
         this.deltaTracker = deltaTracker;
     }
 
-    @Inject(method="renderCameraOverlays", at=@At(value="INVOKE", target="net/minecraft/client/player/LocalPlayer.getTicksFrozen()I"))
-    private void onBeginRenderFrozenOverlay(GuiGraphics guiGraphics, DeltaTracker p_348538_, CallbackInfo ci)
+    @Inject(method="extractCameraOverlays", at=@At(value="INVOKE", target="net/minecraft/client/player/LocalPlayer.getTicksFrozen()I"), remap = false)
+    private void onExtractCameraOverlays(GuiGraphicsExtractor guiGraphics, DeltaTracker p_348538_, CallbackInfo ci)
     {
         EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FROSTBITE, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight()));
     }
 
-    @Inject(method="renderFoodLevel", at=@At(value="INVOKE", target="net/minecraft/client/gui/Gui.getVehicleMaxHearts(Lnet/minecraft/world/entity/LivingEntity;)I"))
-    private void onRenderFoodLevel(GuiGraphics guiGraphics, CallbackInfo ci)
+    @Inject(method="extractFoodLevel", at=@At(value="INVOKE", target="net/minecraft/client/gui/Gui.getVehicleMaxHearts(Lnet/minecraft/world/entity/LivingEntity;)I"))
+    private void onExtractFoodLevel(GuiGraphicsExtractor guiGraphics, CallbackInfo ci)
     {
         EventManager.fire(new RenderGuiEvent.Pre(RenderGuiEvent.Type.FOOD, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight()));
     }
 
-    @Inject(method="renderAirBubbles", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"))
-    private void onBeginRenderAir(GuiGraphics guiGraphics, Player player, int height, int x, int y, CallbackInfo ci)
+    @Inject(method="extractAirBubbles", at=@At(value="INVOKE", target="net/minecraft/world/entity/player/Player.getMaxAirSupply()I"))
+    private void onExtractAirBubbles(GuiGraphicsExtractor guiGraphics, Player player, int height, int x, int y, CallbackInfo ci)
     {
         int rightTop = guiGraphics.guiHeight() - this.rightHeight;
         var event = new RenderGuiEvent.Pre(RenderGuiEvent.Type.AIR, (Gui)(Object)this, guiGraphics, this.deltaTracker, guiGraphics.guiWidth(), guiGraphics.guiHeight(), rightTop);

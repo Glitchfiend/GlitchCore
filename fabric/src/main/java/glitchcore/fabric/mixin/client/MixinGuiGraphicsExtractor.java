@@ -4,16 +4,16 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.client;
 
-import glitchcore.core.GlitchCore;
 import glitchcore.event.EventManager;
 import glitchcore.event.client.RenderTooltipEvent;
 import glitchcore.fabric.gui.IExtendedGuiGraphics;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
+@Mixin(GuiGraphicsExtractor.class)
+public abstract class MixinGuiGraphicsExtractor implements IExtendedGuiGraphics
 {
     @Unique
     private ItemStack currentTooltipStack = ItemStack.EMPTY;
@@ -33,11 +33,10 @@ public abstract class MixinGuiGraphics implements IExtendedGuiGraphics
 
     @Shadow public abstract int guiHeight();
 
-
-    @Inject(method = "renderTooltip", at=@At("HEAD"))
-    private void onRenderTooltipInternal(Font font, List<ClientTooltipComponent> components, int x, int y, ClientTooltipPositioner positioner, Identifier Identifier, CallbackInfo ci)
+    @Inject(method = "tooltip", at=@At("HEAD"))
+    private void modifyRenderTooltipComponents(Font font, List<ClientTooltipComponent> lines, int xo, int yo, ClientTooltipPositioner positioner, @Nullable Identifier style, CallbackInfo ci)
     {
-        EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphics)(Object)this, x, y, this.guiWidth(), this.guiHeight(), components, positioner));
+        EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphicsExtractor) (Object)this, xo, yo, this.guiWidth(), this.guiHeight(), lines, positioner));
     }
 
     @Override

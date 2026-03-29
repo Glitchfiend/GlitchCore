@@ -12,8 +12,7 @@
   ],
   "client": [
     "client.MixinGui",
-    "client.MixinGuiGraphics",
-    "client.MixinLevelRenderer"
+    "client.MixinGuiGraphicsExtractor"
   ],
   "injectors": {
     "defaultRequire": 1

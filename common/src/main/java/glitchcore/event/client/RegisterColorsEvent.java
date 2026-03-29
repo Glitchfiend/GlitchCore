@@ -5,20 +5,22 @@
 package glitchcore.event.client;
 
 import glitchcore.event.Event;
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.block.BlockTintSource;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event
 {
-    private final BiConsumer<ObjColor, Obj> register;
+    private final BiConsumer<List<ObjColor>, Obj> register;
 
-    public RegisterColorsEvent(BiConsumer<ObjColor, Obj> register)
+    public RegisterColorsEvent(BiConsumer<List<ObjColor>, Obj> register)
     {
         this.register = register;
     }
 
-    public void register(ObjColor color, Obj... objs)
+    public void register(List<ObjColor> color, Obj... objs)
     {
         for (var obj : objs)
         {
@@ -26,9 +28,9 @@ public abstract class RegisterColorsEvent<ObjColor, Obj> extends Event
         }
     }
 
-    public static class Block extends RegisterColorsEvent<BlockColor, net.minecraft.world.level.block.Block>
+    public static class Block extends RegisterColorsEvent<BlockTintSource, net.minecraft.world.level.block.Block>
     {
-        public Block(BiConsumer<BlockColor, net.minecraft.world.level.block.Block> register)
+        public Block(BiConsumer<List<BlockTintSource>, net.minecraft.world.level.block.Block> register)
         {
             super(register);
         }

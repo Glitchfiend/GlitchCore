@@ -12,7 +12,7 @@
   ],
   "client": [
     "client.MixinGui",
-    "client.MixinGuiGraphics"
+    "client.MixinGuiGraphicsExtractor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -21,16 +21,6 @@ import java.util.function.Supplier;
 
 public class RenderHelper
 {
-    public static void setRenderType(Block block, ChunkSectionLayer layer)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public static void setRenderType(Fluid fluid, ChunkSectionLayer layer)
-    {
-        throw new UnsupportedOperationException();
-    }
-
     public static <T extends BlockEntity, S extends BlockEntityRenderState> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T, S> blockEntityRendererProvider)
     {
         throw new UnsupportedOperationException();

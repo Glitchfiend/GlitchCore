@@ -13,7 +13,7 @@ import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerato
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.renderer.block.model.BlockModelDefinition;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelDispatcher;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.core.Holder;
@@ -100,11 +100,11 @@ public abstract class ModelProviderBase implements DataProvider
             }
         }
 
-        public CompletableFuture<?> save(CachedOutput p_388014_, PackOutput.PathProvider p_388192_)
+        public CompletableFuture<?> save(CachedOutput cache, PackOutput.PathProvider pathProvider)
         {
-            Map<Block, BlockModelDefinition> map = Maps.transformValues(this.generators, BlockModelDefinitionGenerator::create);
-            Function<Block, Path> function = p_387598_ -> p_388192_.json(p_387598_.builtInRegistryHolder().key().identifier());
-            return DataProvider.saveAll(p_388014_, BlockModelDefinition.CODEC, function, map);
+            Map<Block, BlockStateModelDispatcher> definitions = Maps.transformValues(this.generators, BlockModelDefinitionGenerator::create);
+            Function<Block, Path> pathGetter = block -> pathProvider.json(block.builtInRegistryHolder().key().identifier());
+            return DataProvider.saveAll(cache, BlockStateModelDispatcher.CODEC, pathGetter, definitions);
         }
     }
 

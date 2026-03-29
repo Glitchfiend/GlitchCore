@@ -36,7 +36,7 @@ public abstract class MixinServerConfigurationPacketListenerImpl extends ServerC
         super(server, connection, $$2);
     }
 
-    @Inject(method="startConfiguration", at=@At("HEAD"))
+    @Inject(method="startConfiguration", at=@At("HEAD"), remap = false)
     public void onStartConfiguration(CallbackInfo ci)
     {
         this.configurationTasks.add(new SyncConfigTask((ServerConfigurationPacketListenerImpl)(Object)this, this::finishCurrentTask));

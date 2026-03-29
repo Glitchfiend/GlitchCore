@@ -10,8 +10,8 @@ import glitchcore.event.player.PlayerInteractEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
@@ -52,10 +52,10 @@ public class GlitchCoreFabricClient implements ClientModInitializer
 
         EventManager.fire(new RegisterLayerDefinitionsEvent());
         EventManager.fire(new RegisterRenderersEvent());
-        EventManager.fire(new RegisterColorsEvent.Block(ColorProviderRegistry.BLOCK::register));
+        EventManager.fire(new RegisterColorsEvent.Block(BlockColorRegistry::register));
 
-        BiConsumer<ParticleType<?>, ParticleResources.SpriteParticleRegistration<?>> particleSpriteRegisterFunc = (type, registration) -> {
-            ParticleFactoryRegistry.getInstance().register(type, provider -> (ParticleProvider)registration.create(provider));
+        BiConsumer<ParticleType, ParticleProvider> particleSpriteRegisterFunc = (type, provider) -> {
+            ParticleProviderRegistry.getInstance().register(type, provider);
         };
         EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
     }

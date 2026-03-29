@@ -13,7 +13,7 @@
   "client": [
     "client.MixinAbstractContainerScreen",
     "client.MixinGui",
-    "client.MixinGuiGraphics",
+    "client.MixinGuiGraphicsExtractor",
     "impl.client.MixinPacketHandler"
   ],
   "injectors": {

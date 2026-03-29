@@ -8,8 +8,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.modrinth.minotaur:Minotaur:2.+'
-        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.1.7' // Required for NeoGradle
-        classpath 'net.minecraftforge:gradleutils:2.2.0' // Required for changelog generation
+        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.2' // Required for NeoGradle
+        classpath 'net.minecraftforge:gradleutils:2.6.4' // Required for changelog generation
     }
 }
 
@@ -29,15 +29,9 @@ ext {
     }
 }
 
-subprojects {
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'Sponge / Mixin'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
-        }
-    }
+version = "${minecraft_version}-${mod_version}"
 
+subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
@@ -46,48 +40,145 @@ subprojects {
         apply plugin: 'com.modrinth.minotaur'
     }
 
-    version = "${minecraft_version}-${mod_version}"
+    java {
+        toolchain.languageVersion = JavaLanguageVersion.of(25)
+        withSourcesJar()
+        withJavadocJar()
+    }
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-    java.withSourcesJar()
+    version = rootProject.version
 
     jar {
         manifest {
             attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : mod_version,
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : mod_version,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestamp'               : System.currentTimeMillis(),
-                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Build-On-Minecraft'      : minecraft_version
+                    'Specification-Title'     : mod_name,
+                    'Specification-Vendor'    : mod_authors,
+                    'Specification-Version'   : mod_version,
+                    'Implementation-Title'    : project.name,
+                    'Implementation-Version'  : mod_version,
+                    'Implementation-Vendor'   : mod_authors,
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    'Timestamp'               : System.currentTimeMillis(),
+                    'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                    'Build-On-Minecraft'      : minecraft_version
             ])
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
+        maven {
+            name = 'Sponge'
+            url = 'https://repo.spongepowered.org/repository/maven-public'
+        }
+        exclusiveContent {
+            forRepositories(
+                    maven {
+                        name = "NeoForge"
+                        url = 'https://maven.neoforged.net/releases'
+                    }
+            )
+            filter { includeGroup('org.parchmentmc.data') }
+        }
+        maven {
+            name = 'BlameJared'
+            url = 'https://maven.blamejared.com'
         }
     }
 
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = 'UTF-8'
-        it.options.release.set(21)
+        it.options.release.set(25)
+    }
+
+    // Declare capabilities on the outgoing configurations.
+    // Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
+    ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+        configurations."$variant".outgoing {
+            capability("$group:${project.name}:$version")
+            capability("$group:${base.archivesName.get()}:$version")
+            capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
+            capability("$group:$mod_id:$version")
+        }
+        publishing.publications.configureEach {
+            suppressPomMetadataWarningsFor(variant)
+        }
     }
 
     processResources {
         var expandProps = [
-            minecraft_version   : minecraft_version,
-            forge_version       : forge_version, forge_version_range: forge_version_range, forge_loader_version_range: forge_loader_version_range,
-            neoforge_version    : neoforge_version, neoforge_version_range: neoforge_version_range, neoforge_loader_version_range: neoforge_loader_version_range,
-            mod_id              : mod_id, mod_name: mod_name, mod_display_name: mod_display_name, mod_version: mod_version,
-            mod_authors         : mod_authors, mod_description: mod_description,
-            mod_issues_url      : mod_issues_url, mod_page_url: mod_page_url, mod_git_url: mod_git_url,
-            mod_discord_url     : mod_discord_url,
-            mod_license         : mod_license
+                minecraft_version   : minecraft_version,
+                forge_version       : forge_version, forge_version_range: forge_version_range, forge_loader_version_range: forge_loader_version_range,
+                neoforge_version    : neoforge_version, neoforge_version_range: neoforge_version_range, neoforge_loader_version_range: neoforge_loader_version_range,
+                mod_id              : mod_id, mod_name: mod_name, mod_display_name: mod_display_name, mod_version: mod_version,
+                mod_authors         : mod_authors, mod_description: mod_description,
+                mod_issues_url      : mod_issues_url, mod_page_url: mod_page_url, mod_git_url: mod_git_url,
+                mod_discord_url     : mod_discord_url,
+                mod_license         : mod_license
         ]
-        filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', "*.mixins.json"]) {
+
+        var jsonExpandProps = expandProps.collectEntries {
+            key, value -> [(key): value instanceof String ? value.replace("\n", "\\\\n") : value]
+        }
+
+        filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) {
             expand expandProps
         }
+
+        filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+            expand jsonExpandProps
+        }
+
         inputs.properties(expandProps)
+    }
+
+    // Build setup for non-common subprojects
+    if (!project.name.equals("Common")) {
+        configurations {
+            commonJava {
+                canBeResolved = true
+            }
+            commonResources {
+                canBeResolved = true
+            }
+        }
+
+        dependencies {
+            compileOnly(project(':Common')) {
+                capabilities {
+                    requireCapability "$group:$mod_id"
+                }
+                def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+                attributes {
+                    attribute(loaderAttribute, 'common')
+                }
+            }
+            commonJava project(path: ':Common', configuration: 'commonJava')
+            commonResources project(path: ':Common', configuration: 'commonResources')
+        }
+
+        tasks.named('compileJava', JavaCompile) {
+            dependsOn(configurations.commonJava)
+            source(configurations.commonJava)
+        }
+
+        processResources {
+            dependsOn(configurations.commonResources)
+            from(configurations.commonResources)
+        }
+
+        tasks.named('javadoc', Javadoc).configure {
+            dependsOn(configurations.commonJava)
+            source(configurations.commonJava)
+        }
+
+        tasks.named('sourcesJar', Jar) {
+            dependsOn(configurations.commonJava)
+            from(configurations.commonJava)
+            dependsOn(configurations.commonResources)
+            from(configurations.commonResources)
+        }
     }
 
     // Disables Gradle's custom module metadata from being published to maven. The
@@ -100,7 +191,6 @@ subprojects {
     afterEvaluate {
         // Share Modrinth configuration between loaders
         // Unfortunately the CurseForge plugin breaks when doing this
-        // remapJar does not exist until after initial evaluation
         if (!name.equals("Common")) {
             modrinth {
                 token = findProperty('modrinthToken')
@@ -109,22 +199,19 @@ subprojects {
                 versionName = "${mod_version} for ${name} ${minecraft_version}"
                 versionType = release_channel
 
-                switch (name) {
-                    case "Fabric":
-                        uploadFile = remapJar
-                        break;
-
-                    case "Forge":
-                        uploadFile = shadowJar
-                        break;
-
-                    default:
-                        uploadFile = jar
-                        break;
+                if (name.equals("Forge")) {
+                    uploadFile = shadowJar
+                } else {
+                    uploadFile = jar
                 }
 
                 gameVersions = [minecraft_version]
                 loaders = [name.toLowerCase()]
+                dependencies {
+                    if (name.equals("Fabric")) {
+                        required.project "fabric-api"
+                    }
+                }
 
                 if (changelog_file.exists()) {
                     changelog = trimChangelog(changelog_file.text)
@@ -136,10 +223,9 @@ subprojects {
         publishing {
             publications {
                 mavenJava(MavenPublication) {
-                    artifactId project.archivesBaseName
+                    artifactId project.base.archivesName.get()
                     groupId project.group
                     version project.version
-
                     if (name.equals("Forge")) {
                         from components.shadowJar
                     } else {
@@ -147,7 +233,7 @@ subprojects {
                     }
 
                     pom {
-                        name = project.archivesBaseName
+                        name = project.base.archivesName.get()
                         description = project.mod_description
                         url = project.mod_git_url
                         scm {

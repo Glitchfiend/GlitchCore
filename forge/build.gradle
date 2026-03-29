@@ -1,7 +1,7 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[7.0.17,8)'
     id "de.maxhenkel.cursegradle" version "1.5.1"
-    id 'com.github.johnrengelman.shadow' version '8.+'
+    id 'com.gradleup.shadow' version '8.+'
 }
 
 base.archivesName.set("${mod_name}-forge")

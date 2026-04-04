@@ -21,6 +21,8 @@ public class RegisterParticleProvidersEventHandler
     @SubscribeEvent
     public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event)
     {
-        EventManager.fire(new RegisterParticleSpritesEvent((type, registration) -> event.registerSpriteSet((ParticleType)type, (ParticleResources.SpriteParticleRegistration)registration)));
+        EventManager.fire(new RegisterParticleSpritesEvent((type, registration) -> {
+            event.registerSpriteSet((ParticleType)type, (ParticleResources.SpriteParticleRegistration) spriteSet -> ((RegisterParticleSpritesEvent.SpriteParticleRegistration)registration).create(spriteSet));
+        }));
     }
 }

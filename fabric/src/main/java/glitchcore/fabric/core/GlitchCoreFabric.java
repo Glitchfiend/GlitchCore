@@ -20,10 +20,13 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 
 import java.lang.reflect.Field;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class GlitchCoreFabric implements ModInitializer
 {
@@ -75,8 +78,12 @@ public class GlitchCoreFabric implements ModInitializer
 
     private static void postRegisterEvents()
     {
+        Set<Identifier> registries = new LinkedHashSet<>();
+        registries.addAll(VanillaRegistries.createLookup().listRegistryKeys().map(ResourceKey::identifier).toList());
+        registries.addAll(BuiltInRegistries.LOADERS.keySet());
+
         // We use LOADERS to ensure objects are registered at the correct time relative to each other
-        for (Identifier registryName : BuiltInRegistries.LOADERS.keySet())
+        for (Identifier registryName : registries)
         {
             ResourceKey<? extends Registry<?>> registryKey = ResourceKey.createRegistryKey(registryName);
             BuiltInRegistries.REGISTRY.get(registryName).ifPresent(registry -> {

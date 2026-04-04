@@ -54,8 +54,8 @@ public class GlitchCoreFabricClient implements ClientModInitializer
         EventManager.fire(new RegisterRenderersEvent());
         EventManager.fire(new RegisterColorsEvent.Block(BlockColorRegistry::register));
 
-        BiConsumer<ParticleType, ParticleProvider> particleSpriteRegisterFunc = (type, provider) -> {
-            ParticleProviderRegistry.getInstance().register(type, provider);
+        BiConsumer<ParticleType, RegisterParticleSpritesEvent.SpriteParticleRegistration> particleSpriteRegisterFunc = (type, registration) -> {
+            ParticleProviderRegistry.getInstance().register(type, registration::create);
         };
         EventManager.fire(new RegisterParticleSpritesEvent(particleSpriteRegisterFunc));
     }

@@ -64,7 +64,10 @@ public class GCPayloadFactory<T extends CustomPacket<T>>
                     @Override
                     public Optional<Player> getPlayer()
                     {
-                        return Optional.ofNullable(context.player()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+                        var player = context.player();
+                        if (player != null) return Optional.of(player);
+                        if (isClientSide()) return Optional.ofNullable(Minecraft.getInstance().player);
+                        return Optional.empty();
                     }
                 });
             });

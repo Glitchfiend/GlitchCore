@@ -28,7 +28,7 @@ public class MixinAbstractContainerScreen
     @Inject(method="extractTooltip", at=@At(value = "HEAD"))
     public void onPreExtractTooltip(GuiGraphicsExtractor guiGraphics, int i, int j, CallbackInfo ci)
     {
-        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(Optional.ofNullable(this.hoveredSlot).map(Slot::getItem).orElse(ItemStack.EMPTY));
+        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(this.hoveredSlot != null ? this.hoveredSlot.getItem() : ItemStack.EMPTY);
     }
 
     @Inject(method="extractTooltip", at=@At(value = "TAIL"))

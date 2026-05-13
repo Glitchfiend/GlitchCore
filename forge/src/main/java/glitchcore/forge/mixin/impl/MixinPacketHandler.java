@@ -57,7 +57,10 @@ public abstract class MixinPacketHandler
                     @Override
                     public Optional<Player> getPlayer()
                     {
-                        return Optional.ofNullable((Player)forgeContext.getSender()).or(() -> isClientSide() ? Optional.ofNullable(Minecraft.getInstance().player) : Optional.empty());
+                        var sender = (Player) forgeContext.getSender();
+                        if (sender != null) return Optional.of(sender);
+                        if (isClientSide()) return Optional.ofNullable(Minecraft.getInstance().player);
+                        return Optional.empty();
                     }
                 });
             });

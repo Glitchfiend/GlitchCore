@@ -25,7 +25,7 @@ public class MixinAbstractContainerScreen
     @Inject(method="renderTooltip", at=@At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     public void onPreRenderTooltip(GuiGraphics guiGraphics, int i, int j, CallbackInfo ci)
     {
-        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(this.hoveredSlot.getItem());
+        ((IExtendedGuiGraphics)guiGraphics).setCurrentTooltipStack(this.hoveredSlot != null ? this.hoveredSlot.getItem() : ItemStack.EMPTY);
     }
 
     @Inject(method="renderTooltip", at=@At(value = "TAIL"))

@@ -39,11 +39,11 @@ public class EventManager
     public static <T extends Event> void fire(T event)
     {
         var eventClass = event.getClass();
-        var listeners = listeners.get(eventClass);
-        if (listeners == null)
+        var currentListeners = listeners.get(eventClass);
+        if (currentListeners == null)
             return;
 
-        for (var listener : listeners)
+        for (var listener : currentListeners)
         {
             ((Consumer<T>)listener).accept(event);
 

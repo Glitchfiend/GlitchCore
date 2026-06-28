@@ -12,7 +12,7 @@
   ],
   "client": [
     "client.MixinAbstractContainerScreen",
-    "client.MixinGui",
+    "client.MixinHud",
     "client.MixinGuiGraphicsExtractor",
     "impl.client.MixinPacketHandler"
   ],

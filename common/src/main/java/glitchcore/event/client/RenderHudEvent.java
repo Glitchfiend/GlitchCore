@@ -8,11 +8,12 @@ import glitchcore.event.Event;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 
-public abstract class RenderGuiEvent extends Event
+public abstract class RenderHudEvent extends Event
 {
     private final Type type;
-    private final Gui gui;
+    private final Hud hud;
     private final GuiGraphicsExtractor guiGraphics;
     private final DeltaTracker deltaTracker;
     private final int screenWidth;
@@ -20,10 +21,10 @@ public abstract class RenderGuiEvent extends Event
 
     private int rowTop;
 
-    public RenderGuiEvent(Type type, Gui gui, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight, int rowTop)
+    public RenderHudEvent(Type type, Hud hud, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight, int rowTop)
     {
         this.type = type;
-        this.gui = gui;
+        this.hud = hud;
         this.guiGraphics = guiGraphics;
         this.deltaTracker = deltaTracker;
         this.screenWidth = screenWidth;
@@ -36,9 +37,9 @@ public abstract class RenderGuiEvent extends Event
         return this.type;
     }
 
-    public Gui getGui()
+    public Hud getHud()
     {
-        return this.gui;
+        return this.hud;
     }
 
     public GuiGraphicsExtractor getGuiGraphics()
@@ -77,16 +78,16 @@ public abstract class RenderGuiEvent extends Event
         this.rowTop = value;
     }
 
-    public static class Pre extends RenderGuiEvent
+    public static class Pre extends RenderHudEvent
     {
-        public Pre(Type type, Gui gui, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight, int rowTop)
+        public Pre(Type type, Hud hud, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight, int rowTop)
         {
-            super(type, gui, guiGraphics, deltaTracker, screenWidth, screenHeight, rowTop);
+            super(type, hud, guiGraphics, deltaTracker, screenWidth, screenHeight, rowTop);
         }
 
-        public Pre(Type type, Gui gui, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight)
+        public Pre(Type type, Hud hud, GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, int screenWidth, int screenHeight)
         {
-            this(type, gui, guiGraphics, deltaTracker, screenWidth, screenHeight, -1);
+            this(type, hud, guiGraphics, deltaTracker, screenWidth, screenHeight, -1);
         }
     }
 

@@ -23,6 +23,11 @@ public class BlockHelper
         throw new UnsupportedOperationException();
     }
 
+    public static void registerStrippable(Block block, Block strippedBlock)
+    {
+        StrippableRegistry.register(block, strippedBlock);
+    }
+
     public static void registerFlammable(Block block, int encouragement, int flammability)
     {
         FireBlock fireblock = (FireBlock) Blocks.FIRE;

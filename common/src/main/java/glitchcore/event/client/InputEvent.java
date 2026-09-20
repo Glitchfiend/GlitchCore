@@ -12,16 +12,16 @@ public abstract class InputEvent extends Event
     public static class Key extends InputEvent
     {
         private final int key;
-        private final int scanCode;
+        private final int keyCode;
         private final int modifiers;
         private boolean handledDebugKey;
 
-        public Key(int key, int scanCode, int modifiers, boolean handledDebugKey)
+        public Key(int key, int keyCode, int modifiers, boolean handledDebugKey)
         {
             this.key = key;
-            this.scanCode = scanCode;
+            this.keyCode = keyCode;
             this.modifiers = modifiers;
-            this.handledDebugKey = false;
+            this.handledDebugKey = handledDebugKey;
         }
 
         public int getKey()
@@ -29,9 +29,9 @@ public abstract class InputEvent extends Event
             return this.key;
         }
 
-        public int getScanCode()
+        public int getKeyCode()
         {
-            return this.scanCode;
+            return this.keyCode;
         }
 
         public int getModifiers()

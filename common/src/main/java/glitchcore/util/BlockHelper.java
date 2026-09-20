@@ -4,52 +4,29 @@
  ******************************************************************************/
 package glitchcore.util;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class BlockHelper
 {
-    public static void registerStrippable(Block log, Block stripped)
+    public static void registerCompostable(ResourceKey<ContextIntProvider> layers, ItemLike item)
     {
-        AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-        AxeItem.STRIPPABLES.put(log, stripped);
-    }
-
-    public static void registerFlattenable(Block block, BlockState flattened)
-    {
-        ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
-        ShovelItem.FLATTENABLES.put(block, flattened);
-    }
-
-    public static void registerCompostable(float chance, ItemLike item)
-    {
-        ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+        throw new UnsupportedOperationException();
     }
 
     public static void registerFlammable(Block block, int encouragement, int flammability)
     {
         FireBlock fireblock = (FireBlock) Blocks.FIRE;
         fireblock.setFlammable(block, encouragement, flammability);
-    }
-
-    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled)
-    {
-        throw new UnsupportedOperationException();
     }
 
     public static <T extends BlockEntity> void addBlockEntityBlocks(BlockEntityType<T> type, Block... blocks)

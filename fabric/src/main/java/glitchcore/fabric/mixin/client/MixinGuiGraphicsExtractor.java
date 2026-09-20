@@ -34,7 +34,7 @@ public abstract class MixinGuiGraphicsExtractor implements IExtendedGuiGraphics
     @Shadow public abstract int guiHeight();
 
     @Inject(method = "tooltip", at=@At("HEAD"))
-    private void modifyRenderTooltipComponents(Font font, List<ClientTooltipComponent> lines, int xo, int yo, ClientTooltipPositioner positioner, @Nullable Identifier style, CallbackInfo ci)
+    private void modifyRenderTooltipComponents(Font font, List<ClientTooltipComponent> lines, int xo, int yo, ClientTooltipPositioner positioner, @Nullable Identifier style, boolean extraSpaceAfterFirstLine, CallbackInfo ci)
     {
         EventManager.fire(new RenderTooltipEvent(this.currentTooltipStack, (GuiGraphicsExtractor) (Object)this, xo, yo, this.guiWidth(), this.guiHeight(), lines, positioner));
     }

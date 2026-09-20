@@ -11,6 +11,7 @@ import glitchcore.event.TagsUpdatedEvent;
 import glitchcore.event.TickEvent;
 import glitchcore.event.server.RegisterCommandsEvent;
 import glitchcore.fabric.GlitchCoreInitializer;
+import glitchcore.fabric.handlers.CompostableHandler;
 import glitchcore.util.Remapper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -41,6 +42,8 @@ public class GlitchCoreFabric implements ModInitializer
 
         // Fire events which must occur during initialization
         postRegisterEvents();
+
+        CompostableHandler.init();
 
         ServerTickEvents.START_LEVEL_TICK.register(level -> {
             EventManager.fire(new TickEvent.Level(TickEvent.Phase.START, level));

@@ -56,7 +56,7 @@ public class MixinMinecraft
     }
 
     @Inject(method="startUseItem",
-            slice = @Slice(from = @At(value = "INVOKE", target = "net/minecraft/client/renderer/ItemInHandRenderer.itemUsed (Lnet/minecraft/world/InteractionHand;)V", ordinal = 0)),
+            slice = @Slice(from = @At(value = "INVOKE", target = "net/minecraft/client/player/LocalPlayer.itemUsed (Lnet/minecraft/world/InteractionHand;)V", ordinal = 0)),
             at=@At(value = "INVOKE", target = "net/minecraft/world/item/ItemStack.isEmpty()Z", ordinal = 0), remap = false)
     public void onStartUseItem(CallbackInfo ci)
     {

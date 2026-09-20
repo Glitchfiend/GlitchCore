@@ -4,22 +4,20 @@
  ******************************************************************************/
 package glitchcore.fabric.mixin.impl;
 
+import glitchcore.fabric.handlers.CompostableHandler;
 import glitchcore.util.BlockHelper;
-import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-
-import java.util.function.Predicate;
 
 @Mixin(value = BlockHelper.class, remap = false)
 public class MixinBlockHelper
 {
     @Overwrite
-    public static void registerTillable(Block input, Predicate<UseOnContext> usePredicate, BlockState tilled)
+    public static void registerCompostable(ResourceKey<ContextIntProvider> layers, ItemLike item)
     {
-        TillableBlockRegistry.register(input, usePredicate, tilled);
+        CompostableHandler.register(item.asItem(), layers);
     }
 }

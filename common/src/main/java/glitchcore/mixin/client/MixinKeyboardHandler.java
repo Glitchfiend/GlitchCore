@@ -27,7 +27,7 @@ public abstract class MixinKeyboardHandler
     @Inject(method = "handleDebugKeys", at=@At("RETURN"), cancellable = true, remap = false)
     public void onKeyInput(KeyEvent event, CallbackInfoReturnable<Boolean> cir)
     {
-        var gcEvent = new InputEvent.Key(event.key(), event.scancode(), event.modifiers(), cir.getReturnValue());
+        var gcEvent = new InputEvent.Key(event.key(), event.keycode(), event.modifiers(), cir.getReturnValue());
         EventManager.fire(gcEvent);
 
         if (gcEvent.getHandledDebugKey())

@@ -63,6 +63,8 @@ curseforge {
         releaseType = release_channel
         addGameVersion minecraft_version
         addGameVersion name
+        addGameVersion 'Client'
+        addGameVersion 'Server'
 
         mainArtifact(jar) {
             displayName = "${mod_display_name} ${name} ${version}"

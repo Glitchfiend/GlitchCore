@@ -5,13 +5,11 @@
 package glitchcore.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import glitchcore.core.GlitchCore;
-import glitchcore.util.BlockTransformerExtensions;
-import net.minecraft.core.Holder;
+import glitchcore.util.StrippableRegistry;
 import net.minecraft.core.component.BlockTransformer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockTransformers;
 import net.minecraft.world.item.context.UseOnContext;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -28,9 +26,6 @@ public class MixinBlockTransformer
     {
         // The transformer's registry key is only available from the holder on the item
         var transformer = context.getItemInHand().get(DataComponents.BLOCK_TRANSFORMER);
-        if (transformer == null || transformer.value() != (Object)this)
-            return original;
-
-        return BlockTransformerExtensions.appendTo(transformer, original, context.getLevel().registryAccess());
+        return transformer != null && transformer.is(BlockTransformers.AXE) ? StrippableRegistry.appendTo(original) : original;
     }
 }
